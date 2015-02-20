@@ -9,9 +9,8 @@ block content
           .form-group
             label(for='inputActivityType') Activity Type
               .dropdown
-                button#activityDropMenu.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true')
-                Activity
-                  span.caret
+                button#activityDropMenu.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Activity
+                    span.caret
                 ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
                   li(role='presentation')
                     a(role='run', tabindex='-1', href='#') Running
@@ -23,13 +22,13 @@ block content
           .form-group
             label(for='inputActivityTime') Start Time
             input#timePicker.form-control(type='text', placeholder='Enter Time')
-            label(for='inputActivityDistance') Activity Distance
           .form-group
+            label(for='inputActivityDistance') Activity Distance
             .input-group
               input#distance.form-control(type='text', placeholder='Enter Distance')
               span#basic-addon2.input-group-addon mi
-            label(for='inputActivityPace') Activity Pace
           .form-group
+            label(for='inputActivityPace') Activity Pace
             .input-group
               input#pace.form-control(type='text', placeholder='mm:ss')
               span#basic-addon2.input-group-addon min/mi
