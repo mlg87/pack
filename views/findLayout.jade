@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset="utf-8")
+    title Find A Pack
+    link(rel='stylesheet', type='text/css', href='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css')
+    link(rel='stylesheet', type='text/css', href='css/main.css')
+    link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.1/css/datepicker.mi')
+    link(href='http://fonts.googleapis.com/css?family=Lato', rel='stylesheet', type='text/css')
+    link(rel='stylesheet', href='css/bootstrap-timepicker.css')
+  body
+    block content
+nav.navbar.navbar-default.navbar-fixed-top
+      .container.navContainer
+        .navbar-header
+          .navbar-collapse.collapse
+            ul.nav.nav-pills
+              li
+                img.navLogo(src='/images/green-logo-sm.png', alt='')
+              li(role='presentation')
+                a(href='file:///Users/Schuchard/projects/website/index.html') PACK
+              li.active(role='presentation')
+                a(href='#') Find a PACK
+              li(role='presentation')
+                a(href='file:///Users/Schuchard/projects/website/create.html') Form a PACK
+
+
+script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+script(src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js')
+script(src='http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.1/js/bootstrap-datepicker.min.js')
+script(src='js/bootstrap-timepicker.js')
+script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?libraries=geometry,key=AIzaSyDqFwM-p6X0FZLv1SETkOWi7TL_M6J0z9k')
+script(src='js/find-test.js')

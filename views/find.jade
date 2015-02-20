@@ -1,0 +1,43 @@
+extends findLayout
+
+block content
+
+  .container.mapTop
+    .row
+      .col-sm-3
+        form
+          .form-group
+            label(for='inputActivityType') Activity Type
+              .dropdown
+                button#activityDropMenu.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true')
+                Activity
+                  span.caret
+                ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu1')
+                  li(role='presentation')
+                    a(role='run', tabindex='-1', href='#') Running
+                  li(role='presentation')
+                    a(role='bike', tabindex='-1', href='#') Cycling
+          .form-group
+            label(for='inputActivityDate') ActivityDate
+            input#datePick.form-control.datePick(data-provide='datepicker', type='text', placeholder='Enter Date')
+          .form-group
+            label(for='inputActivityTime') Start Time
+            input#timePicker.form-control(type='text', placeholder='Enter Time')
+            label(for='inputActivityDistance') Activity Distance
+          .form-group
+            .input-group
+              input#distance.form-control(type='text', placeholder='Enter Distance')
+              span#basic-addon2.input-group-addon mi
+            label(for='inputActivityPace') Activity Pace
+          .form-group
+            .input-group
+              input#pace.form-control(type='text', placeholder='mm:ss')
+              span#basic-addon2.input-group-addon min/mi
+          label(for='inputActivityZip') Zip Code
+          .form-group
+            .form-group
+              input#address.form-control(type='text-box', placeholder='Enter Zip')
+          #searchSubmit.form-group
+            button.btn.btn-default(type='submit', value='Geocode') Search
+      .col-sm-9.mapBox
+        #map-canvas.col-sm-10
