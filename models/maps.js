@@ -1,6 +1,3 @@
-var mapCenterLocation;
-
-
 
 module.exports = {
 

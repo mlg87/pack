@@ -1,9 +1,31 @@
 Setup:
  ✔ set up route for link page @done (15-02-19 16:34)
+ ✔ Build user "database" @done (15-02-20 16:29)
+ ✔ Build user model @done (15-02-20 16:29)
+ ✔ Build user activity @done (15-02-20 16:29)
+ ☐ Add remaining functions
 
 Design:
  ✔ Install bootstrap @done (15-02-19 16:34)
- ☐ build out find html in Jade
+ ✔ build out find html in Jade @done (15-02-20 12:17)
+ ☐ Change menu bar to display when sized down(row/collumn)
+ ☐ Look at alternative design
 
 Find page:
- ☐ Change serachRadius function
+ ☐ Fix serachRadius function
+ ☐ Build form display for match users from map/search
+ ☐ On hover of user on form, hop marker on map
+ ☐ on click of user on form, open users info window on map
+   Marker info:
+    ☐ change marker to custom alpha circle
+
+Timepicker:
+ ☐ Setup second timepicker variable to load on page lode with no default time.
+
+User Profile:
+
+Activity page:
+
+Home page:
+
+Login page:

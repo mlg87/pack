@@ -1,6 +1,6 @@
 /* Initialize Google Map on window load */
+var geocoder;
 var initialize = function () {
-  // var geocoder;
   // var map;
     var geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(40.014986, -105.270546);
@@ -24,7 +24,7 @@ var codeAddress = function() {
   });
 };
 
-/* Calendar Settings */
+/* Add custom calendar settings */
 var calendarPick = function(){
   $('.datePick').datepicker({
     startDate: "today",
@@ -33,12 +33,29 @@ var calendarPick = function(){
   });
 };
 
-/* Time picker settings */
+/* Initialize Time Picker module */
 var timePick = function (){
   $('#timePicker').timepicker();
 };
 
-// Converts 12 hour time to 24 hour time.
+/* Gets form data */
+var getForm = function (){
+  // Create new Activity to add to User's Search array
+  var date = $('.datePick').datepicker("getDate");
+  var sType = $('#activityDropMenu').text();
+  var sDate = $('#datePick').val();
+  var sTime = $('#timePicker').val();
+  var sDistance = $('#distance').val();
+  var sPace = $('#pace').val();
+  var sAddress = $('#address').val();
+
+      // Move this to Model
+      var input = new Activity(sType, sDate, sTime, sDistance, sPace, sAddress);
+      // Add form data to User search array
+      kevin.addSearch(input);
+};
+
+/* Converts 12 hour (HH:MM) time to 24 hour time. */
 var timeConvert = function(time){
   var hours = parseInt(time.substr(0, 2));
     if(time.indexOf('AM') != -1 && hours == 12) {
@@ -50,7 +67,7 @@ var timeConvert = function(time){
         return time.replace(/(AM|PM)/, '');
 };
 
-// Converts 24 hour time to seconds.
+/* Converts 24 hour (HH:MM) time to seconds. */
 var timeToSeconds = function(time){
   var t = time.split(':');
     if(t.length > 1){
@@ -61,7 +78,7 @@ var timeToSeconds = function(time){
       }
 };
 
-// Converts pace into seconds
+/* Converts pace (MM:SS) into seconds */
 var paceConvert = function (time){
   if(time.length === 1){
     return time*60;
@@ -78,7 +95,27 @@ var paceConvert = function (time){
 };
 
 $(document).on('ready', function(){
+  /* Load Google Maps */
   google.maps.event.addDomListener(window, 'load', initialize);
+
+  /* Initialize calendar */
   calendarPick();
-  timePick();
+
+  /* Initialize Time Picker when field is clicked */
+  $('#timePicker').on('click', function(){
+    timePick();
+  });
+
+  /* Change Activity tab to User's selection. */
+  $('.form-group').on('click', 'li', function() {
+    $('#activityDropMenu').text($(this).text());
+  });
+
+  /* Add's User's search to their Search array and filter results. */
+  $('#searchSubmit').on('click', 'button', function(e){
+    e.preventDefault();
+    codeAddress();
+    // getForm();
+    // kevin.searchRadius();
+  });
 });

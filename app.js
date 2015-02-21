@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', indexController.index);
 app.get('/find', findController.initialize);
+app.post('/search', findController.searchForm);
 
 var server = app.listen(3000, function() {
 	console.log('Express server listening on port ' + server.address().port);
