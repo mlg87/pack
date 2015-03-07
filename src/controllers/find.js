@@ -1,4 +1,4 @@
-var user = require('../models/users.js');
+var user = require('../models/user.js');
 
 var indexController = {
 
@@ -11,7 +11,8 @@ var indexController = {
   },
 
   searchForm: function(req, res){
-    user.matchActivity(
+    var matches = [];
+    matches = user.matchActivity(
       req.body.type,
       req.body.date,
       req.body.time,
@@ -19,7 +20,8 @@ var indexController = {
       req.body.pace,
       req.body.address
     );
-    res.redirect('/');
+    // deleteMarkers();
+    // user.displayMatches(matches)
   }
 };
 

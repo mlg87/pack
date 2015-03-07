@@ -45,3 +45,7 @@ font-style: italic;
 #matchUserTemp {
   display: none;
 }
+
+.pill {
+  border-bottom: 2px solid black;
+}

@@ -1,31 +1,65 @@
-Setup:
- ✔ set up route for link page @done (15-02-19 16:34)
- ✔ Build user "database" @done (15-02-20 16:29)
- ✔ Build user model @done (15-02-20 16:29)
- ✔ Build user activity @done (15-02-20 16:29)
- ☐ Add remaining functions
+DATABASE:
+ ☐ Seed users
+ ☐ Seed activities
 
-Design:
- ✔ Install bootstrap @done (15-02-19 16:34)
- ✔ build out find html in Jade @done (15-02-20 12:17)
- ☐ Change menu bar to display when sized down(row/collumn)
- ☐ Look at alternative design
+LANDING PAGE:
+ ☐ Add search bar
+   ☐ Format seach inputs
+     ✔ Set calendar up to show date when selected, button @done (15-03-06 14:49)
+     ✔ Add helper text on click to distance and pace @done (15-03-06 16:19)
+   ☐ Setup routes / Link search to DB
+   ☐ Setup geocoder
+   ☐ SEARCH
+     ☐ Hide search bar
+     ☐ Query DB based on search
+       ☐ Search only based on fields entered
+       ☐ Retrun results
 
-Find page:
- ☐ Fix serachRadius function
- ☐ Build form display for match users from map/search
- ☐ On hover of user on form, hop marker on map
- ☐ on click of user on form, open users info window on map
-   Marker info:
-    ☐ change marker to custom alpha circle
+RESULTS:
+  ☐ Display map of match markers
+   ☐ Build info window for each marker
+     ☐ Organizer
+     ☐ Organizer avatar
+     ☐ Number of runners
+     ☐ Distance
+     ☐ Pace
+     ☐ Join button (if logged in)
+     ☐ Logged in marker (pin)
+     ☐ Logged out marker (radius circle, no join buton)
+  ☐ Display table of matches
+ ☐ Link matches on table to markers on map.
 
-Timepicker:
- ☐ Setup second timepicker variable to load on page lode with no default time.
+ADD LOGIN FORM:
+ ☐ Inputs
+   ☐ name
+   ☐ email
+   ☐ password
+   ☐ birthday
+   ☐ GravatarAPI
+ ☐ Route back to search page or user page
 
-User Profile:
+ USER PAGE:
+  ☐ Display upcomming runs
+  ☐ Display stats
+    ☐ Number of packs joined
+    ☐ Number of stars
+    ☐ Leaderboard - most packs joined out of State / Friends
+  ☐ Testimonials
+  ☐ Filter by sex
+  ☐ Add performance zones
 
-Activity page:
+FEED:
+  ☐ Add a follow button to users
+  ☐ Build activity feed for upcomming PACKs from your friends
 
-Home page:
+BUILD:
+ ☐ Setup User model schema
+   ☐ Build User seeds
+ ☐ Setup Activity model Schema
+   ☐ Build Activity seeds
+ ☐ Setup JSON from form data
+   ☐ reset form
+   ☐ $.post to mongo
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
 
-Login page:

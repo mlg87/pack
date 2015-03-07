@@ -26,16 +26,19 @@ var codeAddress = function() {
 
 /* Add custom calendar settings */
 var calendarPick = function(){
-  $('.datePick').datepicker({
-    startDate: "today",
+  $('#datePick input').datepicker({
+    orientation: 'bottom left',
+    startDate: 'today',
     autoclose: true,
-    todayHighlight: true,
+    todayHighlight: true
   });
 };
 
 /* Initialize Time Picker module */
 var timePick = function (){
-  $('#timePicker').timepicker();
+  $('#timePicker').timepicker({
+    showInputs: false
+  });
 };
 
 /* Gets form data */
@@ -50,7 +53,7 @@ var getForm = function (){
   var sAddress = $('#address').val();
 
       // Move this to Model
-      var input = new Activity(sType, sDate, sTime, sDistance, sPace, sAddress);
+      // var input = new Activity(sType, sDate, sTime, sDistance, sPace, sAddress);
       // Add form data to User search array
       kevin.addSearch(input);
 };
@@ -94,15 +97,29 @@ var paceConvert = function (time){
   }
 };
 
+var helperDistance = function(){
+$('#milesHelper').fadeIn();
+    setTimeout(function(){
+      $('#milesHelper').fadeOut();
+    }, 2500);
+};
+
+var helperPace = function(){
+$('#paceHelper').fadeIn();
+    setTimeout(function(){
+      $('#paceHelper').fadeOut();
+    }, 2500);
+};
+
 $(document).on('ready', function(){
   /* Load Google Maps */
   google.maps.event.addDomListener(window, 'load', initialize);
 
   /* Initialize calendar */
-  calendarPick();
+
 
   /* Initialize Time Picker when field is clicked */
-  $('#timePicker').on('click', function(){
+  $('#timePicker').on('focus', function(){
     timePick();
   });
 
@@ -110,6 +127,25 @@ $(document).on('ready', function(){
   $('.form-group').on('click', 'li', function() {
     $('#activityDropMenu').text($(this).text());
   });
+
+  /* Change Date tab to users selection*/
+  $('#datePick').on('focus', function(){
+    calendarPick();
+    $(document).on('click', 'td', function() {
+      $('#datePick').text($('.datePick').datepicker("getDate"));
+    });
+  });
+
+  /* Add helper text below Distance input*/
+  $('#distance').on('focus', function() {
+    helperDistance();
+  });
+
+  /* Add helper text below Pace input*/
+  $('#pace').on('focus', function() {
+    helperPace();
+  });
+
 
   /* Add's User's search to their Search array and filter results. */
   $('#searchSubmit').on('click', 'button', function(e){
