@@ -9,13 +9,16 @@ var activitySchema = mongoose.Schema({
 module.exports = mongoose.model('Activity', activitySchema);
 
 /*
-var Activity = function(type, date, time, distance, pace, address, name){
+var Activity = function(type, date, time, description, distance, pace, address, activityName){
+  this.userId = userId
   this.type = type;
   this.date = date;
   this.time = time;
+  this.description = description;
   this.distance = distance;
   this.pace = pace;
   this.address = address;
-  this.name = name;
+  this.activityName = activityName;
+  this.comments = {}
 };
 */

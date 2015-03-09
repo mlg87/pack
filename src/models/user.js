@@ -8,16 +8,16 @@ var userSchema = mongoose.Schema({
 module.exports = mongoose.model('User', userSchema);
 
 /*
-var User = function(fName, lName, email, password, birthday, favActivities) {
+var User = function(fName, lName, email, password, birthday, sex) {
   this.fName = fName;
   this.lName = lName;
   this.email = email;
   this.password = password;
   this.birthday = birthday;
-  this.favActivities = [];
+  this.sex = sex;
   this.rating = 0;
   this.events = [];
-  this.search = [];
+  this.friends = [];
 };
 
  */

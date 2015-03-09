@@ -26,8 +26,7 @@ var codeAddress = function() {
 
 /* Add custom calendar settings */
 var calendarPick = function(){
-  $('#datePick input').datepicker({
-    orientation: 'bottom left',
+  $('#datePick').datepicker({
     startDate: 'today',
     autoclose: true,
     todayHighlight: true
@@ -116,6 +115,7 @@ $(document).on('ready', function(){
   google.maps.event.addDomListener(window, 'load', initialize);
 
   /* Initialize calendar */
+  calendarPick();
 
 
   /* Initialize Time Picker when field is clicked */
@@ -130,7 +130,6 @@ $(document).on('ready', function(){
 
   /* Change Date tab to users selection*/
   $('#datePick').on('focus', function(){
-    calendarPick();
     $(document).on('click', 'td', function() {
       $('#datePick').text($('.datePick').datepicker("getDate"));
     });

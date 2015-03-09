@@ -7,7 +7,7 @@ block content
       .col-sm-3
         form(action="/search", method="post")
           .form-group
-            label(for='inputActivityType')
+            label(for='inputActivityType') Activity Type
               .dropdown
                 button#activityDropMenu.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='true') Activity
                     span.caret
@@ -17,22 +17,22 @@ block content
                   li(role='presentation')
                     a(name="type", role='bike', tabindex='-1', href='#') Cycling
           .form-group
-            label(for='inputActivityDate')
+            label(for='inputActivityDate') ActivityDate
             input#datePick.form-control.datePick(name="date", data-provide='datepicker', type='text', placeholder='Enter Date')
           .form-group
-            label(for='inputActivityTime')
+            label(for='inputActivityTime') Start Time
             input#timePicker.form-control(name="time", type='text', placeholder='Enter Time')
           .form-group
-            label(for='inputActivityDistance')
+            label(for='inputActivityDistance') Activity Distance
             .input-group
               input#distance.form-control(name="distance", type='text', placeholder='Enter Distance')
               span#basic-addon2.input-group-addon mi
           .form-group
-            label(for='inputActivityPace')
+            label(for='inputActivityPace') Activity Pace
             .input-group
               input#pace.form-control(name="pace", type='text', placeholder='mm:ss')
               span#basic-addon2.input-group-addon min/mi
-          label(for='inputActivityZip')
+          label(for='inputActivityZip') Zip Code
           .form-group
             .form-group
               input#address.form-control(name="address", type='text-box', placeholder='Enter Zip')

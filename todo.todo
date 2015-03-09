@@ -12,45 +12,81 @@ LANDING PAGE:
    ☐ SEARCH
      ☐ Hide search bar
      ☐ Query DB based on search
-       ☐ Search only based on fields entered
-       ☐ Retrun results
+       ☐ search only based on fields entered
+       ☐ return results
 
 RESULTS:
   ☐ Display map of match markers
    ☐ Build info window for each marker
      ☐ Organizer
-     ☐ Organizer avatar
-     ☐ Number of runners
-     ☐ Distance
-     ☐ Pace
-     ☐ Join button (if logged in)
-     ☐ Logged in marker (pin)
-     ☐ Logged out marker (radius circle, no join buton)
+     ☐ organizer avatar
+     ☐ number of runners
+     ☐ distance
+     ☐ pace
+     ☐ logged in marker (pin)
+       ☐ join button (if logged in)
+     ☐ logged out marker (radius circle, no join buton)
   ☐ Display table of matches
  ☐ Link matches on table to markers on map.
+
+ACTIVITY PAGE:
+ ☐ Map location
+ ☐ Activity stats
+   ☐ type, date, time, description, distance, pace, address, activity name,
+     ☐ NEXT
+       ☐ Comments
+         ☐ user name
+         ☐ user photo
+         ☐ time of commment
+         ☐ comment
+         ☐ reply to thread
+         ☐ reply to comment
+ ☐ Users attending
+   ☐ profile picture
+   ☐ name
+   ☐ number of packs joined
+ ☐ NEXT
+   ☐ Show attending Users by -
+     ☐ sorted by friend list first
 
 ADD LOGIN FORM:
  ☐ Inputs
    ☐ name
    ☐ email
    ☐ password
+   ☐ sex
    ☐ birthday
-   ☐ GravatarAPI
+   ☐ profile picture
+     ☐ upload image
+     ☐ GravatarAPI
  ☐ Route back to search page or user page
 
  USER PAGE:
   ☐ Display upcomming runs
   ☐ Display stats
-    ☐ Number of packs joined
-    ☐ Number of stars
-    ☐ Leaderboard - most packs joined out of State / Friends
+    ☐ number of packs joined
+    ☐ number of stars
+    ☐ leaderboard - most packs joined out of State / Friends
   ☐ Testimonials
   ☐ Filter by sex
-  ☐ Add performance zones
+    ☐ NEXT
+      ☐ add performance zones
+      ☐ add friend list
+
+SEARCH PAGE:
+ ☐ On submit, collapse serach criteria, extend map, show results details below, show button to extend serach criteria to refine serach.
 
 FEED:
   ☐ Add a follow button to users
   ☐ Build activity feed for upcomming PACKs from your friends
+    ☐ Search friends array of their upcomming activities
+      ☐ sort by date with newest at top
+        ☐ display activity detils
+        ☐ display users attending
+        ☐ add option to join
+  ☐ Notifications
+    ☐ Any changes to an activity will notify all Users of the change
+  ☐ Messages
 
 BUILD:
  ☐ Setup User model schema
