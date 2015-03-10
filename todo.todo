@@ -1,3 +1,6 @@
+SETUP:
+ ☐ Move jade files to templates
+
 DATABASE:
  ☐ Seed users
  ☐ Seed activities
@@ -87,6 +90,10 @@ FEED:
   ☐ Notifications
     ☐ Any changes to an activity will notify all Users of the change
   ☐ Messages
+
+EMAIL CONFIRMATION:
+ ☐ SendGrid
+   ☐ Route new users to a welcome email
 
 BUILD:
  ☐ Setup User model schema

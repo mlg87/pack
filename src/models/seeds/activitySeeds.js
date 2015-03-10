@@ -2,9 +2,22 @@ var Activity = require('../activity.js');
 
 Activity.find({}, function(err, results){
   if(results.length === 0){
-    var activity1 = new Activity({
 
-    });
+      var item1 = new Activity({
+        creator: 'Jenna',
+        activityName: 'Lunch run',
+        activityType: 'run',
+        activityDate: '02/13/2015',
+        activityTime: '5:00 PM',
+        activityPace: '3',
+        activityDistance: '9:30',
+        activityAddress: {
+          lat: 40.014955,
+          lng: -105.214863
+        },
+        activityDescption: 'Lets run at lunch today!',
+      });
+      item1.save();
 
   }
 });

@@ -3,7 +3,7 @@ extends landingLayout
 block content
   .intro
     h1.landingHeader.logo find a PACK to run with
-
+    div(ng-view)
     .container
       .row.searchBar
         form.col-md-12(action="/search", method="post")
