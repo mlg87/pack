@@ -1,3 +1,4 @@
+
 /* Initialize Google Map on window load */
 var geocoder;
 var initialize = function () {
@@ -112,14 +113,14 @@ $('#paceHelper').fadeIn();
 
 $(document).on('ready', function(){
   /* Load Google Maps */
-  google.maps.event.addDomListener(window, 'load', initialize);
+  // google.maps.event.addDomListener(window, 'load', initialize);
 
   /* Initialize calendar */
   calendarPick();
 
 
   /* Initialize Time Picker when field is clicked */
-  $('#timePicker').on('focus', function(){
+  $(document).on('focus','#timePicker', function(){
     timePick();
   });
 

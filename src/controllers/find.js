@@ -4,27 +4,28 @@ var Activity = require('../models/activity.js');
 
 var findController = {
 
-  initialize: function(req, res){
-    res.render('find', {
-      users: user.users,
-      globalEvents : user.globalEvents,
-      push : user.push
-    });
-  },
+  // initialize: function(req, res){
+  //   res.render('find', {
+  //     users: user.users,
+  //     globalEvents : user.globalEvents,
+  //     push : user.push
+  //   });
+  // },
 
-  searchForm: function(req, res){
-    var matches = [];
-    matches = user.matchActivity(
-      req.body.type,
-      req.body.date,
-      req.body.time,
-      req.body.distance,
-      req.body.pace,
-      req.body.address
-    );
-    // deleteMarkers();
-    // user.displayMatches(matches)
-  },
+  // searchForm: function(req, res){
+  //   var matches = [];
+  //   matches = user.matchActivity(
+  //     req.body.type,
+  //     req.body.date,
+  //     req.body.time,
+  //     req.body.distance,
+  //     req.body.pace,
+  //     req.body.address
+  //   );
+  //   // deleteMarkers();
+  //   // user.displayMatches(matches)
+  // },
+
   getAll: function(req, res){
     if(req.query._id){
       // If there is a query parameter for _id,

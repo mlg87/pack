@@ -1,5 +1,8 @@
 SETUP:
  ☐ Move jade files to templates
+ ☐ Convert bootstrap to UI Bootstrap
+   ☐ change date picker
+   ☐ change time picker
 
 DATABASE:
  ☐ Seed users

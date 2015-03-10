@@ -9,8 +9,8 @@ Activity.find({}, function(err, results){
         activityType: 'run',
         activityDate: '02/13/2015',
         activityTime: '5:00 PM',
-        activityPace: '3',
-        activityDistance: '9:30',
+        activityPace: '9:30',
+        activityDistance: '3',
         activityAddress: {
           lat: 40.014955,
           lng: -105.214863

@@ -20,9 +20,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', indexController.index);
-app.get('/find', findController.initialize);
-// app.post('/search', findController.searchForm);
-app.get('/create', createController.create);
+// app.get('/find', findController.initialize);
+// app.get('/create', createController.create);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
