@@ -1,29 +1,65 @@
 .container.mapTop
-  .row
-    .col-sm-3
-      form(action="/search", method="post")
-        .form-group
-          label(for='inputActivityDate') ActivityDate
-          input#datePick.form-control.datePick(name="date", data-provide='datepicker', type='text', placeholder='Enter Date')
-        .form-group
-          label(for='inputActivityTime') Start Time
-          input#timePicker.form-control(name="time", type='text', placeholder='Enter Time')
-        .form-group
-          label(for='inputActivityDistance') Activity Distance
-          .input-group
-            input#distance.form-control(name="distance", type='text', placeholder='Enter Distance')
-            span#basic-addon2.input-group-addon mi
-        .form-group
-          label(for='inputActivityPace') Activity Pace
-          .input-group
-            input#pace.form-control(name="pace", type='text', placeholder='mm:ss')
-            span#basic-addon2.input-group-addon min/mi
-        label(for='inputActivityZip') Zip Code
-        .form-group
-          .form-group
-            input#address.form-control(name="address", type='text-box', placeholder='Enter Zip')
-        .form-group
-          button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search
-    .col-sm-9.mapBox
-      #map-canvas.col-sm-10
+  .col-sm-3
+    form(name="createActivity", novalidate)
+      .form-group
+        label(for='Name')
+          h5 Activity Name:
+          input.form-control(name="name", type='text')
+      .form-group
+         div(ng-controller="DatepickerCtrl")
+           label(for='Date')
+           h5 Date:
+           .input-group
+             input.form-control(type="text", datepicker-popup="{{format}}", ng-model="search.dt", is-open="opened", min-date="minDate", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", show-weeks='false')
+             span.input-group-btn
+               button.btn.btn-default(type="button", ng-click="open($event)")
+                 i.glyphicon.glyphicon-calendar
+      .form-group#createTime
+        h5 Time:
+        div(ng-controller="TimepickerCtrl")
+          timepicker(ng-model="mytime", ng-change="changed()", hour-step="hstep", minute-step="mstep", show-meridian="ismeridian")
+      .form-group
+        label(for='Distance')
+        h5 Distance:
+        .input-group
+          input#distance.form-control.btn.btn-default(name="distance", type='text', placeholder='Distance')
+          span.input-group-addon mi
+      .form-group
+        label(for='inputActivityPace')
+        h5 Pace:
+        .input-group
+          input#pace.form-control.btn.btn-default(name="pace", type='text', placeholder='Mile Pace')
+          span.input-group-addon mm:ss
+      .form-group
+        label(for='description')
+          h5 Description:
+          textarea.form-control(rows='3')
+      .form-group
+        button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Create
+
+    //- form(action="/search", method="post")
+    //-   .form-group
+    //-     label(for='inputActivityDate') ActivityDate
+    //-     input#datePick.form-control.datePick(name="date", data-provide='datepicker', type='text', placeholder='Enter Date')
+    //-   .form-group
+    //-     label(for='inputActivityTime') Start Time
+    //-     input#timePicker.form-control(name="time", type='text', placeholder='Enter Time')
+    //-   .form-group
+    //-     label(for='inputActivityDistance') Activity Distance
+    //-     .input-group
+    //-       input#distance.form-control(name="distance", type='text', placeholder='Enter Distance')
+    //-       span#basic-addon2.input-group-addon mi
+    //-   .form-group
+    //-     label(for='inputActivityPace') Activity Pace
+    //-     .input-group
+    //-       input#pace.form-control(name="pace", type='text', placeholder='mm:ss')
+    //-       span#basic-addon2.input-group-addon min/mi
+    //-   label(for='inputActivityZip') Zip Code
+    //-   .form-group
+    //-     .form-group
+    //-       input#address.form-control(name="address", type='text-box', placeholder='Enter Zip')
+    //-   .form-group
+    //-     button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search
+  .col-sm-9.mapBox
+    ui-gmap-google-map(center='map.center', zoom='map.zoom').col-sm-10
 

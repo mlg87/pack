@@ -49,3 +49,11 @@ font-style: italic;
 .pill {
   border-bottom: 2px solid black;
 }
+
+.angular-google-map-container {
+  height: 400px;
+}
+
+#createTime {
+  margin-bottom: 0px;
+}

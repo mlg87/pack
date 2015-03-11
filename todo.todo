@@ -4,20 +4,20 @@ SETUP:
    ✔ change date picker @done (15-03-11 07:47)
    ✔ change time picker @done (15-03-11 07:47)
    ✔ center and style search bar @done (15-03-11 07:47)
- ☐ Split landing into landing and search template
-   ☐ Landing page has map
-     ☐ Search Page
+ ✔ Split landing into landing and search template @done (15-03-11 12:25)
+     ✔ Search Page @done (15-03-11 12:25)
      ☐ Results Page
      ☐ Create Page
+       ✔ add map @done (15-03-11 12:28)
  ☐ Create datepicker directive
 
 DATABASE:
  ☐ Seed users
- ☐ Seed activities
+ ✔ Seed activities @done (15-03-11 12:29)
 
 LANDING PAGE:
- ☐ Add search bar
-   ☐ Format seach inputs
+ ✔ Add search bar @done (15-03-11 12:29)
+   ✔ Format seach inputs @done (15-03-11 12:29)
      ☐ get values from form
    ☐ Setup routes / Link search to DB
    ☐ Setup geocoder
@@ -44,7 +44,7 @@ RESULTS:
 ACTIVITY PAGE:
  ☐ Map location
  ☐ Activity stats
-   ☐ type, date, time, description, distance, pace, address, activity name,
+   ☐ date, time, description, distance, pace, address, activity name,
      ☐ NEXT
        ☐ Comments
          ☐ user name

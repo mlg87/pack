@@ -20,6 +20,15 @@ createApp.config(function($routeProvider){
     });
 });
 
+// Config Google Maps SDK Async Loader
+createApp.config(function(uiGmapGoogleMapApiProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+      key: 'AIzaSyDqFwM-p6X0FZLv1SETkOWi7TL_M6J0z9k',
+      v: '3.17',
+      libraries: 'weather,geometry,visualization'
+    });
+});
+
 // Data from server:
 createApp.factory('Activity',['$resource', function($resource){
   // Define and return a resource connection
@@ -46,31 +55,18 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 createApp.controller('searchController', ['$scope', function($scope){
 }]);
 
-createApp.controller('createController', ['$scope', function($scope){
+// Create Activity controller
+createApp.controller('createController', ['$scope','uiGmapGoogleMapApi', function($scope, uiGmapGoogleMapApi){
+  // Do stuff with your $scope.
+  // Note: Some of the directives require at least something to be defined originally!
+  // e.g. $scope.markers = []
+  $scope.map = { center: { latitude: 40.014986, longitude: -105.270546 }, zoom: 12 };
 
-var geocoder;
-var initialize = function () {
-    var geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(40.014986, -105.270546);
-    var mapOptions = {
-      zoom: 12,
-      center: latlng
-    };
-      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-};
+  // uiGmapGoogleMapApi is a promise.
+  // The "then" callback function provides the google.maps object.
+  uiGmapGoogleMapApi.then(function(maps){
 
-/* Center map on zip code input from form on search submit */
-var codeAddress = function() {
-  var address = document.getElementById('address').value;
-  geocoder.geocode( { 'address': address}, function(results, status) {
-    if (status == google.maps.GeocoderStatus.OK) {
-      map.setCenter(results[0].geometry.location);
-      mapCenterLocation = results[0].geometry.location;
-    }   else {
-        alert('Please enter a zip code');
-        }
   });
-};
 }]);
 
 // Controls Datepicker settings
