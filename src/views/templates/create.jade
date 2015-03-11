@@ -1,24 +1,29 @@
-div(ng-controller="DatepickerDemoCtrl")
-  pre.
-    \nSelected date is:
-  h4 Inline
-  div(style="display:inline-block; min-height:290px;")
-    datepicker.well.well-sm(ng-model="dt", min-date="minDate", show-weeks="true")
-  h4 Popup
+.container.mapTop
   .row
-    .col-md-6
-      p.input-group
-        input.form-control(type="text", datepicker-popup="{{format}}", ng-model="dt", is-open="opened", min-date="minDate", max-date="'2015-06-22'", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
-        span.input-group-btn
-          button.btn.btn-default(type="button", ng-click="open($event)")
-            i.glyphicon.glyphicon-calendar
-  .row
-    .col-md-6
-      label Format:
-      select.form-control(ng-model="format", ng-options="f for f in formats")
-        option
-  hr
-  button.btn.btn-sm.btn-info(type="button", ng-click="today()") Today
-  button.btn.btn-sm.btn-default(type="button", ng-click="dt = '2009-08-24'") 2009-08-24
-  button.btn.btn-sm.btn-danger(type="button", ng-click="clear()") Clear
-  button.btn.btn-sm.btn-default(type="button", ng-click="toggleMin()", tooltip="After today restriction") Min date
+    .col-sm-3
+      form(action="/search", method="post")
+        .form-group
+          label(for='inputActivityDate') ActivityDate
+          input#datePick.form-control.datePick(name="date", data-provide='datepicker', type='text', placeholder='Enter Date')
+        .form-group
+          label(for='inputActivityTime') Start Time
+          input#timePicker.form-control(name="time", type='text', placeholder='Enter Time')
+        .form-group
+          label(for='inputActivityDistance') Activity Distance
+          .input-group
+            input#distance.form-control(name="distance", type='text', placeholder='Enter Distance')
+            span#basic-addon2.input-group-addon mi
+        .form-group
+          label(for='inputActivityPace') Activity Pace
+          .input-group
+            input#pace.form-control(name="pace", type='text', placeholder='mm:ss')
+            span#basic-addon2.input-group-addon min/mi
+        label(for='inputActivityZip') Zip Code
+        .form-group
+          .form-group
+            input#address.form-control(name="address", type='text-box', placeholder='Enter Zip')
+        .form-group
+          button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search
+    .col-sm-9.mapBox
+      #map-canvas.col-sm-10
+

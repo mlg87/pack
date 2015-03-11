@@ -25,22 +25,6 @@ var codeAddress = function() {
   });
 };
 
-/* Add custom calendar settings */
-var calendarPick = function(){
-  $('#datePick').datepicker({
-    startDate: 'today',
-    autoclose: true,
-    todayHighlight: true
-  });
-};
-
-/* Initialize Time Picker module */
-var timePick = function (){
-  $('#timePicker').timepicker({
-    showInputs: false
-  });
-};
-
 /* Gets form data */
 var getForm = function (){
   // Create new Activity to add to User's Search array
@@ -114,10 +98,6 @@ $('#paceHelper').fadeIn();
 $(document).on('ready', function(){
   /* Load Google Maps */
   // google.maps.event.addDomListener(window, 'load', initialize);
-
-  /* Initialize calendar */
-  calendarPick();
-
 
   /* Initialize Time Picker when field is clicked */
   $(document).on('focus','#timePicker', function(){

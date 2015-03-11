@@ -1,0 +1,33 @@
+.container.horizontalEdge
+  form(name="searchActivity", novalidate)
+    .row.searchBar
+      .form-group.col-md-2.col-md-offset-1
+         div(ng-controller="DatepickerCtrl")
+           label(for='Date')
+           .input-group
+             input.form-control(type="text", datepicker-popup="{{format}}", ng-model="search.dt", is-open="opened", min-date="minDate", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", show-weeks='false')
+             span.input-group-btn
+               button.btn.btn-default(type="button", ng-click="open($event)")
+                 i.glyphicon.glyphicon-calendar
+      .form-group.col-md-2
+        div.timePicker(ng-controller="TimepickerCtrl")
+          timepicker(ng-model="mytime", ng-change="changed()", hour-step="hstep", minute-step="mstep", show-meridian="ismeridian")
+      .form-group.col-md-2
+        label(for='Distance')
+        .input-group
+          input#distance.form-control.btn.btn-default(name="distance", type='text', placeholder='Distance')
+          span.input-group-addon mi
+      .form-group.col-md-2
+          label(for='inputActivityPace')
+          .input-group
+            input#pace.form-control.btn.btn-default(name="pace", type='text', placeholder='Mile Pace')
+            span.input-group-addon mm:ss
+      .form-group.col-md-2
+        label(for='inputActivityZip')
+        .input-group
+          input#address.btn.btn-default(name="address", type='text-box', placeholder='Zip')
+    .form-group.goLogo
+      div
+        img.intro-logo.center-block(src="/images/logo-button.png")
+      //- a(href='/find' type='submit', value='Geocode')
+      //- button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search

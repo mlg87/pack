@@ -1,8 +1,15 @@
 SETUP:
- ☐ Move jade files to templates
- ☐ Convert bootstrap to UI Bootstrap
-   ☐ change date picker
-   ☐ change time picker
+ ✔ Move jade files to templates @done (15-03-11 07:53)
+ ✔ Convert bootstrap to UI Bootstrap @done (15-03-11 07:53)
+   ✔ change date picker @done (15-03-11 07:47)
+   ✔ change time picker @done (15-03-11 07:47)
+   ✔ center and style search bar @done (15-03-11 07:47)
+ ☐ Split landing into landing and search template
+   ☐ Landing page has map
+     ☐ Search Page
+     ☐ Results Page
+     ☐ Create Page
+ ☐ Create datepicker directive
 
 DATABASE:
  ☐ Seed users
@@ -11,8 +18,7 @@ DATABASE:
 LANDING PAGE:
  ☐ Add search bar
    ☐ Format seach inputs
-     ✔ Set calendar up to show date when selected, button @done (15-03-06 14:49)
-     ✔ Add helper text on click to distance and pace @done (15-03-06 16:19)
+     ☐ get values from form
    ☐ Setup routes / Link search to DB
    ☐ Setup geocoder
    ☐ SEARCH
