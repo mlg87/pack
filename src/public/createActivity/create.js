@@ -42,7 +42,7 @@ createApp.controller('searchController', ['$scope', function($scope){
 
 }]);
 
-createApp.controller('DatepickerCtrl', function ($scope) {
+createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
   $scope.today = function() {
     $scope.dt = new Date();
   };
@@ -50,11 +50,6 @@ createApp.controller('DatepickerCtrl', function ($scope) {
 
   $scope.clear = function () {
     $scope.dt = null;
-  };
-
-  // Disable weekend selection
-  $scope.disabled = function(date, mode) {
-    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
   };
 
   $scope.toggleMin = function() {
@@ -71,12 +66,40 @@ createApp.controller('DatepickerCtrl', function ($scope) {
 
   $scope.dateOptions = {
     formatYear: 'yy',
-    startingDay: 1
+    startingDay: 0,
+    showWeeks: false,
   };
 
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
-});
+  $scope.format = 'shortDate';
+}]);
+
+createApp.controller('TimepickerCtrl', ['$scope', '$log', function ($scope, $log) {
+  $scope.mytime = new Date();
+
+  $scope.hstep = 1;
+  $scope.mstep = 1;
+
+  $scope.ismeridian = true;
+  $scope.toggleMode = function() {
+    $scope.ismeridian = ! $scope.ismeridian;
+  };
+
+  $scope.update = function() {
+    var d = new Date();
+    d.setHours( 14 );
+    d.setMinutes( 0 );
+    $scope.mytime = d;
+  };
+
+  $scope.changed = function () {
+    $log.log('Time changed to: ' + $scope.mytime);
+  };
+
+  $scope.clear = function() {
+    $scope.mytime = null;
+  };
+}]);
+
 // New Activity Controller
 // createApp.controller('newActivityController', ['$scope', function($scope){
 //   $scope.item = {};
