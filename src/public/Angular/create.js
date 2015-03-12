@@ -100,6 +100,8 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
     console.log('publish: ', publish);
   };
 
+  // Check for geolocation support
+
 
   // Do stuff with your $scope.
   // Note: Some of the directives require at least something to be defined originally!
@@ -111,8 +113,8 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
   $scope.marker = {
     id: 0,
     coords: {
-      latitude: 40,
-      longitude: -99
+      latitude: 40.014986,
+      longitude: -105.270546
     },
     options: { draggable: true },
     events: {
@@ -125,33 +127,11 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
 
         $scope.marker.options = {
           draggable: true,
-          labelContent: "lat: " + $scope.marker.coords.latitude + ' ' + 'lon: ' + $scope.marker.coords.longitude,
-          labelAnchor: "100 0",
-          labelClass: "marker-labels"
         };
       }
     }
   };
 
-  $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
-    if (_.isEqual(newVal, oldVal))
-      return;
-    $scope.coordsUpdates++;
-  });
-  $timeout(function () {
-    $scope.marker.coords = {
-      latitude: 40.014986,
-      longitude: -105.270546
-    };
-    $scope.dynamicMoveCtr++;
-    $timeout(function () {
-      $scope.marker.coords = {
-        latitude: 40.014986,
-      longitude: -105.240546
-      };
-      $scope.dynamicMoveCtr++;
-    }, 2000);
-  }, 1000);
 
   // uiGmapGoogleMapApi is a promise.
   // The "then" callback function provides the google.maps object.
