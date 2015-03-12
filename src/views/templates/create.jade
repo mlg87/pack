@@ -1,65 +1,42 @@
 .container.mapTop
-  .col-sm-3
+  .col-sm-3(ng-controller='createController')
     form(name="createActivity", novalidate)
       .form-group
         label(for='Name')
           h5 Activity Name:
-          input.form-control(name="name", type='text')
+          input.form-control(name="name", type='text', ng-model='data.activity.name')
       .form-group
          div(ng-controller="DatepickerCtrl")
            label(for='Date')
            h5 Date:
            .input-group
-             input.form-control(type="text", datepicker-popup="{{format}}", ng-model="search.dt", is-open="opened", min-date="minDate", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", show-weeks='false')
+             input.form-control(type="text", datepicker-popup="{{format}}", ng-model="data.activity.date", is-open="opened", min-date="minDate", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", show-weeks='false', required)
              span.input-group-btn
                button.btn.btn-default(type="button", ng-click="open($event)")
                  i.glyphicon.glyphicon-calendar
       .form-group#createTime
         h5 Time:
         div(ng-controller="TimepickerCtrl")
-          timepicker(ng-model="mytime", ng-change="changed()", hour-step="hstep", minute-step="mstep", show-meridian="ismeridian")
+          timepicker(ng-change="changed()", hour-step="hstep", minute-step="mstep", show-meridian="ismeridian", ng-model='data.activity.time', required)
       .form-group
         label(for='Distance')
         h5 Distance:
         .input-group
-          input#distance.form-control.btn.btn-default(name="distance", type='text', placeholder='Distance')
+          input#distance.form-control.btn.btn-default(name="distance", type='text', placeholder='Distance', ng-model='data.activity.distance')
           span.input-group-addon mi
       .form-group
         label(for='inputActivityPace')
         h5 Pace:
         .input-group
-          input#pace.form-control.btn.btn-default(name="pace", type='text', placeholder='Mile Pace')
+          input#pace.form-control.btn.btn-default(name="pace", type='text', placeholder='Mile Pace', ng-model='data.activity.pace')
           span.input-group-addon mm:ss
       .form-group
         label(for='description')
           h5 Description:
-          textarea.form-control(rows='3')
+          textarea.form-control(rows='3', ng-model='data.activity.description', required)
       .form-group
-        button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Create
+        button#searchSubmit.btn.btn-success(type='submit', value='Geocode', ng-click='publishActivity(data.activity)', ng-disabled='createActivity.$invalid') Create
 
-    //- form(action="/search", method="post")
-    //-   .form-group
-    //-     label(for='inputActivityDate') ActivityDate
-    //-     input#datePick.form-control.datePick(name="date", data-provide='datepicker', type='text', placeholder='Enter Date')
-    //-   .form-group
-    //-     label(for='inputActivityTime') Start Time
-    //-     input#timePicker.form-control(name="time", type='text', placeholder='Enter Time')
-    //-   .form-group
-    //-     label(for='inputActivityDistance') Activity Distance
-    //-     .input-group
-    //-       input#distance.form-control(name="distance", type='text', placeholder='Enter Distance')
-    //-       span#basic-addon2.input-group-addon mi
-    //-   .form-group
-    //-     label(for='inputActivityPace') Activity Pace
-    //-     .input-group
-    //-       input#pace.form-control(name="pace", type='text', placeholder='mm:ss')
-    //-       span#basic-addon2.input-group-addon min/mi
-    //-   label(for='inputActivityZip') Zip Code
-    //-   .form-group
-    //-     .form-group
-    //-       input#address.form-control(name="address", type='text-box', placeholder='Enter Zip')
-    //-   .form-group
-    //-     button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search
-  .col-sm-9.mapBox
-    ui-gmap-google-map(center='map.center', zoom='map.zoom').col-sm-10
+  .col-sm-9
+    ui-gmap-google-map(center='map.center', zoom='map.zoom')
 

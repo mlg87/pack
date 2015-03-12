@@ -17,6 +17,14 @@ createApp.config(function($routeProvider){
     .when('/create', {
       templateUrl: '/templates/create',
       controller: 'createController'
+    })
+    .when('/search', {
+      templateUrl: 'templates/search',
+      controller: 'searchController'
+    })
+    .when('/results', {
+      templateUrl: 'templates/results',
+      controller: 'resultsController'
     });
 });
 
@@ -55,8 +63,42 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 createApp.controller('searchController', ['$scope', function($scope){
 }]);
 
+createApp.controller('resultsController', ['$scope', function($scope){
+
+}]);
+
+
 // Create Activity controller
-createApp.controller('createController', ['$scope','uiGmapGoogleMapApi', function($scope, uiGmapGoogleMapApi){
+createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter', function($scope, uiGmapGoogleMapApi,$filter){
+  $scope.data = {};
+
+  $scope.publishActivity = function(activityDetails){
+    var activity = angular.copy(activityDetails);
+    // console.log(activity);
+    var date = $filter('date')(activity.date, 'shortDate');
+    // console.log('filtered date: ', date);
+    var time = $filter('date')(activity.time, 'HH:mm');
+    // console.log('filtered time: ', time);
+
+    var publish = {
+      creator: 'Creator name',
+      activityName: activity.name,
+      activityDate: date,
+      activityTime: time,
+      activityDistance: activity.distance,
+      activityPace: activity.pace,
+      activityAddress: {
+        lat: 'LatNumber',
+        lng: 'LngNumber',
+      },
+      activityDescption: activity.description,
+    };
+    console.log('publish: ', publish);
+
+
+  };
+
+
   // Do stuff with your $scope.
   // Note: Some of the directives require at least something to be defined originally!
   // e.g. $scope.markers = []
@@ -72,12 +114,12 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi', functio
 // Controls Datepicker settings
 createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    $scope.date = new Date();
   };
   $scope.today();
 
   $scope.clear = function () {
-    $scope.dt = null;
+    $scope.date = null;
   };
 
   $scope.toggleMin = function() {
@@ -93,7 +135,6 @@ createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
   };
 
   $scope.dateOptions = {
-    formatYear: 'yy',
     startingDay: 0,
     showWeeks: false,
   };
@@ -103,7 +144,7 @@ createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
 
 // Configures Timepicker settings
 createApp.controller('TimepickerCtrl', ['$scope', '$log', function ($scope, $log) {
-  $scope.mytime = new Date();
+  $scope.time = new Date();
 
   $scope.hstep = 1;
   $scope.mstep = 1;
@@ -113,27 +154,24 @@ createApp.controller('TimepickerCtrl', ['$scope', '$log', function ($scope, $log
     $scope.ismeridian = ! $scope.ismeridian;
   };
 
-  $scope.update = function() {
-    var d = new Date();
-    d.setHours( 14 );
-    d.setMinutes( 0 );
-    $scope.mytime = d;
-  };
-
   $scope.changed = function () {
-    $log.log('Time changed to: ' + $scope.mytime);
-  };
-
-  $scope.clear = function() {
-    $scope.mytime = null;
+    $log.log('Time changed to: ' + $scope.time);
   };
 }]);
 
 // Create search bar directive
 createApp.directive('searchBar', function(){
   return {
-    retrict: 'E',
+    restrict: 'E',
     templateUrl: '/templates/search'
+  };
+});
+
+// Time picker directive
+createApp.directive('pickTime', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/time'
   };
 });
 
