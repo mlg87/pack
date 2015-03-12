@@ -38,5 +38,10 @@
         button#searchSubmit.btn.btn-success(type='submit', value='Geocode', ng-click='publishActivity(data.activity)', ng-disabled='createActivity.$invalid') Create
 
   .col-sm-9
-    ui-gmap-google-map(center='map.center', zoom='map.zoom')
+    ui-gmap-google-map(center='map.center', zoom='map.zoom', draggable='true', options='options')
+      ui-gmap-marker(coords='marker.coords', options='marker.options', events='marker.events', idkey='marker.id')
+    ng-cloak
+      ul
+        li coords update crt: {{coordsUpdates}}
+        li dynamic move ctr: {{dynamicMoveCtr}}
 

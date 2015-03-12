@@ -9,6 +9,9 @@ SETUP:
      ☐ Results Page
      ☐ Create Page
        ✔ add map @done (15-03-11 12:28)
+       ☐ Get html5 location on startup
+       ☐ add click to add marker
+       ☐ get location of marker to send with form
  ☐ Create datepicker directive
 
 DATABASE:

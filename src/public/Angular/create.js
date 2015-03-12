@@ -69,17 +69,21 @@ createApp.controller('resultsController', ['$scope', function($scope){
 
 
 // Create Activity controller
-createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter', function($scope, uiGmapGoogleMapApi,$filter){
+createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter','$log','$timeout', function($scope, uiGmapGoogleMapApi, $filter, $log, $timeout){
   $scope.data = {};
 
+  // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
     // console.log(activity);
+    // Filter date to short date
     var date = $filter('date')(activity.date, 'shortDate');
     // console.log('filtered date: ', date);
+    // Filter time to 24hr time
     var time = $filter('date')(activity.time, 'HH:mm');
     // console.log('filtered time: ', time);
 
+    // Setup new Activity object to be saved to DB
     var publish = {
       creator: 'Creator name',
       activityName: activity.name,
@@ -94,8 +98,6 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
       activityDescption: activity.description,
     };
     console.log('publish: ', publish);
-
-
   };
 
 
@@ -103,10 +105,58 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
   // Note: Some of the directives require at least something to be defined originally!
   // e.g. $scope.markers = []
   $scope.map = { center: { latitude: 40.014986, longitude: -105.270546 }, zoom: 12 };
+  $scope.options = {scrollwheel: false};
+  $scope.coordsUpdates = 0;
+  $scope.dynamicMoveCtr = 0;
+  $scope.marker = {
+    id: 0,
+    coords: {
+      latitude: 40,
+      longitude: -99
+    },
+    options: { draggable: true },
+    events: {
+      dragend: function (marker, eventName, args) {
+        $log.log('marker dragend');
+        var lat = marker.getPosition().lat();
+        var lon = marker.getPosition().lng();
+        $log.log(lat);
+        $log.log(lon);
+
+        $scope.marker.options = {
+          draggable: true,
+          labelContent: "lat: " + $scope.marker.coords.latitude + ' ' + 'lon: ' + $scope.marker.coords.longitude,
+          labelAnchor: "100 0",
+          labelClass: "marker-labels"
+        };
+      }
+    }
+  };
+
+  $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
+    if (_.isEqual(newVal, oldVal))
+      return;
+    $scope.coordsUpdates++;
+  });
+  $timeout(function () {
+    $scope.marker.coords = {
+      latitude: 40.014986,
+      longitude: -105.270546
+    };
+    $scope.dynamicMoveCtr++;
+    $timeout(function () {
+      $scope.marker.coords = {
+        latitude: 40.014986,
+      longitude: -105.240546
+      };
+      $scope.dynamicMoveCtr++;
+    }, 2000);
+  }, 1000);
 
   // uiGmapGoogleMapApi is a promise.
   // The "then" callback function provides the google.maps object.
   uiGmapGoogleMapApi.then(function(maps){
+
 
   });
 }]);
