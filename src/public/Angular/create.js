@@ -88,15 +88,34 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 //   $scope.activites = Activity.items;
 // }]);
 
-createApp.controller('searchController', ['$scope', function($scope){
+// Search for Activity
+createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
+  $scope.search = {};
+  // Filter date to short date
+
+    $scope.searchRuns = function (input){
+      $log.log('search obj: ', input);
+      var date = $filter('date')(input.date, 'shortDate');
+      console.log('filtered date: ', date);
+      var hr = input.time.hour;
+      var min = input.time.minute;
+      var ap = input.time.ampm;
+
+      if ((ap === 'PM') && (hr < 12)) {
+        var tfHR = parseInt(hr) + 12;
+        $log.log('+12 :', tfHR);
+      }
+      else {
+        var tfHr = parseInt(hr) * 0;
+        $log.log('12 :', tfHr);
+      }
+    };
 }]);
 
 createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
   $scope.hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-  $scope.minutes = ['00','10','20','30','40','50'];
+  $scope.minutes = ['00','05','10','15','20','25','30','35','40','45','50','55'];
   $scope.amPM = ['AM','PM'];
-
-
 }]);
 
 
@@ -228,22 +247,6 @@ createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
   $scope.format = 'shortDate';
 }]);
 
-// Configures Timepicker settings
-createApp.controller('TimepickerCtrl', ['$scope', '$log', function ($scope, $log) {
-  $scope.time = new Date();
-
-  $scope.hstep = 1;
-  $scope.mstep = 1;
-
-  $scope.ismeridian = true;
-  $scope.toggleMode = function() {
-    $scope.ismeridian = ! $scope.ismeridian;
-  };
-
-  $scope.changed = function () {
-    $log.log('Time changed to: ' + $scope.time);
-  };
-}]);
 
 // Create search bar directive
 createApp.directive('searchBar', function(){

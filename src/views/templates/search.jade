@@ -1,19 +1,19 @@
 form(name="searchActivity", novalidate)
-  div.searchContainer.md-whiteframe-z3.searchContent(layout='row', layout-align='center center', layout-sm='column')
+  div.searchContainer.md-whiteframe-z3.searchContent(layout='row', layout-align='center center', layout-sm='column', ng-controller='searchController')
       div(layout='column', layout-margin, layout-padding)
           div(ng-controller="DatepickerCtrl")
             div(style="display:inline-block")
-              datepicker(ng-model="search.dt", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
-      div(layout='column', ng-controller='timeSelectCtrl', layout-margin layout-padding)
-          div.timeSearchRow(layout='row')
+              datepicker(ng-model="search.date", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
+      div(layout='column', layout-margin layout-padding)
+          div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
             div(layout='column')
-              md-select(ng-model='hour', placeholder='hour')
+              md-select(ng-model='search.time.hour', placeholder='hour')
                 md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
             div(layout='column')
-              md-select(ng-model='minute', placeholder='minutes')
+              md-select(ng-model='search.time.minute', placeholder='minutes')
                 md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
             div(layout='column')
-              md-select(ng-model='ampm', placeholder='am/pm')
+              md-select(ng-model='search.time.ampm', placeholder='am/pm')
                 md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
           div(layout='row')
             div(layout='column')
@@ -34,6 +34,7 @@ form(name="searchActivity", novalidate)
           div(layout='row')
             md-input-container(md-no-float)
               input(ng-model='search.address', type='text', placeholder='zipcode')
+            md-button.md-raised.searchBtn(ng-click='searchRuns(search)') Search
 
 
   .form-group.goLogo

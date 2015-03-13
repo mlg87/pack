@@ -35,7 +35,7 @@
           h5 Description:
           textarea.form-control(rows='3', ng-model='data.activity.description', required)
       .form-group
-        button#searchSubmit.btn.btn-success(type='submit', value='Geocode', ng-click='publishActivity(data.activity)', ng-disabled='createActivity.$invalid') Create
+        button#searchSubmit.btn.btn-success(type='submit', value='Geocode', ng-click='publishActivity(data.activity)') Create
 
   .col-sm-9
     ui-gmap-google-map(center='map.center', zoom='map.zoom', draggable='true', options='options')
