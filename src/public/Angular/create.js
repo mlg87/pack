@@ -1,6 +1,6 @@
 // ANGULE CLIENT SIDE
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial']
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial', '720kb.fx']
 );
 
 // Configure client-side routing
@@ -91,11 +91,10 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 createApp.controller('searchController', ['$scope', function($scope){
 }]);
 
-createApp.controller('timeSelectCtrl', ['$scope', function($scope){
+createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
   $scope.hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
   $scope.minutes = ['00','10','20','30','40','50'];
   $scope.amPM = ['AM','PM'];
-
 
 
 }]);

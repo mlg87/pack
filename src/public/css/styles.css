@@ -1,5 +1,5 @@
 .searchColR {
-  width: 220px;
+  width: 382px;
 }
 
 .datePickerSearch {
@@ -8,8 +8,11 @@
 }
 
 .timeSearchRow {
-  margin-top: -15px;
-  padding-bottom: 10px;
+  padding-bottom: 11px;
+}
+
+.timeSearchRow > div:nth-child(-n+2) {
+  padding-right: 20px;
 }
 
 .noMargin {
@@ -24,4 +27,9 @@
   margin-right: auto;
   margin-bottom: 20px;
 }
+
+.searchContainer > div {
+  padding: 20px;
+}
+
 

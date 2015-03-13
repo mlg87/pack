@@ -5,7 +5,7 @@ form(name="searchActivity", novalidate)
             div(style="display:inline-block")
               datepicker(ng-model="search.dt", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
       div(layout='column', ng-controller='timeSelectCtrl', layout-margin layout-padding)
-          div(layout='row')
+          div.timeSearchRow(layout='row')
             div(layout='column')
               md-select(ng-model='hour', placeholder='hour')
                 md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
@@ -22,7 +22,7 @@ form(name="searchActivity", novalidate)
                 p(ng-show='search.distance') Distance: {{search.distance}} mi
                 md-divider
               div(layout)
-                md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance')
+                md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance', aria-label='distance')
           div(layout='row')
             div(layout='column')
               md-item
@@ -30,10 +30,11 @@ form(name="searchActivity", novalidate)
                 p(ng-show='search.pace') Pace: {{ search.pace | minutes }}:{{ search.pace | seconds | numberFixedLen: 2 }} min/mi
                 md-divider
               div(layout)
-                md-slider.searchColR(flex min='240', max='900', step='5', ng-model='search.pace')
+                md-slider.searchColR(flex min='300', max='900', step='5', ng-model='search.pace', aria-label='pace')
           div(layout='row')
             md-input-container(md-no-float)
               input(ng-model='search.address', type='text', placeholder='zipcode')
+
 
   .form-group.goLogo
     div
