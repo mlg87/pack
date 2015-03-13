@@ -115,11 +115,12 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
         minToSec = (min * 60);
         totalTimeSec = hrToSec + minToSec;
       }
-      else {
-        var tfHr = parseInt(hr) * 0;
-        // $log.log('12 :', tfHr);
-        minToSec = (min * 60);
-      }
+        else {
+          hrToSec = parseInt(hr) * 3600;
+          // $log.log('12 :', tfHr);
+          minToSec = (min * 60);
+          totalTimeSec = hrToSec + minToSec;
+        }
       if (ap === 'AM'){
         var amHour = parseInt(hr) * 3600;
         totalTimeSec = minToSec + amHour;
