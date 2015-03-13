@@ -249,6 +249,8 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
             };
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
+                clearMarkers();
+
             }
         };
 
