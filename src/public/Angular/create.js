@@ -1,6 +1,6 @@
 // ANGULE CLIENT SIDE
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps']
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial']
 );
 
 // Configure client-side routing
@@ -63,6 +63,14 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 createApp.controller('searchController', ['$scope', function($scope){
 }]);
 
+createApp.controller('timeSelectCtrl', ['$scope', function($scope){
+  $scope.hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+  $scope.minutes = ['10','20','30','40','50'];
+  $scope.amPM = ['AM','PM'];
+
+
+
+}]);
 createApp.controller('resultsController', ['$scope', function($scope){
 
 }]);
@@ -100,43 +108,62 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
     console.log('publish: ', publish);
   };
 
-  // Check for geolocation support
-
-
   // Do stuff with your $scope.
   // Note: Some of the directives require at least something to be defined originally!
   // e.g. $scope.markers = []
-  $scope.map = { center: { latitude: 40.014986, longitude: -105.270546 }, zoom: 12 };
+  $scope.map = { center: { latitude: 39.97263908708324, longitude: -105.2835922646484 }, zoom: 12 };
   $scope.options = {scrollwheel: false};
-  $scope.coordsUpdates = 0;
-  $scope.dynamicMoveCtr = 0;
-  $scope.marker = {
-    id: 0,
-    coords: {
-      latitude: 40.014986,
-      longitude: -105.270546
-    },
-    options: { draggable: true },
-    events: {
-      dragend: function (marker, eventName, args) {
-        $log.log('marker dragend');
-        var lat = marker.getPosition().lat();
-        var lon = marker.getPosition().lng();
-        $log.log(lat);
-        $log.log(lon);
+      $scope.coordsUpdates = 0;
 
-        $scope.marker.options = {
-          draggable: true,
-        };
-      }
+      $scope.marker = {
+        id: 0,
+        coords: {
+          latitude: 39.97263908708324,
+          longitude: -105.2835922646484
+        },
+        options: { draggable: true },
+        events: {
+          dragend: function (marker, eventName, args) {
+            $log.log('marker dragend');
+            var lat = marker.getPosition().lat();
+            var lng = marker.getPosition().lng();
+            $log.log('marker lat: ', lat);
+            $log.log('marker lng: ', lng);
+
+            $scope.marker.options = {
+              draggable: true,
+            };
+          }
+        }
+      };
+    // Take geolocation and assign to variables. Set marker on geoLocation
+    function geoCallBack(position){
+      var geoLat = position.coords.latitude;
+      var geoLng = position.coords.longitude;
+      $log.log('geoLat: ', geoLat);
+      $log.log('geoLng: ', geoLng);
+
+      $scope.marker.coords = {
+          latitude: geoLat,
+          longitude: geoLng
+      };
+      $scope.map.panTo(LatLng(geoLat, geoLng));
+      $scope.coordsUpdates++;
     }
-  };
-
 
   // uiGmapGoogleMapApi is a promise.
   // The "then" callback function provides the google.maps object.
   uiGmapGoogleMapApi.then(function(maps){
 
+    // Check if browser will give geoLocation
+    if(Modernizr.geolocation){
+      $log.log('yes');
+      // Get geoLocation and call geoCallBack with lat/lng.
+      navigator.geolocation.getCurrentPosition(geoCallBack);
+    }
+    else {
+      $log.warn('no');
+    }
 
   });
 }]);
