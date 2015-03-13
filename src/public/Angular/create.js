@@ -97,18 +97,36 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
       $log.log('search obj: ', input);
       var date = $filter('date')(input.date, 'shortDate');
       console.log('filtered date: ', date);
+     // Break out into own filter
       var hr = input.time.hour;
       var min = input.time.minute;
       var ap = input.time.ampm;
+      var hrToSec = 0;
+      var minToSec = 0;
+      var totalTimeSec = 0;
+
+      minToSec = (min * 60);
 
       if ((ap === 'PM') && (hr < 12)) {
         var tfHR = parseInt(hr) + 12;
-        $log.log('+12 :', tfHR);
+          // $log.log('+12 :', tfHR);
+        hrToSec += (tfHR * 3600);
+          // $log.log('+12 secs :', hrToSec);
+        minToSec = (min * 60);
+        totalTimeSec = hrToSec + minToSec;
       }
       else {
         var tfHr = parseInt(hr) * 0;
-        $log.log('12 :', tfHr);
+        // $log.log('12 :', tfHr);
+        minToSec = (min * 60);
       }
+      if (ap === 'AM'){
+        var amHour = parseInt(hr) * 3600;
+        totalTimeSec = minToSec + amHour;
+      }
+      $log.log('total: ',totalTimeSec);
+
+
     };
 }]);
 
