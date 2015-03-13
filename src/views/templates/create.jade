@@ -1,12 +1,10 @@
 form(name="searchActivity", novalidate)
   div.md-whiteframe-z3.searchContainer.createContainer.searchContent
-    div(layout='row', layout-align='center center', layout-sm='column', ng-controller='searchController')
-        div(ng-controller='createController')
-          ui-gmap-google-map(center='{latitude: 39.972398708324, longitude: -105.28392646484 }', control='refresh', zoom='7', draggable='true', options='options')
-            ui-gmap-marker(ng-if='mapsReady', coords='marker.coords', options='marker.options', events='marker.events', idkey='marker.id')
-          p Drag marker to starting location
-          md-button.md-raised(ng-click='findMe()', ng-hide='hide') Find my location
-          md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
+    div(layout='row', layout-align='center center', layout-sm='column', ng-controller='createController')
+      #map-canvas
+    div.mapButtons(layout='row')
+        md-button.locB.md-raised(ng-click='locator()', ng-hide='hide') Find my location
+        md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
     div.createFormContainer(layout='row')
         div(layout='column', layout-margin, layout-padding)
             div(ng-controller="DatepickerCtrl")

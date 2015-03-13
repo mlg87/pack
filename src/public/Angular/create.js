@@ -1,6 +1,10 @@
-// ANGULE CLIENT SIDE
+////////////////////////
+// ANGULE CLIENT SIDE //
+////////////////////////
+var map = null;
+
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial',
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
   // '720kb.fx'
   ]
 );
@@ -30,14 +34,6 @@ createApp.config(function($routeProvider){
     });
 });
 
-// Config Google Maps SDK Async Loader
-createApp.config(function(uiGmapGoogleMapApiProvider) {
-    uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyDqFwM-p6X0FZLv1SETkOWi7TL_M6J0z9k',
-      v: '3.17',
-      libraries: 'weather,geometry,visualization'
-    });
-});
 
 // Data from server:
 createApp.factory('Activity',['$resource', function($resource){
@@ -147,7 +143,7 @@ createApp.controller('resultsController', ['$scope', function($scope){
 
 
 // Create Activity controller
-createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter','$log','$timeout', function($scope, uiGmapGoogleMapApi, $filter, $log, $timeout){
+createApp.controller('createController', ['$scope','$filter','$log','$timeout', function($scope, $filter, $log, $timeout){
   $scope.data = {};
 
   // Prepare form submission for new DB object
@@ -181,33 +177,61 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
   // Do stuff with your $scope.
   // Note: Some of the directives require at least something to be defined originally!
   // e.g. $scope.markers = []
-  // $scope.map = { center: { latitude: 39.9723908708324, longitude: -105.283592646484 }, zoom: 12 };
-  $scope.options = {scrollwheel: false};
+
   $scope.circle = false;
   $scope.hide = false;
+
+  // GOOGLE MAP
+
+  function initialize() {
+      var mapOptions = {
+          center: { lat: -34.397, lng: 150.644},
+          zoom: 8,
+          mayTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  }
+  initialize();
+
+  $scope.title = 'Testing';
+        $scope.locator = function(){
+            var showPosition = function(pos){
+                console.log(pos);
+                var myLatLng = new google.maps.LatLng( pos.coords.latitude, pos.coords.longitude );
+                var marker = new google.maps.Marker( {position: myLatLng, map: map} );
+                map.panTo(myLatLng);
+            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+        };
 
   $scope.findMe = function(){
     $scope.circle = true;
     $scope.hide = true;
     // Check if browser will give geoLocation
     if(Modernizr.geolocation){
-      $log.log('yes');
+      $log.log('Finding location...');
       // Get geoLocation and call geoCallBack with lat/lng.
-      navigator.geolocation.getCurrentPosition(geoCallBack);
+      // navigator.geolocation.getCurrentPosition(geoCallBack);
     }
     else {
-      $log.warn('no');
+      $log.warn('Cant find location');
     }
   };
+
+
 
     // Take geolocation and assign to variables. Set marker on geoLocation
     function geoCallBack(position){
       var geoLat = position.coords.latitude;
       var geoLng = position.coords.longitude;
-      $log.log('geoLat: ', geoLat);
-      $log.log('geoLng: ', geoLng);
+      // $log.log('geo position: ', pos);
+      $log.log('found geoLat: ', geoLat);
+      $log.log('found geoLng: ', geoLng);
       $scope.circle = false;
-      $scope.map.control.refresh({latitude: geoLat, longitude: geoLng});
+
+
 
       // Once user's lat and lng are found drop marker
       if(geoLat && geoLng){
@@ -230,14 +254,19 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
               }
             }
           };
+        reload = true;
+        $log.log(reload);
+        //   setTimeout(function(){
+        // reload = true;
+        // $scope.map.center= {
+        //   latitude: geoLat,
+        //   longitude: geoLng
+        // };
+
+        //   },5000);
         }
     }
 
-  // uiGmapGoogleMapApi is a promise.
-  // The "then" callback function provides the google.maps object.
-  uiGmapGoogleMapApi.then(function(maps){
-
-  });
 }]);
 
 // Controls Datepicker settings
@@ -287,6 +316,13 @@ createApp.directive('pickTime', function(){
     templateUrl: '/templates/time'
   };
 });
+
+// createApp.directive('googleMaps', function(){
+//   return {
+//     restrict: 'E',
+//     templateUrl: '/templates/googlemap'
+//   };
+// });
 
 // New Activity Controller
 // createApp.controller('newActivityController', ['$scope', function($scope){

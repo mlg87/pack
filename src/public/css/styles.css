@@ -40,12 +40,17 @@
   margin-top: -80px;
 }
 
-.createBtn {
-
+#map-canvas {
+  height: 400px;
+  width: 500px;
 }
 
 .searchContainer > div {
   padding: 20px;
+}
+
+.mapButtons {
+  margin-top: 0px;
 }
 
 .searchBtn {
