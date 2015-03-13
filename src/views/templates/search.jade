@@ -1,14 +1,11 @@
+
 form(name="searchActivity", novalidate)
-  .md-whiteframe-z2(layout-margin, style='margin-top: 100px')
-    form
-    div(layout='row', layout-align='center center')
-      div(layout='column', layout-margin)
-        div(flex='33')
+  div.searchContainer.md-whiteframe-z3.searchContent(layout='row', layout-align='center center', layout-sm='column')
+      div(layout='column', layout-margin, layout-padding)
           div(ng-controller="DatepickerCtrl")
-            div(style="display:inline-block; min-height:290px;")
-              datepicker.well.well-sm(ng-model="search.dt", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
-      div(layout='column', ng-controller='timeSelectCtrl', layout-margin)
-        div(flex='66')
+            div(style="display:inline-block")
+              datepicker(ng-model="search.dt", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
+      div(layout='column', ng-controller='timeSelectCtrl', layout-margin layout-padding)
           div(layout='row')
             div(layout='column')
               md-select(ng-model='hour', placeholder='hour')
@@ -22,26 +19,23 @@ form(name="searchActivity", novalidate)
           div(layout='row')
             div(layout='column')
               md-item
-                p Distance
+                p Distance: {{search.distance}} mi
                 md-divider
               div(layout)
-                md-slider(flex min='1', max='26.2', ng-model='search.distance')
-                div(flex='20', layout layout-align='center center')
-                  input(type='number', ng-model='search.distance')
+                md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance')
           div(layout='row')
             div(layout='column')
               md-item
-                p Pace
+                p Pace: {{search.pace | minutes}}:{{search.pace | seconds | numberFixedLen: 2}} min/mi
+                md-divider
               div(layout)
-                md-slider(flex min='5:00', max='15:00', ng-model='search.pace')
-                div(flex='20', layout layout-align='center center')
-                  input(type='number', ng-model='search.pace')
+                md-slider.searchColR(flex min='240', max='900', step='5', ng-model='search.pace')
           div(layout='row')
             md-input-container(md-no-float)
               input(ng-model='search.address', type='text', placeholder='zipcode')
 
-    .form-group.goLogo
-      div
-        img.intro-logo.center-block(src="/images/logo-button.png")
-      //- a(href='/find' type='submit', value='Geocode')
-      //- button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search
+  .form-group.goLogo
+    div
+      img.intro-logo.center-block(src="/images/logo-button.png")
+    //- a(href='/find' type='submit', value='Geocode')
+    //- button#searchSubmit.btn.btn-default(type='submit', value='Geocode') Search

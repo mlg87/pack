@@ -51,6 +51,34 @@ createApp.factory('Activity',['$resource', function($resource){
   };
 }]);
 
+createApp.filter('minutes', [function(){
+  return function(seconds){
+    return Math.floor(seconds/60);
+  };
+}]);
+
+createApp.filter('seconds', [function(){
+  return function(seconds){
+    var min = Math.floor(seconds/60);
+    return seconds - min * 60;
+  };
+}]);
+
+createApp.filter('numberFixedLen', function () {
+        return function (n, len) {
+            var num = parseInt(n, 10);
+            len = parseInt(len, 10);
+            if (isNaN(num) || isNaN(len)) {
+                return n;
+            }
+            num = ''+num;
+            while (num.length < len) {
+                num = '0'+num;
+            }
+            return num;
+        };
+ });
+
 // Sets item scope for speicifc Activity ID.
 createApp.controller('viewController', ['$routeParams','$scope','Activity', function($routeParams, $scope, Activity){
   $scope.item = Activity.model.get({_id: $routeParams.id});
@@ -65,12 +93,14 @@ createApp.controller('searchController', ['$scope', function($scope){
 
 createApp.controller('timeSelectCtrl', ['$scope', function($scope){
   $scope.hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
-  $scope.minutes = ['10','20','30','40','50'];
+  $scope.minutes = ['00','10','20','30','40','50'];
   $scope.amPM = ['AM','PM'];
 
 
 
 }]);
+
+
 createApp.controller('resultsController', ['$scope', function($scope){
 
 }]);
