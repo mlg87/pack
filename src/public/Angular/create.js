@@ -142,10 +142,12 @@ createApp.controller('resultsController', ['$scope', function($scope){
 
 }]);
 
-
 // Create Activity controller
 createApp.controller('createController', ['$scope','$filter','$log','$timeout', function($scope, $filter, $log, $timeout){
   $scope.data = {};
+
+  // Hide zip when creating activity
+  $scope.hideZip = true;
 
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
@@ -180,13 +182,28 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   ////////////////
   function initialize() {
       var mapOptions = {
-          center: { lat: -34.397, lng: 150.644},
-          zoom: 8,
+          center: { lat: 40.014986, lng: -105.270546},
+          zoom: 12,
           mayTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
   initialize();
+
+  function codeAddress() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
 
   // Click listener on map to clear markers and add a new one.
   google.maps.event.addListener(map, 'click', function(e){
@@ -211,7 +228,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
     });
     markers.push(marker);
     map.panTo(position);
-    // Push to Mongo
     pinLocation.push(marker.getPosition());
   };
 

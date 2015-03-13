@@ -29,7 +29,7 @@
 }
 
 .createFormContainer {
-  margin-top: -50px;
+  /*margin-top: -50px;*/
 }
 
 .createFormContainer > div:nth-child(2){
@@ -37,7 +37,8 @@
 }
 
 .createDescription {
-  margin-top: -80px;
+  margin-top: -40px;
+
 }
 
 #map-canvas {
@@ -46,7 +47,7 @@
 }
 
 .searchContainer > div {
-  padding: 20px;
+  padding: 10px;
 }
 
 .mapButtons {
@@ -59,10 +60,13 @@
   width: 145px;
 }
 
-.angular-google-map-container {
-  height: 275px;
-  width: 650px;
+.leftNone {
+padding-left: 0px;
+margin-left: 0px;
 }
 
-
+.rightNone {
+padding-right: 0px;
+margin-right: 0px;
+}
 

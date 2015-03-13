@@ -1,5 +1,5 @@
 form(name="searchActivity", novalidate)
-  div.md-whiteframe-z3.searchContainer.createContainer.searchContent
+  div.md-whiteframe-z3.searchContainer.createContainer
     div(layout='row', layout-align='center center', layout-sm='column', ng-controller='createController')
       #map-canvas
     div.mapButtons(layout='row')
@@ -39,7 +39,7 @@ form(name="searchActivity", novalidate)
                   md-slider.searchColR(flex min='300', max='900', step='5', ng-model='search.pace', aria-label='pace')
             div(layout='row')
               md-input-container(md-no-float)
-                input(ng-model='search.address', type='text', placeholder='zipcode')
+                input(ng-hide='hideZip', ng-model='search.address', type='text', placeholder='zipcode')
     div.createDescription(layout='row')
       md-input-container(flex)
         label Activity Name
