@@ -193,12 +193,16 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   }
   initialize();
 
-  $scope.title = 'Testing';
         $scope.locator = function(){
             var showPosition = function(pos){
                 console.log(pos);
                 var myLatLng = new google.maps.LatLng( pos.coords.latitude, pos.coords.longitude );
-                var marker = new google.maps.Marker( {position: myLatLng, map: map} );
+                var marker = new google.maps.Marker({
+                  position: myLatLng,
+                  map: map,
+                  draggable: true,
+                });
+
                 map.panTo(myLatLng);
             };
             if (navigator.geolocation) {
@@ -220,8 +224,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
     }
   };
 
-
-
     // Take geolocation and assign to variables. Set marker on geoLocation
     function geoCallBack(position){
       var geoLat = position.coords.latitude;
@@ -230,7 +232,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
       $log.log('found geoLat: ', geoLat);
       $log.log('found geoLng: ', geoLng);
       $scope.circle = false;
-
 
 
       // Once user's lat and lng are found drop marker

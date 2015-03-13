@@ -41,8 +41,8 @@
 }
 
 #map-canvas {
-  height: 400px;
-  width: 500px;
+  height: 260px;
+  width: 100%;
 }
 
 .searchContainer > div {
