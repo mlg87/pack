@@ -90,6 +90,7 @@ ADD LOGIN FORM:
 
 SEARCH PAGE:
  ☐ On submit, collapse serach criteria, extend map, show results details below, show button to extend serach criteria to refine serach.
+ ☐ add spinner when getting location
 
 FEED:
   ☐ Add a follow button to users

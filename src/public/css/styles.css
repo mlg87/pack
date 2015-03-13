@@ -20,12 +20,28 @@
 }
 
 .searchContainer {
-  height: 287px;
+  height: auto;
   width: 700px;
   margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
+}
+
+.createFormContainer {
+  margin-top: -50px;
+}
+
+.createFormContainer > div:nth-child(2){
+  margin-top: -17px;
+}
+
+.createDescription {
+  margin-top: -80px;
+}
+
+.createBtn {
+
 }
 
 .searchContainer > div {
@@ -37,5 +53,11 @@
   height: 35px;
   width: 145px;
 }
+
+.angular-google-map-container {
+  height: 275px;
+  width: 650px;
+}
+
 
 

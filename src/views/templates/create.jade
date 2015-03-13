@@ -1,45 +1,49 @@
-.container.mapTop
-  .col-sm-3(ng-controller='createController')
-    form(name="createActivity", novalidate)
-      .form-group
-        label(for='Name')
-          h5 Activity Name:
-          input.form-control(name="name", type='text', ng-model='data.activity.name')
-      .form-group
-         div(ng-controller="DatepickerCtrl")
-           label(for='Date')
-           h5 Date:
-           .input-group
-             input.form-control(type="text", datepicker-popup="{{format}}", ng-model="data.activity.date", is-open="opened", min-date="minDate", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", show-weeks='false', required)
-             span.input-group-btn
-               button.btn.btn-default(type="button", ng-click="open($event)")
-                 i.glyphicon.glyphicon-calendar
-      .form-group#createTime
-        h5 Time:
-        div(ng-controller="TimepickerCtrl")
-          timepicker(ng-change="changed()", hour-step="hstep", minute-step="mstep", show-meridian="ismeridian", ng-model='data.activity.time', required)
-      .form-group
-        label(for='Distance')
-        h5 Distance:
-        .input-group
-          input#distance.form-control.btn.btn-default(name="distance", type='text', placeholder='Distance', ng-model='data.activity.distance')
-          span.input-group-addon mi
-      .form-group
-        label(for='inputActivityPace')
-        h5 Pace:
-        .input-group
-          input#pace.form-control.btn.btn-default(name="pace", type='text', placeholder='Mile Pace', ng-model='data.activity.pace')
-          span.input-group-addon mm:ss
-      .form-group
-        label(for='description')
-          h5 Description:
-          textarea.form-control(rows='3', ng-model='data.activity.description', required)
-      .form-group
-        button#searchSubmit.btn.btn-success(type='submit', value='Geocode', ng-click='publishActivity(data.activity)') Create
-
-  .col-sm-9
-    ui-gmap-google-map(center='map.center', zoom='map.zoom', draggable='true', options='options')
-      ui-gmap-marker(coords='marker.coords', options='marker.options', events='marker.events', idkey='marker.id')
-    p Drag marker to starting location
-    p coords update ctr: {{coordsUpdates}}
+form(name="searchActivity", novalidate)
+  div.md-whiteframe-z3.searchContainer.createContainer.searchContent
+    div(layout='row', layout-align='center center', layout-sm='column', ng-controller='searchController')
+        div(ng-controller='createController')
+          ui-gmap-google-map(center='map.center', zoom='map.zoom', draggable='true', options='options')
+            ui-gmap-marker(coords='marker.coords', options='marker.options', events='marker.events', idkey='marker.id')
+          p Drag marker to starting location
+    div.createFormContainer(layout='row')
+        div(layout='column', layout-margin, layout-padding)
+            div(ng-controller="DatepickerCtrl")
+              div(style="display:inline-block")
+                datepicker(ng-model="search.date", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
+        div(layout='column', layout-margin layout-padding, flex)
+            div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
+              div(layout='column')
+                md-select(ng-model='search.time.hour', placeholder='hour')
+                  md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
+              div(layout='column')
+                md-select(ng-model='search.time.minute', placeholder='minutes')
+                  md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
+              div(layout='column')
+                md-select(ng-model='search.time.ampm', placeholder='am/pm')
+                  md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
+            div(layout='row')
+              div(layout='column', flex)
+                md-item
+                  p(ng-hide='search.distance') Distance:
+                  p(ng-show='search.distance') Distance: {{search.distance}} mi
+                  md-divider
+                div(layout)
+                  md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance', aria-label='distance')
+            div(layout='row')
+              div(layout='column', flex)
+                md-item
+                  p(ng-hide='search.pace') Pace:
+                  p(ng-show='search.pace') Pace: {{ search.pace | minutes }}:{{ search.pace | seconds | numberFixedLen: 2 }} min/mi
+                  md-divider
+                div(layout)
+                  md-slider.searchColR(flex min='300', max='900', step='5', ng-model='search.pace', aria-label='pace')
+            div(layout='row')
+              md-input-container(md-no-float)
+                input(ng-model='search.address', type='text', placeholder='zipcode')
+    div.createDescription(layout='row')
+      md-input-container(flex)
+        label Description
+        textarea(ng-model='search.description' columns='1', md-maxLength='150')
+    div(layout='row')
+      md-button.md-raised.md-primary(flex, ng-click='publishActivity(search)') Create
 

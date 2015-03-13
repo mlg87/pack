@@ -1,6 +1,8 @@
 // ANGULE CLIENT SIDE
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial', '720kb.fx']
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'uiGmapgoogle-maps', 'ngMaterial',
+  // '720kb.fx'
+  ]
 );
 
 // Configure client-side routing
@@ -97,7 +99,9 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
       $log.log('search obj: ', input);
       var date = $filter('date')(input.date, 'shortDate');
       console.log('filtered date: ', date);
-     // Break out into own filter
+     ///////////////////////////////
+     // Break out into own filter //
+     ///////////////////////////////
       var hr = input.time.hour;
       var min = input.time.minute;
       var ap = input.time.ampm;
@@ -126,7 +130,6 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
         totalTimeSec = minToSec + amHour;
       }
       $log.log('total: ',totalTimeSec);
-
 
     };
 }]);
@@ -172,7 +175,7 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
       },
       activityDescption: activity.description,
     };
-    console.log('publish: ', publish);
+    // console.log('publish: ', publish);
   };
 
   // Do stuff with your $scope.
@@ -191,11 +194,11 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
         options: { draggable: true },
         events: {
           dragend: function (marker, eventName, args) {
-            $log.log('marker dragend');
+            // $log.log('marker dragend');
             var lat = marker.getPosition().lat();
             var lng = marker.getPosition().lng();
-            $log.log('marker lat: ', lat);
-            $log.log('marker lng: ', lng);
+            // $log.log('marker lat: ', lat);
+            // $log.log('marker lng: ', lng);
 
             $scope.marker.options = {
               draggable: true,
@@ -207,8 +210,8 @@ createApp.controller('createController', ['$scope','uiGmapGoogleMapApi','$filter
     function geoCallBack(position){
       var geoLat = position.coords.latitude;
       var geoLng = position.coords.longitude;
-      $log.log('geoLat: ', geoLat);
-      $log.log('geoLng: ', geoLng);
+      // $log.log('geoLat: ', geoLat);
+      // $log.log('geoLng: ', geoLng);
 
       $scope.marker.coords = {
           latitude: geoLat,
