@@ -2,7 +2,8 @@
 // ANGULE CLIENT SIDE //
 ////////////////////////
 var map = null;
-
+var markers = [];
+var pinLocation = [];
 var createApp = angular.module('createApp',
   ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
   // '720kb.fx'
@@ -178,8 +179,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   // Note: Some of the directives require at least something to be defined originally!
   // e.g. $scope.markers = []
 
-  $scope.circle = false;
-  $scope.hide = false;
+
 
   // GOOGLE MAP
 
@@ -193,6 +193,41 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   }
   initialize();
 
+  google.maps.event.addListener(map, 'click', function(e){
+    if(markers){
+      clearMarkers();
+    }
+    placeMarker(e.latLng, map);
+  });
+
+  var locationSearch = function (){
+    return _.last(pinLocation);
+  };
+
+  var placeMarker = function(position, map){
+    var marker = new google.maps.Marker({
+      position: position,
+      map: map,
+      draggable: true,
+      animation: google.maps.Animation.DROP
+    });
+    markers.push(marker);
+    map.panTo(position);
+    // Push to Mongo
+    pinLocation.push(marker.getPosition());
+  };
+  // Goes through all the markers on the page.
+  var setAllMap = function (map){
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  };
+
+  // Clear marker on page before adding new one.
+  var clearMarkers = function() {
+    setAllMap(null);
+  };
+
         $scope.locator = function(){
             var showPosition = function(pos){
                 console.log(pos);
@@ -202,6 +237,13 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
                   map: map,
                   draggable: true,
                 });
+                markers.push(marker);
+                  var lat = marker.getPosition().lat();
+                  var lng = marker.getPosition().lng();
+                  $log.log('marker lat: ', lat);
+                  $log.log('marker lng: ', lng);
+                pinLocation.push(marker.getPosition());
+
 
                 map.panTo(myLatLng);
             };
@@ -210,19 +252,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
             }
         };
 
-  $scope.findMe = function(){
-    $scope.circle = true;
-    $scope.hide = true;
-    // Check if browser will give geoLocation
-    if(Modernizr.geolocation){
-      $log.log('Finding location...');
-      // Get geoLocation and call geoCallBack with lat/lng.
-      // navigator.geolocation.getCurrentPosition(geoCallBack);
-    }
-    else {
-      $log.warn('Cant find location');
-    }
-  };
+
 
     // Take geolocation and assign to variables. Set marker on geoLocation
     function geoCallBack(position){
@@ -231,32 +261,32 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
       // $log.log('geo position: ', pos);
       $log.log('found geoLat: ', geoLat);
       $log.log('found geoLng: ', geoLng);
-      $scope.circle = false;
+      // $scope.circle = false;
 
 
       // Once user's lat and lng are found drop marker
-      if(geoLat && geoLng){
-        $log.log('Have latLng');
-        $scope.mapsReady = true;
-          $scope.marker = {
-            id: 0,
-            coords: {
-              latitude: geoLat,
-              longitude: geoLng
-            },
-            options: { draggable: true },
-            events: {
-              dragend: function (marker, eventName, args) {
-                // $log.log('marker dragend');
-                var lat = marker.getPosition().lat();
-                var lng = marker.getPosition().lng();
-                $log.log('marker lat: ', lat);
-                $log.log('marker lng: ', lng);
-              }
-            }
-          };
-        reload = true;
-        $log.log(reload);
+      // if(geoLat && geoLng){
+      //   $log.log('Have latLng');
+      //   $scope.mapsReady = true;
+      //     $scope.marker = {
+      //       id: 0,
+      //       coords: {
+      //         latitude: geoLat,
+      //         longitude: geoLng
+      //       },
+      //       options: { draggable: true },
+      //       events: {
+      //         dragend: function (marker, eventName, args) {
+      //           // $log.log('marker dragend');
+      //           var lat = marker.getPosition().lat();
+      //           var lng = marker.getPosition().lng();
+      //           $log.log('marker lat: ', lat);
+      //           $log.log('marker lng: ', lng);
+      //         }
+      //       }
+      //     };
+      //   reload = true;
+      //   $log.log(reload);
         //   setTimeout(function(){
         // reload = true;
         // $scope.map.center= {
@@ -265,7 +295,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
         // };
 
         //   },5000);
-        }
+        // }
     }
 
 }]);
