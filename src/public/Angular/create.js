@@ -119,61 +119,39 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 /////////////////////////
 createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
   $scope.search = {};
+  $scope.hideZip = false;
   // Filter date to short date
 
+    // Build object of search criteria
     $scope.searchRuns = function (input){
-      // $log.log('search obj: ', input);
-      var date = $filter('date')(input.date, 'shortDate');
-      // console.log('filtered date: ', date);
-     // ///////////////////////////////
-     // // Break out into own filter //
-     // ///////////////////////////////
-     //  var hr = input.time.hour;
-     //  var min = input.time.minute;
-     //  var ap = input.time.ampm;
-     //  var hrToSec = 0;
-     //  var minToSec = 0;
-     //  var totalTimeSec = 0;
+      var date = $filter('date')(input.date, 'yyyy-MM-dd');
+      var time = $filter('timeTo24')(input.time);
 
-     //  minToSec = (min * 60);
-
-     //  if ((ap === 'PM') && (hr < 12)) {
-     //    var tfHR = parseInt(hr) + 12;
-     //      // $log.log('+12 :', tfHR);
-     //    hrToSec += (tfHR * 3600);
-     //      // $log.log('+12 secs :', hrToSec);
-     //    minToSec = (min * 60);
-     //    totalTimeSec = hrToSec + minToSec;
-     //  }
-     //    else {
-     //      hrToSec = parseInt(hr) * 3600;
-     //      // $log.log('12 :', tfHr);
-     //      minToSec = (min * 60);
-     //      totalTimeSec = hrToSec + minToSec;
-     //    }
-     //  if (ap === 'AM'){
-     //    var amHour = parseInt(hr) * 3600;
-     //    totalTimeSec = minToSec + amHour;
-     //  }
-     //  $log.log('total: ',totalTimeSec);
-
+      var search = {
+        searchDate : date,
+        searchTime : time,
+        searchDist : input.distance,
+        searchPace : input.pace,
+        searchZip  : input.address
+      };
     };
 }]);
 
+// Store available option for selecting time
 createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
   $scope.hours = ['1','2','3','4','5','6','7','8','9','10','11','12'];
   $scope.minutes = ['00','05','10','15','20','25','30','35','40','45','50','55'];
   $scope.amPM = ['AM','PM'];
 }]);
 
+// Show Results
+createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
 
-createApp.controller('resultsController', ['$scope', function($scope){
 
 }]);
 
 // Create Activity controller
 createApp.controller('createController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  $scope.data = {};
   $scope.search = {};
   // Hide zip when creating activity
   $scope.hideZip = true;

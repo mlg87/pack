@@ -1,6 +1,6 @@
 SETUP:
  ☐ Get form data from search and create
-   ☐ enter into DB
+   ✔ enter create activity into DB @done (15-03-14 10:55)
  ☐ Query DB for results
    ☐ Build results page
  ☐ Add User Auth
