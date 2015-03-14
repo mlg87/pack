@@ -13,9 +13,9 @@ DATABASE:
 LANDING PAGE:
  ✔ Add search bar @done (15-03-11 12:29)
    ✔ Format seach inputs @done (15-03-11 12:29)
-     ☐ get values from form
-   ☐ Setup routes / Link search to DB
-   ☐ Setup geocoder
+     ✔ get values from form @done (15-03-14 11:37)
+   ✔ Setup routes / Link search to DB @done (15-03-14 11:37)
+   ✔ Setup geocoder @done (15-03-14 11:37)
    ☐ SEARCH
      ☐ Hide search bar
      ☐ Query DB based on search

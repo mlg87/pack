@@ -146,7 +146,7 @@ createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
 
 // Show Results
 createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-
+  $scope.results = Activity.items;
 
 }]);
 
@@ -329,9 +329,17 @@ createApp.directive('searchBar', function(){
   };
 });
 
-createApp.directive('googleMaps', function(){
+// Create results directive
+createApp.directive('activity', function(){
   return {
     restrict: 'E',
-    templateUrl: '/templates/googlemap'
+    templateUrl: '/templates/view'
   };
 });
+
+// createApp.directive('googleMaps', function(){
+//   return {
+//     restrict: 'E',
+//     templateUrl: '/templates/googlemap'
+//   };
+// });
