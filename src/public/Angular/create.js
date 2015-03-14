@@ -172,7 +172,7 @@ createApp.controller('resultsController', ['$scope', function($scope){
 }]);
 
 // Create Activity controller
-createApp.controller('createController', ['$scope','$filter','$log','$timeout', function($scope, $filter, $log, $timeout){
+createApp.controller('createController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
   $scope.data = {};
   $scope.search = {};
   // Hide zip when creating activity
@@ -210,7 +210,10 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
       activityDescption: activity.description,
       activityTimeStamp: buildTimeStamp,
     };
-    $log.log('publish: ', publish);
+    var newActivitiy = new Activity.model(publish);
+    newActivitiy.$save(function(savedItem){
+      $log.log(savedItem);
+    });
   };
 
   ////////////////

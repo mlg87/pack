@@ -25,6 +25,7 @@ app.get('/', indexController.index);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
+app.post('/api/view', createController.create);
 
 // Templates route:
 app.get('/templates/:templateid', indexController.getTemplate);

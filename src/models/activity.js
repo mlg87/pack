@@ -12,8 +12,8 @@ var activitySchema = mongoose.Schema({
     lng: Number,
   },
   activityDescption: String,
-  activityTS: String,
-  // activityParticipants: {}
+  activityTimeStamp: String,
+  // activityParticipants: {},
   // activityComments: {}
 
 });

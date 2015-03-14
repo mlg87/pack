@@ -1,6 +1,11 @@
+var Activity = require('../models/activity.js');
+
 var indexController = {
 	create: function(req, res) {
-		res.render('create');
+		var newActivity = new Activity(req.body);
+    newActivity.save(function(err, results){
+      res.send(results);
+    });
 	}
 };
 
