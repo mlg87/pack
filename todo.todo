@@ -1,18 +1,10 @@
 SETUP:
- ✔ Move jade files to templates @done (15-03-11 07:53)
- ✔ Convert bootstrap to UI Bootstrap @done (15-03-11 07:53)
-   ✔ change date picker @done (15-03-11 07:47)
-   ✔ change time picker @done (15-03-11 07:47)
-   ✔ center and style search bar @done (15-03-11 07:47)
- ✔ Split landing into landing and search template @done (15-03-11 12:25)
-     ✔ Search Page @done (15-03-11 12:25)
-     ☐ Results Page
-     ☐ Create Page
-       ✔ add map @done (15-03-11 12:28)
-       ☐ Get html5 location on startup
-       ☐ add click to add marker
-       ☐ get location of marker to send with form
- ☐ Create datepicker directive
+ ☐ Get form data from search and create
+   ☐ enter into DB
+ ☐ Query DB for results
+   ☐ Build results page
+ ☐ Add User Auth
+   ☐ Add user feed
 
 DATABASE:
  ☐ Seed users

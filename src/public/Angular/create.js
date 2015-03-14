@@ -63,6 +63,32 @@ createApp.filter('seconds', [function(){
   };
 }]);
 
+createApp.filter('timeTo24', [function(){
+  return function(input){
+    console.log('input: ',input);
+      var hr = parseInt(input.hour);
+      var min = input.minute;
+      var ap = input.ampm;
+
+      if ((ap === 'PM') && (hr < 12)) {
+        var tfHR = parseInt(hr) + 12;
+          // $log.log('+12 :', tfHR);
+        var time24 = tfHR + ':' + min;
+        return time24;
+      }
+        else if ((ap ==='AM') && (hr === 12)){
+          var morningTime = '0' + ':' + min;
+          return morningTime;
+        }
+          else {
+           hours = parseInt(hr);
+            // $log.log('12 :', tfHr);
+           var time12 = hours + ':' + min;
+           return time12;
+          }
+  };
+}]);
+
 createApp.filter('numberFixedLen', function () {
         return function (n, len) {
             var num = parseInt(n, 10);
@@ -93,40 +119,40 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
   // Filter date to short date
 
     $scope.searchRuns = function (input){
-      $log.log('search obj: ', input);
+      // $log.log('search obj: ', input);
       var date = $filter('date')(input.date, 'shortDate');
-      console.log('filtered date: ', date);
-     ///////////////////////////////
-     // Break out into own filter //
-     ///////////////////////////////
-      var hr = input.time.hour;
-      var min = input.time.minute;
-      var ap = input.time.ampm;
-      var hrToSec = 0;
-      var minToSec = 0;
-      var totalTimeSec = 0;
+      // console.log('filtered date: ', date);
+     // ///////////////////////////////
+     // // Break out into own filter //
+     // ///////////////////////////////
+     //  var hr = input.time.hour;
+     //  var min = input.time.minute;
+     //  var ap = input.time.ampm;
+     //  var hrToSec = 0;
+     //  var minToSec = 0;
+     //  var totalTimeSec = 0;
 
-      minToSec = (min * 60);
+     //  minToSec = (min * 60);
 
-      if ((ap === 'PM') && (hr < 12)) {
-        var tfHR = parseInt(hr) + 12;
-          // $log.log('+12 :', tfHR);
-        hrToSec += (tfHR * 3600);
-          // $log.log('+12 secs :', hrToSec);
-        minToSec = (min * 60);
-        totalTimeSec = hrToSec + minToSec;
-      }
-        else {
-          hrToSec = parseInt(hr) * 3600;
-          // $log.log('12 :', tfHr);
-          minToSec = (min * 60);
-          totalTimeSec = hrToSec + minToSec;
-        }
-      if (ap === 'AM'){
-        var amHour = parseInt(hr) * 3600;
-        totalTimeSec = minToSec + amHour;
-      }
-      $log.log('total: ',totalTimeSec);
+     //  if ((ap === 'PM') && (hr < 12)) {
+     //    var tfHR = parseInt(hr) + 12;
+     //      // $log.log('+12 :', tfHR);
+     //    hrToSec += (tfHR * 3600);
+     //      // $log.log('+12 secs :', hrToSec);
+     //    minToSec = (min * 60);
+     //    totalTimeSec = hrToSec + minToSec;
+     //  }
+     //    else {
+     //      hrToSec = parseInt(hr) * 3600;
+     //      // $log.log('12 :', tfHr);
+     //      minToSec = (min * 60);
+     //      totalTimeSec = hrToSec + minToSec;
+     //    }
+     //  if (ap === 'AM'){
+     //    var amHour = parseInt(hr) * 3600;
+     //    totalTimeSec = minToSec + amHour;
+     //  }
+     //  $log.log('total: ',totalTimeSec);
 
     };
 }]);
@@ -145,21 +171,24 @@ createApp.controller('resultsController', ['$scope', function($scope){
 // Create Activity controller
 createApp.controller('createController', ['$scope','$filter','$log','$timeout', function($scope, $filter, $log, $timeout){
   $scope.data = {};
-
+  $scope.search = {};
   // Hide zip when creating activity
   $scope.hideZip = true;
 
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
-    // console.log(activity);
+    // console.log('Activity: ', activity);
     // Filter date to short date
-    var date = $filter('date')(activity.date, 'shortDate');
+    var date = $filter('date')(activity.date, 'yyyy-MM-dd');
     // console.log('filtered date: ', date);
-    // Filter time to 24hr time
-    var time = $filter('date')(activity.time, 'HH:mm');
-    // console.log('filtered time: ', time);
 
+    // Filter time to 24hr time
+    var time = $filter('timeTo24')(activity.time);
+    $log.log('filtered time: ', time);
+
+    var lastCoords = locationSearch();
+    $log.log(lastCoords);
     // Setup new Activity object to be saved to DB
     var publish = {
       creator: 'Creator name',
@@ -169,12 +198,13 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
       activityDistance: activity.distance,
       activityPace: activity.pace,
       activityAddress: {
-        lat: 'LatNumber',
-        lng: 'LngNumber',
+        lat: lastCoords.latitude,
+        lng: lastCoords.longitude,
       },
       activityDescption: activity.description,
+      // activityTS: ,
     };
-    $log.log('publish: ', publish);
+    // $log.log('publish: ', publish);
   };
 
   ////////////////
@@ -217,8 +247,8 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   var locationSearch = function (){
     var coord = _.last(pinLocation);
     var coords = {
-      latitude: coord.latitude,
-      longitude: coord.longitude
+      latitude: coord.k,
+      longitude: coord.D
     };
     return coords;
   };
