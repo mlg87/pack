@@ -50,12 +50,14 @@ createApp.factory('Activity',['$resource', function($resource){
   };
 }]);
 
+// Filters out only mintues
 createApp.filter('minutes', [function(){
   return function(seconds){
     return Math.floor(seconds/60);
   };
 }]);
 
+// Filters out only seconds
 createApp.filter('seconds', [function(){
   return function(seconds){
     var min = Math.floor(seconds/60);
@@ -63,32 +65,34 @@ createApp.filter('seconds', [function(){
   };
 }]);
 
+/**
+ * Convert time object to 24 hour format
+ * @param  {Obejct} { return function(input) {
+ * Add's 12 to hour if PM and between 1 and 11 hour.
+ * Prepends 0 to hour if 12AM
+ * Otherwise add hour and minutes together
+ */
 createApp.filter('timeTo24', [function(){
   return function(input){
-    console.log('input: ',input);
       var hr = parseInt(input.hour);
       var min = input.minute;
       var ap = input.ampm;
 
       if ((ap === 'PM') && (hr < 12)) {
         var tfHR = parseInt(hr) + 12;
-          // $log.log('+12 :', tfHR);
-        var time24 = tfHR + ':' + min;
-        return time24;
+        return tfHR + ':' + min;
       }
         else if ((ap ==='AM') && (hr === 12)){
-          var morningTime = '0' + ':' + min;
-          return morningTime;
+          return '0' + ':' + min;
         }
           else {
            hours = parseInt(hr);
-            // $log.log('12 :', tfHr);
-           var time12 = hours + ':' + min;
-           return time12;
+           return hours + ':' + min;
           }
   };
 }]);
 
+// Sets a fixed length by prepending 0 if length is not met.
 createApp.filter('numberFixedLen', function () {
         return function (n, len) {
             var num = parseInt(n, 10);
@@ -109,11 +113,10 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
   $scope.item = Activity.model.get({_id: $routeParams.id});
 }]);
 
-// createApp.controller('listController',['$scope', 'Activity', function($scope, Activity){
-//   $scope.activites = Activity.items;
-// }]);
 
-// Search for Activity
+/////////////////////////
+// Search for Activity //
+/////////////////////////
 createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
   $scope.search = {};
   // Filter date to short date
@@ -179,16 +182,19 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
     // console.log('Activity: ', activity);
+
     // Filter date to short date
     var date = $filter('date')(activity.date, 'yyyy-MM-dd');
-    // console.log('filtered date: ', date);
 
-    // Filter time to 24hr time
+    // Filter time to 24hr format
     var time = $filter('timeTo24')(activity.time);
-    $log.log('filtered time: ', time);
 
+    // Build timestamp for event
+    var buildTimeStamp = date + 'T' + time;
+
+    // Get last marker coordinates
     var lastCoords = locationSearch();
-    $log.log(lastCoords);
+
     // Setup new Activity object to be saved to DB
     var publish = {
       creator: 'Creator name',
@@ -202,9 +208,9 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
         lng: lastCoords.longitude,
       },
       activityDescption: activity.description,
-      // activityTS: ,
+      activityTimeStamp: buildTimeStamp,
     };
-    // $log.log('publish: ', publish);
+    $log.log('publish: ', publish);
   };
 
   ////////////////
