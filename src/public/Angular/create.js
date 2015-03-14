@@ -174,7 +174,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
       },
       activityDescption: activity.description,
     };
-    // console.log('publish: ', publish);
+    $log.log('publish: ', publish);
   };
 
   ////////////////
@@ -215,7 +215,12 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout', 
 
   // Returns last placed pin location.
   var locationSearch = function (){
-    return _.last(pinLocation);
+    var coord = _.last(pinLocation);
+    var coords = {
+      latitude: coord.latitude,
+      longitude: coord.longitude
+    };
+    return coords;
   };
 
   // Places the marker from the click listener call.
@@ -299,7 +304,6 @@ createApp.controller('DatepickerCtrl', ['$scope', function ($scope) {
   $scope.format = 'shortDate';
 }]);
 
-
 // Create search bar directive
 createApp.directive('searchBar', function(){
   return {
@@ -308,25 +312,9 @@ createApp.directive('searchBar', function(){
   };
 });
 
-// Time picker directive
-createApp.directive('pickTime', function(){
+createApp.directive('googleMaps', function(){
   return {
     restrict: 'E',
-    templateUrl: '/templates/time'
+    templateUrl: '/templates/googlemap'
   };
 });
-
-// createApp.directive('googleMaps', function(){
-//   return {
-//     restrict: 'E',
-//     templateUrl: '/templates/googlemap'
-//   };
-// });
-
-// New Activity Controller
-// createApp.controller('newActivityController', ['$scope', function($scope){
-//   $scope.item = {};
-//   $scope.addActivity = function(){
-
-//   };
-// }]);
