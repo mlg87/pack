@@ -32,6 +32,10 @@ createApp.config(function($routeProvider){
     .when('/results', {
       templateUrl: 'templates/results',
       controller: 'resultsController'
+    })
+    .when('/login', {
+      templateUrl: 'templates/login',
+      controller: 'resultsController'
     });
 });
 

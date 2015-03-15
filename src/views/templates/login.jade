@@ -1,0 +1,24 @@
+
+//- Error comes through via the context passed when calling
+//- res.render('login', {...})
+//- Will see this in controllers/authenticate.js
+//- If the error exists, we'll display it.
+
+if error
+  h3= error
+
+h2 Login
+//- Form for handling existing user logins
+form(name="login", novalidate)
+  div.loginContainer(layout='row', layout-align='center center')
+    div.md-whiteframe-z3(layout='column', layout-margin, layout-padding, layout-align='center center', layout-sm='column')
+      div(layout='row')
+        div(layout='row')
+          md-input-container(md-no-float)
+            input(ng-model='login.username', type='text', placeholder='username')
+        div(layout='row')
+          md-input-container(md-no-float)
+            input(ng-model='login.password', type='password', placeholder='password')
+      div(layout='row')
+        md-button.md-raised.md-primary(flex, ng-disabled='createActivity.$invalid', ng-click='publishActivity(search)') Create
+

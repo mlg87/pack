@@ -7,10 +7,10 @@ var user = new User({
   password: 'test'
 });
 
-user.save(function(err, user){
-  if(err){
-    console.log(err);
-  } else {
-    console.log('Seeded user');
-  }
-});
+// user.save(function(err, user){
+//   if(err){
+//     console.log(err);
+//   } else {
+//     console.log('Seeded user');
+//   }
+// });
