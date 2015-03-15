@@ -9,7 +9,7 @@ if error
 
 h2 Login
 //- Form for handling existing user logins
-form(name="login", novalidate)
+form(action='/auth/login', method='post', name="login", novalidate)
   div.loginContainer(layout='row', layout-align='center center')
     div.md-whiteframe-z3(layout='column', layout-margin, layout-padding, layout-align='center center', layout-sm='column')
       div(layout='row')
@@ -20,5 +20,5 @@ form(name="login", novalidate)
           md-input-container(md-no-float)
             input(ng-model='login.password', type='password', placeholder='password')
       div(layout='row')
-        md-button.md-raised.md-primary(flex, ng-disabled='createActivity.$invalid', ng-click='publishActivity(search)') Create
+        md-button.md-raised.md-primary(flex, ng-disabled='createActivity.$invalid', ng-submit='submit()') Create
 
