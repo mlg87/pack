@@ -25,6 +25,7 @@ require('./models/seeds/activitySeeds.js');
 var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
 var createController = require('./controllers/create.js');
+var authenticationController = require('./controllers/authenticate');
 
 mongoose.connect('mongodb://localhost/pack');
 
@@ -39,9 +40,28 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(flash());
 
+// Initialize the express session. Needs to be given a secret property.
+// Also requires the resave option (will not force a resave of session if not modified)
+// as well as saveUninitialized(will not automatically create empty data)
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.get('/', indexController.index);
-// app.get('/find', findController.initialize);
-// app.get('/create', createController.create);
+
+// Hook in passport to the middleware chain
+app.use(passport.initialize());
+
+// Hook in the passport session management into the middleware chain.
+app.use(passport.session());
+
+// Our get request for viewing the login page
+app.get('/auth/login', authenticationController.login);
+
+// Post received from submitting the login form
+app.post('/auth/login', authenticationController.processLogin);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
