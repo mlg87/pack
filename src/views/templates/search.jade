@@ -36,6 +36,9 @@ form(name="searchActivity", novalidate)
               input(ng-model='search.address', type='text', placeholder='zipcode')
             md-button.md-raised.searchBtn(ng-click='searchRuns(search)') Search
 
+
+    div.results-item(ng-show='results', ng-repeat='item in results')
+      activity
   .form-group.goLogo
     div
       img.intro-logo.center-block(src="/images/logo-button.png")

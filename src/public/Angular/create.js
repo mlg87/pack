@@ -66,14 +66,14 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
       templateUrl: '/templates/view',
       controller: 'viewController',
       resolve: {
-          loggedin: checkLoggedin
+          // loggedin: checkLoggedin
         }
     })
     .when('/create', {
       templateUrl: '/templates/create',
       controller: 'createController',
       resolve: {
-          loggedin: checkLoggedin
+          // loggedin: checkLoggedin
         }
     })
     .when('/search', {
@@ -88,7 +88,7 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
       templateUrl: 'templates/admin',
       controller: 'adminController',
       resolve: {
-          loggedin: checkLoggedin
+          // loggedin: checkLoggedin
         }
     })
     .when('/login', {
@@ -239,8 +239,6 @@ createApp.filter('numberFixedLen', function () {
         };
  });
 
-
-
 // Sets item scope for speicifc Activity ID.
 createApp.controller('viewController', ['$routeParams','$scope','Activity', function($routeParams, $scope, Activity){
   $scope.item = Activity.model.get({_id: $routeParams.id});
@@ -255,15 +253,17 @@ createApp.controller('navBarController', ['scope', function($scope){
 /////////////////////////
 // Search for Activity //
 /////////////////////////
-createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
+createApp.controller('searchController', ['$scope','$log','$filter','Activity', function($scope, $log, $filter, Activity){
   $scope.search = {};
   $scope.hideZip = false;
   var search;
   var geoLatLng;
+  $scope.results = Activity.items;
   // Filter date to short date
 
     // Replace in jade with codeAddress
     $scope.searchRuns = function (input){
+      $scope.results = null;
       codeAddress(input);
     };
 
@@ -291,6 +291,7 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
           searchAddress  : geoLatLng
         };
         $log.log(search);
+
       };
 
 }]);

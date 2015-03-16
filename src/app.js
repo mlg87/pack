@@ -75,7 +75,6 @@ app.get('/users',
   res.send([{name: "user1"}, {name: "user2"}]);
 });
 
-
 // TEST IF THE USER IS LOGGED IN
 app.get('/loggedin', function(req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
@@ -93,7 +92,6 @@ app.post('/logout', function(req, res){
   req.logOut();
   res.send(200);
 });
-
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
