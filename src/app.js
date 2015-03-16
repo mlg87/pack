@@ -46,6 +46,10 @@ app.use(flash());
 // as well as saveUninitialized(will not automatically create empty data)
 app.use(session({
   secret: 'secret',
+  cookie: {
+    maxAge: new Date(Date.now() + 14*24*60*60*1000), // 14 days, in milliseconds
+    expires: new Date(Date.now() + 14*24*60*60*1000) // 14 days, in milliseconds
+  },
   resave: false,
   saveUninitialized: false
 }));

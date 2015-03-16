@@ -55,10 +55,6 @@ var findController = {
         }
         res.send(results);
       });
-    } else {
-      User.find({}, function(err, results){
-        res.send(results);
-      });
     }
   }
 };

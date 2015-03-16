@@ -127,7 +127,7 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
       .success(function(user){
         // No error: authentication OK
         $rootScope.message = 'Authentication successful!';
-        $location.url('templates/admin');
+        $location.url('/admin');
       })
       .error(function(){
         // Error: authentication failed
@@ -246,7 +246,12 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
   $scope.item = Activity.model.get({_id: $routeParams.id});
 }]);
 
+createApp.controller('navBarController', ['scope', function($scope){
 
+   $scope.status = {
+    isopen: false
+  };
+}]);
 /////////////////////////
 // Search for Activity //
 /////////////////////////
