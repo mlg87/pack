@@ -40,7 +40,7 @@ var authenticationController = {
     // after use. Useful for quick messages like "failed to login."
     // In this case, we pull any existing flash message id'd as "error"
     // and pass it to the view.
-    res.render('login', {
+    res.render('/login', {
       error: req.flash('error')
     });
   },
@@ -64,7 +64,7 @@ var authenticationController = {
       // to that handler.
       if(!user) {
         req.flash('error', 'Error logging in. Please try again.');
-        return res.redirect('/auth/login');
+        return res.redirect('/login');
       }
 
       // If we make it this far, the user has correctly authenticated with passport
@@ -116,7 +116,7 @@ var authenticationController = {
         // Flash the message and redirect to the login view to
         // show it.
         req.flash('error', errorMessage);
-        return res.redirect('/auth/login');
+        return res.redirect('/login');
       }
 
       // If we make it this far, we are ready to log the user in.
@@ -131,7 +131,7 @@ var authenticationController = {
     req.logout();
 
     // Redirect back to the login page
-    res.redirect('/auth/login');
+    res.redirect('/login');
   }
 };
 

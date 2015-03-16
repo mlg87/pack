@@ -1,6 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-
+var path = require('path');
 // Database persistance
 var mongoose = require('mongoose');
 
@@ -25,7 +25,7 @@ require('./models/seeds/activitySeeds.js');
 var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
 var createController = require('./controllers/create.js');
-var authenticationController = require('./controllers/authenticate');
+var authenticationController = require('./controllers/authenticate.js');
 
 mongoose.connect('mongodb://localhost/pack');
 
@@ -35,6 +35,7 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Add cookieParser and flash middleware.
 app.use(cookieParser());
@@ -49,7 +50,12 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.get('/', indexController.index);
+var auth = function(req, res, next){
+  if (!req.isAuthenticated())
+    res.send(401);
+  else
+    next();
+};
 
 // Hook in passport to the middleware chain
 app.use(passport.initialize());
@@ -57,11 +63,33 @@ app.use(passport.initialize());
 // Hook in the passport session management into the middleware chain.
 app.use(passport.session());
 
-// Our get request for viewing the login page
-app.get('/auth/login', authenticationController.login);
+app.get('/', indexController.index);
 
-// Post received from submitting the login form
-app.post('/auth/login', authenticationController.processLogin);
+app.get('/users',
+  passportConfig.ensureAuthenticated,
+  function(req, res){
+  res.send([{name: "user1"}, {name: "user2"}]);
+});
+
+
+// TEST IF THE USER IS LOGGED IN
+app.get('/loggedin', function(req, res) {
+  res.send(req.isAuthenticated() ? req.user : '0');
+});
+
+// ROUTE TO LOG IN
+app.post('/login',
+  authenticationController.processLogin,
+  function(req, res) {
+    res.send(req.user);
+});
+
+// ROUTE TO LOG OUT
+app.post('/logout', function(req, res){
+  req.logOut();
+  res.send(200);
+});
+
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);

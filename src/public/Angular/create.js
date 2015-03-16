@@ -1,5 +1,4 @@
 ////////////////////////
-
 // ANGULE CLIENT SIDE //
 ////////////////////////
 var map = null;
@@ -7,13 +6,57 @@ var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
-  // '720kb.fx'
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial'
   ]
 );
 
+
 // Configure client-side routing
-createApp.config(function($routeProvider){
+createApp.config(function($routeProvider,$httpProvider,$locationProvider){
+
+  // Check if the user is connected
+  //================================================
+  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
+      // Initialize a new promise
+      var deferred = $q.defer();
+
+      // Make an AJAX call to check if the user is logged in
+      $http.get('/loggedin').success(function(user){
+        // Authenticated
+        if (user !== '0')
+          /*$timeout(deferred.resolve, 0);*/
+          deferred.resolve();
+
+        // Not Authenticated
+        else {
+          $rootScope.message = 'You need to log in.';
+          //$timeout(function(){deferred.reject();}, 0);
+          deferred.reject();
+          $location.url('/login');
+        }
+      });
+
+      return deferred.promise;
+    };
+
+  // Add an interceptor for AJAX errors
+  //================================================
+  $httpProvider.interceptors.push(function($q, $location) {
+    return {
+      response: function(response) {
+        // do something on success
+        return response;
+      },
+      responseError: function(response) {
+        if (response.status === 401)
+          $location.url('/login');
+        return $q.reject(response);
+      }
+    };
+  });
+
+  // Define all routes
+  // =================================================
   $routeProvider
     .when('/', {
       templateUrl: '/templates/landing',
@@ -21,11 +64,17 @@ createApp.config(function($routeProvider){
     })
     .when('/view/:id', {
       templateUrl: '/templates/view',
-      controller: 'viewController'
+      controller: 'viewController',
+      resolve: {
+          loggedin: checkLoggedin
+        }
     })
     .when('/create', {
       templateUrl: '/templates/create',
-      controller: 'createController'
+      controller: 'createController',
+      resolve: {
+          loggedin: checkLoggedin
+        }
     })
     .when('/search', {
       templateUrl: 'templates/search',
@@ -35,12 +84,74 @@ createApp.config(function($routeProvider){
       templateUrl: 'templates/results',
       controller: 'resultsController'
     })
-    .when('/auth/login', {
+    .when('/admin', {
+      templateUrl: 'templates/admin',
+      controller: 'adminController',
+      resolve: {
+          loggedin: checkLoggedin
+        }
+    })
+    .when('/login', {
       templateUrl: 'templates/login',
       controller: 'loginController'
+    })
+    .otherwise({
+      redirectTo:'/'
     });
-});
+  }) // end of config()
+  .run(function($rootScope, $http){
+    $rootScope.message = '';
 
+    // Logout function is available in any pages
+    $rootScope.logout = function(){
+      $rootScope.message = 'Logged out.';
+      $http.post('/logout');
+    };
+  });
+
+
+  /****************************
+   * Login controller
+   ****************************/
+  createApp.controller('loginController', function($scope, $rootScope, $http, $location, $log) {
+    // This object will be filled by the form
+    $scope.user = {};
+
+    // Register the login() function
+    $scope.login = function(){
+      $log.log($scope.user);
+      $http.post('/login', {
+        username: $scope.user.username,
+        password: $scope.user.password,
+      })
+      .success(function(user){
+        // No error: authentication OK
+        $rootScope.message = 'Authentication successful!';
+        $location.url('templates/admin');
+      })
+      .error(function(){
+        // Error: authentication failed
+        $rootScope.message = 'Authentication failed.';
+        $location.url('/login');
+      });
+    };
+  });
+
+
+
+  /***************************
+   * Admin controller
+   ***************************/
+  createApp.controller('adminController', function($scope, $http) {
+    // List of users got from the server
+    $scope.users = [];
+
+    // Fill the array to display it in the page
+    $http.get('/users').success(function(users){
+      for (var i in users)
+        $scope.users.push(users[i]);
+    });
+  });
 
 // Data from server:
 createApp.factory('Activity',['$resource', function($resource){
@@ -128,10 +239,6 @@ createApp.filter('numberFixedLen', function () {
         };
  });
 
-// Login Controller
-createApp.controller('loginController', function(){
-
-});
 
 
 // Sets item scope for speicifc Activity ID.

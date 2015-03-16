@@ -1,3 +1,5 @@
+// Since we will be using the user model to control access and
+// persistence, we'll use that as well.
 var User = require('../models/user');
 
 // seed a user
@@ -23,11 +25,6 @@ var passport = require('passport');
 // different login systems like Facebook or Twitter. You can also
 // use multiple strategies to support more auth types.
 var LocalStrategy = require('passport-local').Strategy;
-
-// Since we will be using the user model to control access and
-// persistence, we'll use that as well.
-var User = require('../models/user');
-
 
 // SERIALIZATION:
 //  This small subset of code will take a user object, used
@@ -104,6 +101,6 @@ module.exports = {
     }
 
     // If not, redirect to login
-    res.redirect('/auth/login');
+    res.send(401);
   }
 };
