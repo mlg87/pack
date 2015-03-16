@@ -1,4 +1,5 @@
 ////////////////////////
+
 // ANGULE CLIENT SIDE //
 ////////////////////////
 var map = null;
@@ -149,9 +150,8 @@ createApp.controller('searchController', ['$scope','$log','$filter', function($s
   var geoLatLng;
   // Filter date to short date
 
-    // Build object of search criteria
+    // Replace in jade with codeAddress
     $scope.searchRuns = function (input){
-
       codeAddress(input);
     };
 
