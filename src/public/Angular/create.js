@@ -258,7 +258,7 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity', 
   $scope.hideZip = false;
   var search;
   var geoLatLng;
-  $scope.results = Activity.items;
+
   // Filter date to short date
 
     // Replace in jade with codeAddress
