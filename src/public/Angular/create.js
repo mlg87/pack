@@ -2,6 +2,7 @@
 // ANGULE CLIENT SIDE //
 ////////////////////////
 var map = null;
+var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
@@ -33,9 +34,9 @@ createApp.config(function($routeProvider){
       templateUrl: 'templates/results',
       controller: 'resultsController'
     })
-    .when('/login', {
+    .when('/auth/login', {
       templateUrl: 'templates/login',
-      controller: 'resultsController'
+      controller: 'loginController'
     });
 });
 
@@ -45,6 +46,20 @@ createApp.factory('Activity',['$resource', function($resource){
   // Define and return a resource connection
   var model = $resource(
     '/api/view/:id',
+    {id: '@_id'}
+  );
+
+  return {
+    model: model,
+    items: model.query()
+  };
+}]);
+
+// Data from the user:
+createApp.factory('User',['$resource', function($resource){
+  // Define and return a resource connection
+  var user = $resource(
+    '/api/user/:id',
     {id: '@_id'}
   );
 
@@ -112,6 +127,12 @@ createApp.filter('numberFixedLen', function () {
         };
  });
 
+// Login Controller
+createApp.controller('loginController', function(){
+
+});
+
+
 // Sets item scope for speicifc Activity ID.
 createApp.controller('viewController', ['$routeParams','$scope','Activity', function($routeParams, $scope, Activity){
   $scope.item = Activity.model.get({_id: $routeParams.id});
@@ -124,21 +145,42 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
   $scope.search = {};
   $scope.hideZip = false;
+  var search;
+  var geoLatLng;
   // Filter date to short date
 
     // Build object of search criteria
     $scope.searchRuns = function (input){
-      var date = $filter('date')(input.date, 'yyyy-MM-dd');
-      var time = $filter('timeTo24')(input.time);
 
-      var search = {
-        searchDate : date,
-        searchTime : time,
-        searchDist : input.distance,
-        searchPace : input.pace,
-        searchZip  : input.address
-      };
+      codeAddress(input);
     };
+
+    geocoder = new google.maps.Geocoder();
+
+    var codeAddress = function(zip) {
+      geocoder.geocode( { 'address': zip.address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          geoLatLng = results[0].geometry.location;
+          buildSearch(geoLatLng, zip);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    };
+
+     var buildSearch = function(geoLatLng, input){
+        var date = $filter('date')(input.date, 'yyyy-MM-dd');
+        var time = $filter('timeTo24')(input.time);
+        search = {
+          searchDate : date,
+          searchTime : time,
+          searchDist : input.distance,
+          searchPace : input.pace,
+          searchAddress  : geoLatLng
+        };
+        $log.log(search);
+      };
+
 }]);
 
 // Store available option for selecting time

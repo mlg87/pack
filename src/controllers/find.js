@@ -1,4 +1,4 @@
-var user = require('../models/user.js');
+var User = require('../models/user.js');
 var Activity = require('../models/activity.js');
 
 
@@ -32,7 +32,7 @@ var findController = {
       // get an individual item:
       Activity.findById(req.query._id, function(err, result){
         if(err){
-          console.log('error from findById', err);
+          console.log('error from findById Activity', err);
         }
         res.send(result);
       });
@@ -42,6 +42,21 @@ var findController = {
       Activity.find({}, function(err, results){
         // Send the entire array of results
         // to the client as JSON
+        res.send(results);
+      });
+    }
+  },
+
+  findUser: function(req, res){
+    if(req.query._id){
+      User.findById(req.query._id, function(err, results){
+        if(err){
+          console.log('error from findById User', err);
+        }
+        res.send(results);
+      });
+    } else {
+      User.find({}, function(err, results){
         res.send(results);
       });
     }
