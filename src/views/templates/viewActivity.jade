@@ -1,14 +1,10 @@
-div(layout='column', style='margin-top: 10px')
-  md-whiteframe.md-whiteframe-z2.resultsContainer(layout)
-    md-content.md-padding(flex)
-      .panel.panel-default.panelContainer
-        .panel-heading
-          div(layout='row' layout-align='space-around center')
-            h3 {{item.activityName}}
-            a(href='#/view/{{item._id}}')
-              md-button.md-raised.actBtn View
-            md-switch(ng-model='q.num', ng-init='q.num = $index', ng-change='onChange(q.num)') Join
-        .panel-body
+div(layout='column', style='margin-top: 10px', layout-align='center center', ng-controller='singleActivityController')
+  md-whiteframe.md-whiteframe-z2.singleActivityContainer(layout='column')
+    md-toolbar.md-warn
+      div.md-toolbar-tools
+        span.md-flex {{item.activityName}}
+    md-content.md-padding
+          #map-canvas
           div(layout='row')
             p <strong>{{item.creator}}</strong> &nbsp; - &nbsp; &nbsp;
             p <strong>Date</strong>: {{item.activityDate | date: 'M/d/yy'}} &nbsp; - &nbsp;

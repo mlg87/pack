@@ -63,7 +63,7 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
       controller: 'searchController'
     })
     .when('/view/:id', {
-      templateUrl: '/templates/view',
+      templateUrl: '/templates/viewActivity',
       controller: 'viewController',
       resolve: {
           // loggedin: checkLoggedin
@@ -245,6 +245,36 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 
 }]);
 
+// Controller for singal activity page.
+createApp.controller('singleActivityController', ['$routeParams','$scope','Activity','$log', function($routeParams, $scope, Activity, $log){
+  $scope.item = Activity.model.get({_id: $routeParams.id});
+  ////////////////////////////////
+  // SINGLE ACTIVITY GOOGLE MAP //
+  ////////////////////////////////
+  function initialize() {
+      var mapOptions = {
+          center: { lat: 40.014986, lng: -105.270546},
+          zoom: 12,
+          mayTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  }
+  initialize();
+  var placeMarker = function(position, map){
+    var marker = new google.maps.Marker({
+      position: position,
+      map: map,
+      draggable: false,
+      animation: google.maps.Animation.DROP
+    });
+  };
+
+   placeMarker({lat: -50,lng: 130}, map);
+
+}]);
+
+
+
 createApp.controller('navBarController', ['scope', function($scope){
 
    $scope.status = {
@@ -261,9 +291,11 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   var search;
   var geoLatLng;
 
- $scope.onChange = function(cbState){
-  $scope.joinSwitchMessage = 'Joined';
- };
+  $scope.isCollapsed = false;
+
+  $scope.onChange = function(cbState){
+    $scope.joinSwitchMessage = 'Joined';
+  };
 
   $scope.results = Activity.items;
   // Filter date to short date
@@ -504,9 +536,9 @@ createApp.directive('activity', function(){
   };
 });
 
-// createApp.directive('googleMaps', function(){
-//   return {
-//     restrict: 'E',
-//     templateUrl: '/templates/googlemap'
-//   };
-// });
+createApp.directive('googleMaps', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/googlemap'
+  };
+});

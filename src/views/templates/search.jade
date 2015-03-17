@@ -37,10 +37,10 @@ form(name="searchActivity", novalidate)
             md-button.md-raised.searchBtn(ng-click='codeAddress(search)', ng-disabled='searchActivity.$invalid') Search
             //- md-input(type=text, ng-model='mySearch')
 
-    div(layout='row')
-      input(type='text', ng-model='query', placeholder='search for item')
-    div.results-item(ng-repeat='item in results')
-      activity
+  div(layout='row')
+    input(type='text', ng-model='query', placeholder='search for item')
+  div.results-item(ng-repeat='item in results')
+    activity
   .form-group.goLogo
     div
       img.intro-logo.center-block(src="/images/logo-button.png")
