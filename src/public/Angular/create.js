@@ -246,20 +246,40 @@ createApp.controller('viewController', ['$routeParams','$scope','Activity', func
 }]);
 
 // Controller for singal activity page.
-createApp.controller('singleActivityController', ['$routeParams','$scope','Activity','$log', function($routeParams, $scope, Activity, $log){
+createApp.controller('singleActivityController', ['$routeParams','$scope','Activity','$log','$http', function($routeParams, $scope, Activity, $log,$http){
+
+  // Data object from DB
+  var data;
+
+  // Get activity data from DB
   $scope.item = Activity.model.get({_id: $routeParams.id});
+
+  // Set the DB data to 'data'
+  Activity.model.get({_id: $routeParams.id})
+  .$promise.then(function(act){
+    data = act;
+    // Initalize map once we have data.
+    initialize();
+    // place marker once we have data
+    placeMarker(data.activityAddress, map);
+  });
+
+  // var actData = Activity.model.get({_id: $routeParams.id});
+  // $log.log(actData);
   ////////////////////////////////
   // SINGLE ACTIVITY GOOGLE MAP //
   ////////////////////////////////
+
+  // map initialization options
   function initialize() {
       var mapOptions = {
-          center: { lat: 40.014986, lng: -105.270546},
+          center: data.activityAddress,
           zoom: 12,
           mayTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
-  initialize();
+  // marker initialization options
   var placeMarker = function(position, map){
     var marker = new google.maps.Marker({
       position: position,
@@ -268,8 +288,6 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
       animation: google.maps.Animation.DROP
     });
   };
-
-   placeMarker({lat: -50,lng: 130}, map);
 
 }]);
 
