@@ -254,7 +254,7 @@ createApp.controller('navBarController', ['scope', function($scope){
 /////////////////////////
 // Search for Activity //
 /////////////////////////
-createApp.controller('searchController', ['$scope','$log','$filter','Activity', function($scope, $log, $filter, Activity){
+createApp.controller('searchController', ['$scope','$log','$filter','Activity','$http', function($scope, $log, $filter, Activity, $http){
   $scope.search = {};
   $scope.hideZip = false;
   $scope.printSearch = {};
@@ -287,8 +287,6 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity', 
           activityPace : input.pace,
           activityAddress  : geoLatLng
         };
-        $scope.apply(function(){$scope.printSearch = search;});
-        $log.log(search);
       };
 
       $scope.searchX = function (row) {
@@ -346,7 +344,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
 
     // Setup new Activity object to be saved to DB
     var publish = {
-      creator: 'Creator name',
+      creator: 'Ben',
       activityName: activity.name,
       activityDate: date,
       activityTime: time,
