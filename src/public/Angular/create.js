@@ -417,7 +417,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
         lat: lastCoords.latitude,
         lng: lastCoords.longitude,
       },
-      activityDescption: activity.description,
+      activityDescription: activity.description,
       activityTimeStamp: buildTimeStamp,
     };
     var newActivitiy = new Activity.model(publish);

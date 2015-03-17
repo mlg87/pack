@@ -11,7 +11,7 @@ var activitySchema = mongoose.Schema({
     lat: Number,
     lng: Number,
   },
-  activityDescption: String,
+  activityDescription: String,
   activityTimeStamp: String,
   // activityParticipants: {},
   // activityComments: {}

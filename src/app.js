@@ -20,7 +20,7 @@ var passport = require('passport');
 var passportConfig = require('./config/passport');
 
 // Seed the DB with activities
-// require('./models/seeds/activitySeeds.js');
+require('./models/seeds/activitySeeds.js');
 
 var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');

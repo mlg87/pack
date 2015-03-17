@@ -4,7 +4,7 @@ div(layout='column', style='margin-top: 10px', layout-align='center center', ng-
       div.md-toolbar-tools(layout='row', layout-align='space-between')
         span.md-flex <strong>{{item.creator}}</strong> - {{item.activityName}}
         a(href='#/search')
-          md-button.md-raised Back
+          md-button.md-raised.actBtn Back
     md-content.md-padding
       #map-canvas
       div(layout='row' layout-align='space-around center')
@@ -14,7 +14,7 @@ div(layout='column', style='margin-top: 10px', layout-align='center center', ng-
         h4 <strong>Pace</strong>: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
       md-divider
       div(layout='row' layout-padding)
-        p <strong>Details:</strong> {{item.activityDescption}}
+        p <strong>Details:</strong> {{item.activityDescription}}
       div.commentContainer(layout='column')
         md-toolbar(md-scroll)
           .md-toolbar-tools
@@ -29,5 +29,9 @@ div(layout='column', style='margin-top: 10px', layout-align='center center', ng-
                   h3 {{item.who}}
                   h4 {{item.date}}
                   p {{item.comment}}
+      md-content.md-padding
+        md-input-container(md-no-float)
+          input(placeholder='add comment...')
+        md-button.md-raised.actBtn Submit
 
 

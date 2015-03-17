@@ -4,20 +4,52 @@ Activity.find({}, function(err, results){
   if(results.length === 0){
 
       var item1 = new Activity({
-        creator: 'Jenna',
-        activityName: 'Lunch run',
-        activityType: 'run',
-        activityDate: '02/13/2015',
-        activityTime: '5:00 PM',
-        activityPace: '9:30',
-        activityDistance: '3',
-        activityAddress: {
-          lat: 40.014955,
-          lng: -105.214863
-        },
-        activityDescption: 'Lets run at lunch today!',
+          creator : "Ben",
+          activityName : "Boulder run",
+          activityDate : "2015-03-21",
+          activityTime : "13:00",
+          activityDistance : "10",
+          activityPace : "525",
+          activityDescription : "Looking to run 10 miles today if anyone wants to join.",
+          activityTimeStamp : "2015-03-21T13:00",
+          activityAddress : {
+            "lat" : 40.009735296621834,
+            "lng" : -105.27520179748535
+          }
       });
       item1.save();
+
+      var item2 = new Activity({
+          creator : "Jenna",
+          activityName : "Training run",
+          activityDate : "2015-03-21",
+          activityTime : "12:45",
+          activityDistance : "10",
+          activityPace : "510",
+          activityDescription : "I'm training for a half marathon in June and I'm trying to keep my pace around 8:30's for this one.",
+          activityTimeStamp : "2015-03-21T12:45",
+          activityAddress : {
+            "lat" : 40.01093505470606,
+            "lng" : -105.25430470705032
+          }
+      });
+      item2.save();
+
+      var item3 = new Activity({
+          creator : "Michael",
+          activityName : "Trail run",
+          activityDate : "2015-03-21",
+          activityTime : "12:30",
+          activityDistance : "8",
+          activityPace : "555",
+          activityDescription : "Running Chautauqua Trail. I have a 4 mile out and back route planned.",
+          activityTimeStamp : "2015-03-21T12:30",
+          activityAddress : {
+            "lat" : 39.99890775878909,
+            "lng" : -105.28272539377213
+          }
+      });
+      item3.save();
 
   }
 });
