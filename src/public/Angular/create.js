@@ -287,6 +287,23 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
     });
   };
 
+  // Comment stream
+  var commentItem = {
+    face: '/images/logo-button.png',
+    who: 'Lorem',
+    date: '9/6/14',
+    comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum elit in nibh tristique aliquam.'
+  };
+
+  $scope.comments = [];
+  for (var i = 0; i < 6; i++){
+    $scope.comments.push({
+      face: '/images/logo-button.png',
+      who: 'Lorem',
+      date: '9/6/14',
+      comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum elit in nibh tristique aliquam.'
+    });
+  }
 }]);
 
 

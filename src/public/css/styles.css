@@ -101,3 +101,19 @@ margin-right: 0px;
   width: 800px;
   height: 100%
 }
+
+.commentContainer {
+  height: 340px;
+  margin-top: 10px;
+}
+
+.commentContainer p {
+  font-size: 1em;
+}
+
+.face {
+  width: 48px;
+  margin: 16px;
+  border-radius: 48px;
+  border: 1px solid #ddd;
+}
