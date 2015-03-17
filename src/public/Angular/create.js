@@ -261,6 +261,10 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   var search;
   var geoLatLng;
 
+ $scope.onChange = function(cbState){
+  $scope.joinSwitchMessage = 'Joined';
+ };
+
   $scope.results = Activity.items;
   // Filter date to short date
 
@@ -287,6 +291,7 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
           activityPace : input.pace,
           activityAddress  : geoLatLng
         };
+
       };
 
       $scope.searchX = function (row) {
@@ -304,19 +309,12 @@ createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
 
 // Show Results
 createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  $scope.results = Activity.items;
+  // $scope.results = Activity.items;
 
 }]);
 
 createApp.controller('listViewController', ['$scope', function($scope){
-   $scope.actBtn2 = "md-raised";
 
-   $scope.changeClass = function(){
-       if ($scope.actBtn2 === "md-raised")
-           $scope.actBtn2 = "md-primary";
-        else
-           $scope.actBtn2 = "md-raised";
-   };
 }]);
 
 // Create Activity controller
@@ -344,7 +342,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
 
     // Setup new Activity object to be saved to DB
     var publish = {
-      creator: 'Ben',
+      creator: 'Michael',
       activityName: activity.name,
       activityDate: date,
       activityTime: time,
