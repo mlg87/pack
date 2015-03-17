@@ -3,11 +3,14 @@ div(layout='column', style='margin-top: 10px')
     md-content.md-padding(flex)
       .panel.panel-default.panelContainer
         .panel-heading
-          h3 Activity Details
+          div(layout='row' layout-align='space-around center')
+            h3 Activity Details
+            md-button.md-raised.actBtn Map
+            md-button.md-raised.actBtn Join
         .panel-body
           div(layout='row')
-            p {{item.creator}}
-            p Date: {{item.activityDate}}
-            p Time : {{item.activityTime}}
-            p Distance: {{item.activityDistance}} mi
-            p Pace: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
+            p <strong>{{item.creator}}</strong> &nbsp; - &nbsp;
+            p <strong>Date</strong>: {{item.activityDate}} &nbsp; - &nbsp;
+            p <strong>Time</strong> : {{item.activityTime}} &nbsp; - &nbsp;
+            p <strong>Distance</strong>: {{item.activityDistance}} mi &nbsp; - &nbsp;
+            p <strong>Pace</strong>: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi

@@ -46,7 +46,9 @@ background: rgba(255,255,255,0.98);
   margin-bottom: 0px;
 }
 
-
+.actBtn {
+  width: 100px;
+}
 
 .createFormContainer {
   /*margin-top: -50px;*/
