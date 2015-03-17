@@ -1,3 +1,8 @@
+.navBar {
+width: 100%;
+background: rgba(255,255,255,0.98);
+}
+
 .searchColR {
   width: 382px;
 }
@@ -26,6 +31,23 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
+}
+
+.resultsContainer {
+  height: auto;
+  width: 700px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.panelContainer {
+  margin-bottom: 0px;
+}
+
+.actBtn {
+  width: 100px;
 }
 
 .createFormContainer {
@@ -71,5 +93,11 @@ margin-right: 0px;
 }
 
 .loginContainer {
-  /*width: 400px;*/
+  margin-top: 150px;
+}
+
+.singleActivityContainer {
+  margin-top: 80px;
+  width: 800px;
+  height: 100%
 }

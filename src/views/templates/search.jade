@@ -3,17 +3,17 @@ form(name="searchActivity", novalidate)
       div(layout='column', layout-margin, layout-padding)
           div(ng-controller="DatepickerCtrl")
             div(style="display:inline-block")
-              datepicker(ng-model="search.date", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close")
+              datepicker(ng-model="search.date", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", close-text="Close", required)
       div(layout='column', layout-margin layout-padding)
           div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
             div(layout='column')
-              md-select(ng-model='search.time.hour', placeholder='hour')
+              md-select(ng-model='search.time.hour', placeholder='hour', required)
                 md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
             div(layout='column')
-              md-select(ng-model='search.time.minute', placeholder='minutes')
+              md-select(ng-model='search.time.minute', placeholder='minutes', required)
                 md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
             div(layout='column')
-              md-select(ng-model='search.time.ampm', placeholder='am/pm')
+              md-select(ng-model='search.time.ampm', placeholder='am/pm', required)
                 md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
           div(layout='row')
             div(layout='column')
@@ -22,7 +22,7 @@ form(name="searchActivity", novalidate)
                 p(ng-show='search.distance') Distance: {{search.distance}} mi
                 md-divider
               div(layout)
-                md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance', aria-label='distance')
+                md-slider.searchColR(flex min='1', max='26.2', ng-model='search.distance', aria-label='distance', required)
           div(layout='row')
             div(layout='column')
               md-item
@@ -30,12 +30,17 @@ form(name="searchActivity", novalidate)
                 p(ng-show='search.pace') Pace: {{ search.pace | minutes }}:{{ search.pace | seconds | numberFixedLen: 2 }} min/mi
                 md-divider
               div(layout)
-                md-slider.searchColR(flex min='300', max='900', step='5', ng-model='search.pace', aria-label='pace')
+                md-slider.searchColR(flex min='300', max='900', step='5', ng-model='search.pace', aria-label='pace', required)
           div(layout='row')
             md-input-container(md-no-float)
-              input(ng-model='search.address', type='text', placeholder='zipcode')
-            md-button.md-raised.searchBtn(ng-click='searchRuns(search)') Search
+              input(ng-model='search.address', type='text', placeholder='zipcode', required)
+            md-button.md-raised.searchBtn(ng-click='codeAddress(search)', ng-disabled='searchActivity.$invalid') Search
+            //- md-input(type=text, ng-model='mySearch')
 
+  div(layout='row')
+    input(type='text', ng-model='query', placeholder='search for item')
+  div.results-item(ng-repeat='item in results')
+    activity
   .form-group.goLogo
     div
       img.intro-logo.center-block(src="/images/logo-button.png")

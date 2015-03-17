@@ -1,0 +1,20 @@
+div(layout='column', style='margin-top: 10px', layout-align='center center', ng-controller='singleActivityController')
+  md-whiteframe.md-whiteframe-z2.singleActivityContainer(layout='column')
+    md-toolbar.md-warn
+      div.md-toolbar-tools(layout='row', layout-align='space-between')
+        span.md-flex <strong>{{item.creator}}</strong> - {{item.activityName}}
+        a(href='#/search')
+          md-button.md-raised Back
+    md-content.md-padding
+          #map-canvas
+          div(layout='row' layout-align='space-around center')
+            h4 <strong>Date</strong>: {{item.activityDate | date: 'M/d/yy'}}
+            h4 <strong>Time</strong> : {{item.activityTimeStamp | date:'h:mm a' }}
+            h4 <strong>Distance</strong>: {{item.activityDistance}} mi
+            h4 <strong>Pace</strong>: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
+          md-divider
+          div(layout='row' layout-padding)
+            p <strong>Details:</strong> {{item.activityDescption}}
+
+
+

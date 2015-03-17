@@ -2,28 +2,79 @@
 // ANGULE CLIENT SIDE //
 ////////////////////////
 var map = null;
+var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
-  // '720kb.fx'
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial'
   ]
 );
 
+
 // Configure client-side routing
-createApp.config(function($routeProvider){
+createApp.config(function($routeProvider,$httpProvider,$locationProvider){
+
+  // Check if the user is connected
+  //================================================
+  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
+      // Initialize a new promise
+      var deferred = $q.defer();
+
+      // Make an AJAX call to check if the user is logged in
+      $http.get('/loggedin').success(function(user){
+        // Authenticated
+        if (user !== '0')
+          /*$timeout(deferred.resolve, 0);*/
+          deferred.resolve();
+
+        // Not Authenticated
+        else {
+          $rootScope.message = 'You need to log in.';
+          //$timeout(function(){deferred.reject();}, 0);
+          deferred.reject();
+          $location.url('/login');
+        }
+      });
+
+      return deferred.promise;
+    };
+
+  // Add an interceptor for AJAX errors
+  //================================================
+  $httpProvider.interceptors.push(function($q, $location) {
+    return {
+      response: function(response) {
+        // do something on success
+        return response;
+      },
+      responseError: function(response) {
+        if (response.status === 401)
+          $location.url('/login');
+        return $q.reject(response);
+      }
+    };
+  });
+
+  // Define all routes
+  // =================================================
   $routeProvider
     .when('/', {
       templateUrl: '/templates/landing',
       controller: 'searchController'
     })
     .when('/view/:id', {
-      templateUrl: '/templates/view',
-      controller: 'viewController'
+      templateUrl: '/templates/viewActivity',
+      controller: 'viewController',
+      resolve: {
+          // loggedin: checkLoggedin
+        }
     })
     .when('/create', {
       templateUrl: '/templates/create',
-      controller: 'createController'
+      controller: 'createController',
+      resolve: {
+          // loggedin: checkLoggedin
+        }
     })
     .when('/search', {
       templateUrl: 'templates/search',
@@ -33,18 +84,94 @@ createApp.config(function($routeProvider){
       templateUrl: 'templates/results',
       controller: 'resultsController'
     })
+    .when('/admin', {
+      templateUrl: 'templates/admin',
+      controller: 'adminController',
+      resolve: {
+          // loggedin: checkLoggedin
+        }
+    })
     .when('/login', {
       templateUrl: 'templates/login',
-      controller: 'resultsController'
+      controller: 'loginController'
+    })
+    .otherwise({
+      redirectTo:'/'
     });
-});
+  }) // end of config()
+  .run(function($rootScope, $http){
+    $rootScope.message = '';
 
+    // Logout function is available in any pages
+    $rootScope.logout = function(){
+      $rootScope.message = 'Logged out.';
+      $http.post('/logout');
+    };
+  });
+
+
+  /****************************
+   * Login controller
+   ****************************/
+  createApp.controller('loginController', function($scope, $rootScope, $http, $location, $log) {
+    // This object will be filled by the form
+    $scope.user = {};
+
+    // Register the login() function
+    $scope.login = function(){
+      $log.log($scope.user);
+      $http.post('/login', {
+        username: $scope.user.username,
+        password: $scope.user.password,
+      })
+      .success(function(user){
+        // No error: authentication OK
+        $rootScope.message = 'Authentication successful!';
+        $location.url('/admin');
+      })
+      .error(function(){
+        // Error: authentication failed
+        $rootScope.message = 'Authentication failed.';
+        $location.url('/login');
+      });
+    };
+  });
+
+
+
+  /***************************
+   * Admin controller
+   ***************************/
+  createApp.controller('adminController', function($scope, $http) {
+    // List of users got from the server
+    $scope.users = [];
+
+    // Fill the array to display it in the page
+    $http.get('/users').success(function(users){
+      for (var i in users)
+        $scope.users.push(users[i]);
+    });
+  });
 
 // Data from server:
 createApp.factory('Activity',['$resource', function($resource){
   // Define and return a resource connection
   var model = $resource(
     '/api/view/:id',
+    {id: '@_id'}
+  );
+
+  return {
+    model: model,
+    items: model.query()
+  };
+}]);
+
+// Data from the user:
+createApp.factory('User',['$resource', function($resource){
+  // Define and return a resource connection
+  var user = $resource(
+    '/api/user/:id',
     {id: '@_id'}
   );
 
@@ -115,30 +242,110 @@ createApp.filter('numberFixedLen', function () {
 // Sets item scope for speicifc Activity ID.
 createApp.controller('viewController', ['$routeParams','$scope','Activity', function($routeParams, $scope, Activity){
   $scope.item = Activity.model.get({_id: $routeParams.id});
+
+}]);
+
+// Controller for singal activity page.
+createApp.controller('singleActivityController', ['$routeParams','$scope','Activity','$log','$http', function($routeParams, $scope, Activity, $log,$http){
+
+  // Data object from DB
+  var data;
+
+  // Get activity data from DB
+  $scope.item = Activity.model.get({_id: $routeParams.id});
+
+  // Set the DB data to 'data'
+  Activity.model.get({_id: $routeParams.id})
+  .$promise.then(function(act){
+    data = act;
+    // Initalize map once we have data.
+    initialize();
+    // place marker once we have data
+    placeMarker(data.activityAddress, map);
+  });
+
+  ////////////////////////////////
+  // SINGLE ACTIVITY GOOGLE MAP //
+  ////////////////////////////////
+
+  // map initialization options
+  function initialize() {
+      var mapOptions = {
+          center: data.activityAddress,
+          zoom: 15,
+          mayTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  }
+  // marker initialization options
+  var placeMarker = function(position, map){
+    var marker = new google.maps.Marker({
+      position: position,
+      map: map,
+      draggable: false,
+      animation: google.maps.Animation.DROP
+    });
+  };
+
 }]);
 
 
+
+createApp.controller('navBarController', ['scope', function($scope){
+
+   $scope.status = {
+    isopen: false
+  };
+}]);
 /////////////////////////
 // Search for Activity //
 /////////////////////////
-createApp.controller('searchController', ['$scope','$log','$filter', function($scope, $log, $filter){
+createApp.controller('searchController', ['$scope','$log','$filter','Activity','$http', function($scope, $log, $filter, Activity, $http){
   $scope.search = {};
   $scope.hideZip = false;
+  $scope.printSearch = {};
+  var search;
+  var geoLatLng;
+
+  $scope.isCollapsed = false;
+
+  $scope.onChange = function(cbState){
+    $scope.joinSwitchMessage = 'Joined';
+  };
+
+  $scope.results = Activity.items;
   // Filter date to short date
 
-    // Build object of search criteria
-    $scope.searchRuns = function (input){
-      var date = $filter('date')(input.date, 'yyyy-MM-dd');
-      var time = $filter('timeTo24')(input.time);
+    geocoder = new google.maps.Geocoder();
 
-      var search = {
-        searchDate : date,
-        searchTime : time,
-        searchDist : input.distance,
-        searchPace : input.pace,
-        searchZip  : input.address
-      };
+    $scope.codeAddress = function(input) {
+      geocoder.geocode( { 'address': input.address}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          geoLatLng = results[0].geometry.location;
+          buildSearch(geoLatLng, input);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
     };
+
+     var buildSearch = function(geoLatLng, input){
+        var date = $filter('date')(input.date, 'yyyy-MM-dd');
+        var time = $filter('timeTo24')(input.time);
+        search = {
+          activityDate : date,
+          activityTime : time,
+          activityDistance : input.distance,
+          activityPace : input.pace,
+          activityAddress  : geoLatLng
+        };
+
+      };
+
+      $scope.searchX = function (row) {
+        return (angular.lowercase(row.activityDistance).indexOf($scope.query || '') !== -1);
+      };
+
 }]);
 
 // Store available option for selecting time
@@ -150,7 +357,11 @@ createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
 
 // Show Results
 createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  $scope.results = Activity.items;
+  // $scope.results = Activity.items;
+
+}]);
+
+createApp.controller('listViewController', ['$scope', function($scope){
 
 }]);
 
@@ -179,7 +390,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
 
     // Setup new Activity object to be saved to DB
     var publish = {
-      creator: 'Creator name',
+      creator: 'Michael',
       activityName: activity.name,
       activityDate: date,
       activityTime: time,
@@ -341,9 +552,9 @@ createApp.directive('activity', function(){
   };
 });
 
-// createApp.directive('googleMaps', function(){
-//   return {
-//     restrict: 'E',
-//     templateUrl: '/templates/googlemap'
-//   };
-// });
+createApp.directive('googleMaps', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/googlemap'
+  };
+});

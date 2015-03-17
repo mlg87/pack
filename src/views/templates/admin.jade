@@ -1,0 +1,8 @@
+h1 Admin
+p
+  a(href='#/') Home
+p
+  a(href='#/', ng-click='logout()') logout
+h2 User List
+  ul
+    li(ng-repeat='u in users'){{u.name}}

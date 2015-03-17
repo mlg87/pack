@@ -1,9 +1,22 @@
 div(layout='column', style='margin-top: 10px')
-  md-whiteframe.md-whiteframe-z2(layout)
-    md-content.md-padding
-      h1 Activity Details
-      h3 {{item.creator}}
-      h4 Date: {{item.activityDate}}
-      p Time : {{item.activityTime}}
-      p Distance: {{item.activityDistance}} mi
-      p Pace: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
+  md-whiteframe.md-whiteframe-z2.resultsContainer(layout)
+    md-content.md-padding(flex)
+      .panel.panel-default.panelContainer
+        .panel-heading
+          div(layout='row' layout-align='space-around center')
+            h3 {{item.activityName}}
+            a(href='#/view/{{item._id}}')
+              md-button.md-raised.actBtn View
+            md-switch(ng-model='q.num', ng-init='q.num = $index', ng-change='onChange(q.num)') Join
+        .panel-body
+          div(layout='row')
+            p <strong>{{item.creator}}</strong> &nbsp; - &nbsp; &nbsp;
+            p <strong>Date</strong>: {{item.activityDate | date: 'M/d/yy'}} &nbsp; - &nbsp;
+            p <strong>Time</strong> : {{item.activityTimeStamp | date:'h:mm a' }} &nbsp; - &nbsp;
+            p <strong>Distance</strong>: {{item.activityDistance}} mi &nbsp; - &nbsp;
+            p <strong>Pace</strong>: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
+          md-divider
+          div(layout='row')
+            p {{item.activityDescption}}
+
+
