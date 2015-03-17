@@ -27,7 +27,6 @@ var findController = {
   // },
 
   getAll: function(req, res){
-    console.log('request: ', req);
     if(req.query._id){
       // If there is a query parameter for _id,
       // get an individual item:
@@ -37,17 +36,10 @@ var findController = {
         }
         res.send(result);
       });
-    // } else if(req.query.obj) {
-
-    //   Activity.find({activityTime : obj.df }, function(err, results){
-    //     // Send the entire array of results
-    //     // to the client as JSON
-    //     res.send(results);
-    //   });
     } else {
       // else, get all items
       // Go to DB and find all news items
-      Activity.find({}, function(err, results){
+      Activity.find({} , function(err, results){
         // Send the entire array of results
         // to the client as JSON
         res.send(results);

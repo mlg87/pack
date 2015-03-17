@@ -256,24 +256,21 @@ createApp.controller('navBarController', ['scope', function($scope){
 createApp.controller('searchController', ['$scope','$log','$filter','Activity', function($scope, $log, $filter, Activity){
   $scope.search = {};
   $scope.hideZip = false;
+  $scope.printSearch = {};
+  $scope.datasearch = 8;
   var search;
   var geoLatLng;
 
+  $scope.results = Activity.items;
   // Filter date to short date
-
-    // Replace in jade with codeAddress
-    $scope.searchRuns = function (input){
-      $scope.results = null;
-      codeAddress(input);
-    };
 
     geocoder = new google.maps.Geocoder();
 
-    var codeAddress = function(zip) {
-      geocoder.geocode( { 'address': zip.address}, function(results, status) {
+    $scope.codeAddress = function(input) {
+      geocoder.geocode( { 'address': input.address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           geoLatLng = results[0].geometry.location;
-          buildSearch(geoLatLng, zip);
+          buildSearch(geoLatLng, input);
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -284,12 +281,13 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity', 
         var date = $filter('date')(input.date, 'yyyy-MM-dd');
         var time = $filter('timeTo24')(input.time);
         search = {
-          searchDate : date,
-          searchTime : time,
-          searchDist : input.distance,
-          searchPace : input.pace,
-          searchAddress  : geoLatLng
+          activityDate : date,
+          activityTime : time,
+          activityDistance : input.distance,
+          activityPace : input.pace,
+          activityAddress  : geoLatLng
         };
+        $scope.printSearch = search;
         $log.log(search);
 
       };

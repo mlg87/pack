@@ -1,9 +1,13 @@
 div(layout='column', style='margin-top: 10px')
   md-whiteframe.md-whiteframe-z2.resultsContainer(layout)
-    md-content.md-padding
-      h1 Activity Details
-      h3 {{item.creator}}
-      h4 Date: {{item.activityDate}}
-      p Time : {{item.activityTime}}
-      p Distance: {{item.activityDistance}} mi
-      p Pace: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
+    md-content.md-padding(flex)
+      .panel.panel-default.panelContainer
+        .panel-heading
+          h3 Activity Details
+        .panel-body
+          div(layout='row')
+            p {{item.creator}}
+            p Date: {{item.activityDate}}
+            p Time : {{item.activityTime}}
+            p Distance: {{item.activityDistance}} mi
+            p Pace: {{ item.activityPace | minutes }}:{{ item.activityPace | seconds | numberFixedLen: 2 }} min/mi
