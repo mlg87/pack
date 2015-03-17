@@ -2,7 +2,7 @@ div(layout='column', style='margin-top: 10px', layout-align='center center', ng-
   md-whiteframe.md-whiteframe-z2.singleActivityContainer(layout='column')
     md-toolbar.md-warn
       div.md-toolbar-tools(layout='row', layout-align='space-between')
-        span.md-flex {{item.activityName}} - <strong>{{item.creator}}</strong>
+        span.md-flex <strong>{{item.creator}}</strong> - {{item.activityName}}
         a(href='#/search')
           md-button.md-raised Back
     md-content.md-padding

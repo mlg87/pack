@@ -274,7 +274,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   function initialize() {
       var mapOptions = {
           center: data.activityAddress,
-          zoom: 12,
+          zoom: 15,
           mayTypeId: google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
