@@ -264,8 +264,6 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
     placeMarker(data.activityAddress, map);
   });
 
-  // var actData = Activity.model.get({_id: $routeParams.id});
-  // $log.log(actData);
   ////////////////////////////////
   // SINGLE ACTIVITY GOOGLE MAP //
   ////////////////////////////////
