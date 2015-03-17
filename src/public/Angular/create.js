@@ -319,16 +319,11 @@ createApp.controller('navBarController', ['scope', function($scope){
 /////////////////////////
 createApp.controller('searchController', ['$scope','$log','$filter','Activity','$http', function($scope, $log, $filter, Activity, $http){
   $scope.search = {};
+  // Shows zip on search. Changed on creating an event.
   $scope.hideZip = false;
-  $scope.printSearch = {};
+
   var search;
   var geoLatLng;
-
-  $scope.isCollapsed = false;
-
-  $scope.onChange = function(cbState){
-    $scope.joinSwitchMessage = 'Joined';
-  };
 
   $scope.results = Activity.items;
   // Filter date to short date
