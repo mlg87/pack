@@ -242,6 +242,7 @@ createApp.filter('numberFixedLen', function () {
 // Sets item scope for speicifc Activity ID.
 createApp.controller('viewController', ['$routeParams','$scope','Activity', function($routeParams, $scope, Activity){
   $scope.item = Activity.model.get({_id: $routeParams.id});
+
 }]);
 
 createApp.controller('navBarController', ['scope', function($scope){
@@ -257,7 +258,6 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity', 
   $scope.search = {};
   $scope.hideZip = false;
   $scope.printSearch = {};
-  $scope.datasearch = 8;
   var search;
   var geoLatLng;
 
@@ -287,9 +287,12 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity', 
           activityPace : input.pace,
           activityAddress  : geoLatLng
         };
-        $scope.printSearch = search;
+        $scope.apply(function(){$scope.printSearch = search;});
         $log.log(search);
+      };
 
+      $scope.searchX = function (row) {
+        return (angular.lowercase(row.activityDistance).indexOf($scope.query || '') !== -1);
       };
 
 }]);
@@ -305,6 +308,17 @@ createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
 createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
   $scope.results = Activity.items;
 
+}]);
+
+createApp.controller('listViewController', ['$scope', function($scope){
+   $scope.actBtn2 = "md-raised";
+
+   $scope.changeClass = function(){
+       if ($scope.actBtn2 === "md-raised")
+           $scope.actBtn2 = "md-primary";
+        else
+           $scope.actBtn2 = "md-raised";
+   };
 }]);
 
 // Create Activity controller
