@@ -8,13 +8,13 @@ form(name="searchActivity", novalidate)
           div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
             div(layout='column')
               md-select(ng-model='search.time.hour', placeholder='hour', required)
-                md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
+                md-option(ng-value='hour', ng-repeat='hour in hours') {{hour}}
             div(layout='column')
               md-select(ng-model='search.time.minute', placeholder='minutes', required)
-                md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
+                md-option(ng-value='minute', ng-repeat='minute in minutes') {{minute}}
             div(layout='column')
               md-select(ng-model='search.time.ampm', placeholder='am/pm', required)
-                md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
+                md-option(ng-value='ap', ng-repeat='ap in amPM') {{ap}}
           div(layout='row')
             div(layout='column')
               md-item
