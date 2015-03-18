@@ -59,14 +59,17 @@ var findController = {
   },
 
   search: function(req, res){
-
-
-      console.log('y', [req.body.activityAddress[0], req.body.activityAddress[1]] );
+    console.log('LATLNG', [req.body.activityAddress[0], req.body.activityAddress[1]] );
 
     Activity.find({
       activityAddress:{
-        $near: [req.body.activityAddress[0], req.body.activityAddress[1]],
-          $maxDistance: 8000,
+        $near:{
+          $geometry: {
+            type: "Point",
+            coordinates : [req.body.activityAddress[0], req.body.activityAddress[1]],
+          },
+          $maxDistance: 800000,
+        }
       }
     }).exec(function(err, locations){
       if(err){
