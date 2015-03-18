@@ -70,7 +70,11 @@ var findController = {
           },
           $maxDistance: 8000,
         }
-      }
+      },
+      activityDistance : req.body.activityDistance,
+      activityDate : req.body.activityDate,
+      activityPace: req.body.activityPace,
+      activityTime : req.body.activityTime
     }).exec(function(err, locations){
       if(err){
         console.log('server error: ', err);
