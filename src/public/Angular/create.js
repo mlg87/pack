@@ -6,8 +6,7 @@ var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
-  ]
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial','ngFx']
 );
 
 
@@ -30,7 +29,6 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
         // Not Authenticated
         else {
           $rootScope.message = 'You need to log in.';
-          //$timeout(function(){deferred.reject();}, 0);
           deferred.reject();
           $location.url('/login');
         }
@@ -297,7 +295,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
     date: '9/6/14',
     comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum elit in nibh tristique aliquam.'
   };
-
+  // Push 6 Lorem comments to each activity
   $scope.comments = [];
   for (var i = 0; i < 6; i++){
     $scope.comments.push({
@@ -324,23 +322,13 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   $scope.search = {};
   // Shows zip on search. Changed on creating an event.
   $scope.hideZip = false;
-  // $scope.searchValues = {
-  //   activityDate: "2015-03-21",
-  //   activityDescription: "d",
-  //   activityDistance: "7",
-  //   activityName: "a",
-  //   activityPace: "420",
-  //   activityTime: "3:00",
-  //   creator: "Michael"
-  // };
+
   // var search;
   var geoLatLng;
   $rootScope.results = [];
-  // $scope.results = Activity.items;
-  // Filter date to short date
 
+    // Use form zipcode to geocode into lat/lng
     geocoder = new google.maps.Geocoder();
-
     $scope.codeAddress = function(input) {
       geocoder.geocode( { 'address': input.address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -352,12 +340,16 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
       });
     };
 
+    // Trying to set watch on 'results'
+    // set rootScope on line 367 which
+    // is probably overiding.
     $scope.$watch('results',function(){
-      // $scope.searchValues.searchStuff = search;
     });
 
     $scope.$watch('searchValues', function(){});
+
     // Build search object from form
+    // Filter form data into serach object
      var buildSearch = function(geoLatLng, input){
         var date = $filter('date')(input.date, 'yyyy-MM-dd');
         var time = $filter('timeTo24')(input.time);
@@ -369,20 +361,14 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
           activityPace : input.pace,
           activityAddress  : arrayCoords
         };
+        // Post route to search DB and return results
         $http.post('/api/search', search).success(function(data){
-          $log.log('success: ', data);
             $scope.searchValues = search;
-              $rootScope.results = data;
+            $rootScope.results = data;
         }).error(function(data){
           $log.warn('error: ', data);
         });
-        $log.log(search);
-
       };
-
-
-  // $scope.$apply(function(){
-  // });
 
 }]);
 
@@ -395,7 +381,6 @@ createApp.controller('timeSelectCtrl', ['$scope','$log', function($scope, $log){
 
 // Show Results
 createApp.controller('resultsController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  // $scope.results = Activity.items;
 
 }]);
 
@@ -405,7 +390,7 @@ createApp.controller('listViewController', ['$scope', function($scope){
 
 // Create Activity controller
 createApp.controller('createController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  // $scope.search = {};
+
   // Hide zip when creating activity
   $scope.hideZip = true;
   $scope.search = {};
@@ -424,13 +409,13 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
     var buildTimeStamp = date + 'T' + time;
 
     // Get last marker coordinates
+    // Build array of [long,lat]
     var lastCoords = locationSearch();
     var arrayCoords = [lastCoords.longitude , lastCoords.latitude];
-    console.log('coords: ',arrayCoords);
 
     // Setup new Activity object to be saved to DB
     var publish = {
-      creator: 'Michael',
+      creator: 'Kevin',
       activityName: activity.name,
       activityDate: date,
       activityTime: time,
@@ -442,7 +427,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
     };
     var newActivitiy = new Activity.model(publish);
     newActivitiy.$save(function(savedItem){
-      $log.log('created activity: ',savedItem);
     });
   };
 
@@ -468,7 +452,8 @@ setTimeout(function(){
     placeMarker(e.latLng, map);
   });
 },1000);
- //
+
+ //Geocoder
   function codeAddress() {
     var address = document.getElementById('address').value;
     geocoder.geocode( { 'address': address}, function(results, status) {
@@ -593,6 +578,7 @@ createApp.directive('activity', function(){
   };
 });
 
+// Create googlemap directive
 createApp.directive('googleMaps', function(){
   return {
     restrict: 'E',
