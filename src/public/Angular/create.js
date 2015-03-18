@@ -6,7 +6,7 @@ var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial'
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
   ]
 );
 
@@ -373,7 +373,6 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         $http.post('/api/search', search).success(function(data){
           $log.log('success: ', data);
             $scope.searchValues = search;
-              // $scope.$digest();
               $rootScope.results = data;
         }).error(function(data){
           $log.warn('error: ', data);
