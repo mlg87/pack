@@ -126,6 +126,16 @@ margin-right: 0px;
   width:100px;
 }
 
-.landingContainer {
-margin-top: 150px;
+.landingMargin {
+padding-top: 100px;
+}
+
+.landingHeader {
+  padding-top: 100px;
+  font-size: 3em;
+  font-family: 'Lato' , sans-serif;
+}
+
+.goLogo {
+padding-top: 40px;
 }

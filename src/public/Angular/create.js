@@ -205,10 +205,8 @@ createApp.filter('seconds', [function(){
  */
 createApp.filter('timeTo24', [function(){
   return function(input){
-      console.log('in filter: ',input);
       var hr = parseInt(input.hour);
       var min = input.minute;
-      console.log('min',min);
       var ap = input.ampm;
 
       if ((ap === 'PM') && (hr < 12)) {
@@ -327,10 +325,16 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   $scope.search = {};
   // Shows zip on search. Changed on creating an event.
   $scope.hideZip = false;
-  $scope.searchValues ={
-    searchStuff: {}
-  };
-  var search;
+  // $scope.searchValues = {
+  //   activityDate: "2015-03-21",
+  //   activityDescription: "d",
+  //   activityDistance: "7",
+  //   activityName: "a",
+  //   activityPace: "420",
+  //   activityTime: "3:00",
+  //   creator: "Michael"
+  // };
+  // var search;
   var geoLatLng;
   $rootScope.results = [];
   // $scope.results = Activity.items;
@@ -351,10 +355,9 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
 
     $scope.$watch('results',function(){
       // $scope.searchValues.searchStuff = search;
-
     });
-    // $scope.results = 'test string';
 
+    $scope.$watch('searchValues', function(){});
     // Build search object from form
      var buildSearch = function(geoLatLng, input){
         var date = $filter('date')(input.date, 'yyyy-MM-dd');
@@ -369,17 +372,18 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         };
         $http.post('/api/search', search).success(function(data){
           $log.log('success: ', data);
-              $rootScope.results = data;
+            $scope.searchValues = search;
               // $scope.$digest();
+              $rootScope.results = data;
         }).error(function(data){
           $log.warn('error: ', data);
         });
         $log.log(search);
+
       };
 
 
   // $scope.$apply(function(){
-  //   $scope.searchValues.searchStuff = search;
   // });
 
 }]);
@@ -407,6 +411,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
   // Hide zip when creating activity
   $scope.hideZip = true;
   $scope.search = {};
+  $scope.isMarker = '';
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
@@ -421,6 +426,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
 
     // Get last marker coordinates
     var lastCoords = locationSearch();
+    $scope.isMarker = lastCoords;
     var arrayCoords = [lastCoords.longitude , lastCoords.latitude];
     console.log('coords: ',arrayCoords);
 
