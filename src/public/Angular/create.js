@@ -206,8 +206,9 @@ createApp.filter('seconds', [function(){
 createApp.filter('timeTo24', [function(){
   return function(input){
       console.log('in filter: ',input);
-      var hr = input.hour;
+      var hr = parseInt(input.hour);
       var min = input.minute;
+      console.log('min',min);
       var ap = input.ampm;
 
       if ((ap === 'PM') && (hr < 12)) {
@@ -331,8 +332,8 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   };
   var search;
   var geoLatLng;
-
-  $scope.results = Activity.items;
+  $scope.results = {};
+  // $scope.results = Activity.items;
   // Filter date to short date
 
     geocoder = new google.maps.Geocoder();
@@ -362,6 +363,7 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         };
         $http.post('/api/search', search).success(function(data){
           $log.log('success: ', data);
+          $scope.results = data;
         }).error(function(data){
           $log.warn('error: ', data);
         });
