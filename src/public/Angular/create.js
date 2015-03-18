@@ -6,8 +6,7 @@ var geocoder;
 var markers = [];
 var pinLocation = [];
 var createApp = angular.module('createApp',
-  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial',
-  ]
+  ['ngResource', 'ngRoute', 'ui.bootstrap', 'ngMaterial','ngFx']
 );
 
 

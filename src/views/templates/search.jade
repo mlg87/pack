@@ -37,7 +37,7 @@ form(name="searchActivity", novalidate)
             md-button.md-raised.searchBtn(ng-click='codeAddress(search)', ng-disabled='searchActivity.$invalid') Search
 
   div(layout='row')
-  div.results-item(ng-repeat="item in results")
+  div.results-item.fx-zoom-down.fx-speed-400(ng-repeat="item in results")
     activity
   .form-group.goLogo
     div
