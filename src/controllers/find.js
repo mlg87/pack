@@ -68,7 +68,7 @@ var findController = {
             type: "Point",
             coordinates : [req.body.activityAddress[0], req.body.activityAddress[1]],
           },
-          $maxDistance: 800000,
+          $maxDistance: 8000,
         }
       }
     }).exec(function(err, locations){

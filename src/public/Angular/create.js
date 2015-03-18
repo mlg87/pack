@@ -251,6 +251,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
 
   // Data object from DB
   var data;
+  var loc;
 
   // Get activity data from DB
   $scope.item = Activity.model.get({_id: $routeParams.id});
@@ -260,6 +261,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   .$promise.then(function(act){
     data = act;
     console.log('data',data);
+
     // Initalize map once we have data.
     initialize();
 
@@ -274,7 +276,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   // map initialization options
   function initialize() {
       var mapOptions = {
-          center: new google.maps.LatLng(data.activityAddress[0], data.activityAddress),
+          center: { lat:data.activityAddress[1], lng: data.activityAddress[0]},
           zoom: 15,
           mayTypeId: google.maps.MapTypeId.ROADMAP
       };
@@ -283,7 +285,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   // marker initialization options
   var placeMarker = function(position, map){
     var marker = new google.maps.Marker({
-      position: (position[0],position[1]),
+      position: { lat:data.activityAddress[1], lng: data.activityAddress[0]},
       map: map,
       draggable: false,
       animation: google.maps.Animation.DROP
@@ -324,7 +326,9 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   $scope.search = {};
   // Shows zip on search. Changed on creating an event.
   $scope.hideZip = false;
-
+  $scope.searchValues ={
+    searchStuff: {}
+  };
   var search;
   var geoLatLng;
 
@@ -364,9 +368,9 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         $log.log(search);
       };
 
-  // $scope.apply(function(){
-
-  // });
+  $scope.$apply(function(){
+    $scope.searchValues.searchStuff = search;
+  });
 
 }]);
 
@@ -439,8 +443,16 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
       };
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
-  initialize();
 
+  initialize();
+ // Click listener on map to clear markers and add a new one.
+  google.maps.event.addListener(map, 'click', function(e){
+    if(markers){
+      clearMarkers();
+    }
+    placeMarker(e.latLng, map);
+  });
+ //
   function codeAddress() {
     var address = document.getElementById('address').value;
     geocoder.geocode( { 'address': address}, function(results, status) {
@@ -456,13 +468,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
     });
   }
 
-  // Click listener on map to clear markers and add a new one.
-  google.maps.event.addListener(map, 'click', function(e){
-    if(markers){
-      clearMarkers();
-    }
-    placeMarker(e.latLng, map);
-  });
+
 
   // Returns last placed pin location.
   var locationSearch = function (){
