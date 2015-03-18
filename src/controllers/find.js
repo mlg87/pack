@@ -56,6 +56,33 @@ var findController = {
         res.send(results);
       });
     }
+  },
+
+  search: function(req, res){
+    console.log('LATLNG', [req.body.activityAddress[0], req.body.activityAddress[1]] );
+
+    Activity.find({
+      activityAddress:{
+        $near:{
+          $geometry: {
+            type: "Point",
+            coordinates : [req.body.activityAddress[0], req.body.activityAddress[1]],
+          },
+          $maxDistance: 8000,
+        }
+      },
+      activityDistance : req.body.activityDistance,
+      activityDate : req.body.activityDate,
+      activityPace: req.body.activityPace,
+      activityTime : req.body.activityTime
+    }).exec(function(err, locations){
+      if(err){
+        console.log('server error: ', err);
+        return res.json(500, err);
+      }
+      res.send(200, locations);
+    });
+
   }
 };
 

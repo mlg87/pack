@@ -20,7 +20,7 @@ var passport = require('passport');
 var passportConfig = require('./config/passport');
 
 // Seed the DB with activities
-// require('./models/seeds/activitySeeds.js');
+require('./models/seeds/activitySeeds.js');
 
 var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
@@ -96,6 +96,7 @@ app.post('/logout', function(req, res){
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
 app.post('/api/view', createController.create);
+app.post('/api/search', findController.search);
 
 // Templates route:
 app.get('/templates/:templateid', indexController.getTemplate);

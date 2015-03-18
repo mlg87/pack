@@ -1,10 +1,10 @@
 form(name="createActivity", novalidate)
   div.md-whiteframe-z3.searchContainer.createContainer
-    div(layout='row', layout-align='center center', layout-sm='column', ng-controller='createController')
+    div(layout='row', layout-align='center center', layout-sm='column')
       #map-canvas
     div.mapButtons(layout='row')
         md-button.md-raised(ng-click='locator()', ng-hide='hide') Find my location
-        //- md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
+        md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
     div.createFormContainer(layout='row')
         div(layout='column', layout-margin, layout-padding)
             div(ng-controller="DatepickerCtrl")
@@ -12,15 +12,15 @@ form(name="createActivity", novalidate)
                 datepicker(ng-model="search.date", min-date="minDate", show-weeks="false", datepicker-options="dateOptions", date-disabled="disabled(date, mode)", ng-required="true", required, close-text="Close")
         div(layout='column', layout-margin layout-padding, flex)
           div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
-            div(layout='column')
-              md-select(ng-model='search.time.hour', required ,placeholder='hour')
-                md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
+            div(layout='column', required)
+              md-select(ng-model='search.time.hour', required , placeholder='hour')
+                md-option(ng-value='hour', ng-repeat='hour in hours') {{hour}}
             div(layout='column')
               md-select(ng-model='search.time.minute', required, placeholder='minutes')
-                md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
+                md-option(ng-value='minute', ng-repeat='minute in minutes') {{minute}}
             div(layout='column')
               md-select(ng-model='search.time.ampm', required, placeholder='am/pm')
-                md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
+                md-option(ng-value='ap', ng-repeat='ap in amPM') {{ap}}
           div(layout='row')
             div(layout='column', flex)
               md-item
@@ -48,7 +48,7 @@ form(name="createActivity", novalidate)
     div.createDescription(layout='row')
       md-input-container(flex)
         label Description
-        textarea(ng-model='search.description' columns='1', md-maxLength='150')
+        textarea(ng-model='search.description', required, columns='1', md-maxLength='150')
     div(layout='row')
       md-button.md-raised.md-primary(flex, ng-disabled='createActivity.$invalid', ng-click='publishActivity(search)') Create
 

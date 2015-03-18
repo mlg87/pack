@@ -8,13 +8,13 @@ form(name="searchActivity", novalidate)
           div.timeSearchRow(layout='row', ng-controller='timeSelectCtrl')
             div(layout='column')
               md-select(ng-model='search.time.hour', placeholder='hour', required)
-                md-option(ng-value='hour', ng-repeat='hour in hours'){{hour}}
+                md-option(ng-value='hour', ng-repeat='hour in hours') {{hour}}
             div(layout='column')
               md-select(ng-model='search.time.minute', placeholder='minutes', required)
-                md-option(ng-value='minute', ng-repeat='minute in minutes'){{minute}}
+                md-option(ng-value='minute', ng-repeat='minute in minutes') {{minute}}
             div(layout='column')
               md-select(ng-model='search.time.ampm', placeholder='am/pm', required)
-                md-option(ng-value='ap', ng-repeat='ap in amPM'){{ap}}
+                md-option(ng-value='ap', ng-repeat='ap in amPM') {{ap}}
           div(layout='row')
             div(layout='column')
               md-item
@@ -35,11 +35,9 @@ form(name="searchActivity", novalidate)
             md-input-container(md-no-float)
               input(ng-model='search.address', type='text', placeholder='zipcode', required)
             md-button.md-raised.searchBtn(ng-click='codeAddress(search)', ng-disabled='searchActivity.$invalid') Search
-            //- md-input(type=text, ng-model='mySearch')
 
   div(layout='row')
-    input(type='text', ng-model='query', placeholder='search for item')
-  div.results-item(ng-repeat='item in results')
+  div.results-item(ng-repeat="item in results")
     activity
   .form-group.goLogo
     div

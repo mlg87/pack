@@ -7,11 +7,8 @@ var activitySchema = mongoose.Schema({
   activityTime: String,
   activityDistance: String,
   activityPace: String,
-  activityAddress: {
-    lat: Number,
-    lng: Number,
-  },
-  activityDescption: String,
+  activityAddress: [],
+  activityDescription: String,
   activityTimeStamp: String,
   // activityParticipants: {},
   // activityComments: {}
