@@ -371,7 +371,7 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
       };
 
   $scope.$apply(function(){
-    $scope.searchValues.searchStuff = search;
+    $scope.searchValues.searchStuff = data;
   });
 
 }]);
@@ -446,6 +446,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
 
+setTimeout(function(){
   initialize();
  // Click listener on map to clear markers and add a new one.
   google.maps.event.addListener(map, 'click', function(e){
@@ -454,6 +455,7 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
     }
     placeMarker(e.latLng, map);
   });
+},1000);
  //
   function codeAddress() {
     var address = document.getElementById('address').value;
