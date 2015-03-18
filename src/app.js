@@ -101,6 +101,8 @@ app.post('/api/search', findController.search);
 // Templates route:
 app.get('/templates/:templateid', indexController.getTemplate);
 
-var server = app.listen(3001, function() {
+var port = process.env.PORT || 3001;
+
+var server = app.listen(port, function() {
 	console.log('Express server listening on port ' + server.address().port);
 });
