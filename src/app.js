@@ -27,7 +27,7 @@ var findController = require('./controllers/find.js');
 var createController = require('./controllers/create.js');
 var authenticationController = require('./controllers/authenticate.js');
 
-mongoose.connect('mongodb://localhost/pack');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pack');
 
 var app = express();
 app.set('view engine', 'jade');
