@@ -1,37 +1,38 @@
 extends layout
 
 block content
-  .navbar.navbar-fixed-top.container.navBar(role="navigation")
-    .navbar-header
-      a.navbar-brand.navbar-form(rel="home", href="/")
-        img.navLogo(src='/images/green-logo-sm.png', alt='')
-    .collapse.navbar-collapse
-      ul.nav.navbar-nav
-        li
-          a(href="#/") Home
-        li
-          a(href="#/search") Search
-        li
-          a(href="#/create") Create
-        li.dropdown(dropdown, is-open='status.isopen')
-          a.dropdown-toggle(href="#", data-toggle="dropdown", ng-disabled='disabled', role='button', dropdown-toggle)
-            | Account
-            b.caret
-          ul.dropdown-menu(role='menu')
-            li
-              a(href="#") Profile
-            li.divider
-            li
-              a(href="#/login") Login
-            li
-              a(href="#/admin") Admin
+  .navbar.navbar-fixed-top.navBar(role="navigation")
+    .container
+      .navbar-header
+        a.navbar-brand.navbar-form(rel="home", href="/")
+          img.navLogo(src='/images/green-logo-sm.png', alt='')
+      .collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li
+            a(href="#/") Home
+          li
+            a(href="#/search") Search
+          li
+            a(href="#/create") Create
+          li.dropdown(dropdown, is-open='status.isopen')
+            a.dropdown-toggle(href="#", data-toggle="dropdown", ng-disabled='disabled', role='button', dropdown-toggle)
+              | Account
+              b.caret
+            ul.dropdown-menu(role='menu')
+              li
+                a(href="#") Profile
+              li.divider
+              li
+                a(href="#/login") Login
+              li
+                a(href="#/admin") Admin
 
-      .col-sm-3.col-md-3.pull-right
-        form.navbar-form(role="search")
-          .input-group
-            input#srch-term.form-control(type="text", placeholder="Location", name="srch-term")
-            .input-group-btn
-              button.btn.btn-default(type="submit")
-                i.glyphicon.glyphicon-search
+        .col-sm-3.col-md-3.pull-right
+          form.navbar-form(role="search")
+            .input-group
+              input#srch-term.form-control(type="text", placeholder="Location", name="srch-term")
+              .input-group-btn
+                button.btn.btn-default(type="submit")
+                  i.glyphicon.glyphicon-search
 
   div(ng-view)
