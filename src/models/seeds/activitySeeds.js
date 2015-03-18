@@ -12,10 +12,7 @@ Activity.find({}, function(err, results){
           activityPace : "480",
           activityDescription : "Looking to run 10 miles today if anyone wants to join.",
           activityTimeStamp : "2015-03-21T13:00",
-          activityAddress : {
-            "lat" : 40.009735296621834,
-            "lng" : -105.27520179748535
-          }
+          activityAddress : [ -105.27520179748535,40.009735296621834]
       });
       item1.save();
 
@@ -28,10 +25,8 @@ Activity.find({}, function(err, results){
           activityPace : "480",
           activityDescription : "I'm training for a half marathon in June and I'm trying to keep my pace around 8:30's for this one.",
           activityTimeStamp : "2015-03-21T13:00",
-          activityAddress : {
-            "lat" : 40.01093505470606,
-            "lng" : -105.25430470705032
-          }
+          activityAddress : [-105.25430470705032,40.01093505470606]
+
       });
       item2.save();
 
@@ -44,10 +39,7 @@ Activity.find({}, function(err, results){
           activityPace : "480",
           activityDescription : "Running Chautauqua Trail. I have a 4 mile out and back route planned.",
           activityTimeStamp : "2015-03-21T13:00",
-          activityAddress : {
-            "lat" : 39.99890775878909,
-            "lng" : -105.28272539377213
-          }
+          activityAddress : [-105.28272539377213,39.99890775878909]
       });
       item3.save();
 
