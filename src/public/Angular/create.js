@@ -411,7 +411,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
   // Hide zip when creating activity
   $scope.hideZip = true;
   $scope.search = {};
-  $scope.isMarker = '';
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
@@ -426,7 +425,6 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
 
     // Get last marker coordinates
     var lastCoords = locationSearch();
-    $scope.isMarker = lastCoords;
     var arrayCoords = [lastCoords.longitude , lastCoords.latitude];
     console.log('coords: ',arrayCoords);
 

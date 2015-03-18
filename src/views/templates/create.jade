@@ -48,7 +48,7 @@ form(name="createActivity", novalidate)
     div.createDescription(layout='row')
       md-input-container(flex)
         label Description
-        textarea(ng-model='search.description' columns='1', md-maxLength='150')
+        textarea(ng-model='search.description', required, columns='1', md-maxLength='150')
     div(layout='row')
       md-button.md-raised.md-primary(flex, ng-disabled='createActivity.$invalid', ng-click='publishActivity(search)') Create
 
