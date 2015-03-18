@@ -412,6 +412,8 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
+    $scope.createActivity.$setPristine();
+    $scope.search = {};
 
     // Filter time to 24hr format
     var time = $filter('timeTo24')(activityDetails.time);
