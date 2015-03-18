@@ -258,6 +258,10 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   Activity.model.get({_id: $routeParams.id})
   .$promise.then(function(act){
     data = act;
+<<<<<<< HEAD
+
+=======
+>>>>>>> dev
 
     // Initalize map once we have data.
     initialize();
