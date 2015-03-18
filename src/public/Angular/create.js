@@ -323,7 +323,7 @@ createApp.controller('navBarController', ['scope', function($scope){
 /////////////////////////
 // Search for Activity //
 /////////////////////////
-createApp.controller('searchController', ['$scope','$log','$filter','Activity','$http', function($scope, $log, $filter, Activity, $http){
+createApp.controller('searchController', ['$scope','$log','$filter','Activity','$http','$rootScope', function($scope, $log, $filter, Activity, $http, $rootScope){
   $scope.search = {};
   // Shows zip on search. Changed on creating an event.
   $scope.hideZip = false;
@@ -332,7 +332,7 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
   };
   var search;
   var geoLatLng;
-  $scope.results = {};
+  $rootScope.results = [];
   // $scope.results = Activity.items;
   // Filter date to short date
 
@@ -348,12 +348,18 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         }
       });
     };
+
+    $scope.$watch('results',function(){
+      // $scope.searchValues.searchStuff = search;
+
+    });
+    // $scope.results = 'test string';
+
     // Build search object from form
      var buildSearch = function(geoLatLng, input){
         var date = $filter('date')(input.date, 'yyyy-MM-dd');
         var time = $filter('timeTo24')(input.time);
         var arrayCoords = [geoLatLng.D, geoLatLng.k];
-        console.log('geo',arrayCoords);
         search = {
           activityDate : date,
           activityTime : time,
@@ -363,16 +369,18 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         };
         $http.post('/api/search', search).success(function(data){
           $log.log('success: ', data);
-          $scope.results = data;
+              $rootScope.results = data;
+              // $scope.$digest();
         }).error(function(data){
           $log.warn('error: ', data);
         });
         $log.log(search);
       };
 
-  $scope.$apply(function(){
-    $scope.searchValues.searchStuff = data;
-  });
+
+  // $scope.$apply(function(){
+  //   $scope.searchValues.searchStuff = search;
+  // });
 
 }]);
 
