@@ -4,7 +4,7 @@ form(name="createActivity", novalidate)
       #map-canvas
     div.mapButtons(layout='row')
         md-button.md-raised(ng-click='locator()', ng-hide='hide') Find my location
-        //- md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
+        md-progress-circular.md-hue-2(ng-show='circle', md-mode='indeterminate')
     div.createFormContainer(layout='row')
         div(layout='column', layout-margin, layout-padding)
             div(ng-controller="DatepickerCtrl")
