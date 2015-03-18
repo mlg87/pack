@@ -205,19 +205,20 @@ createApp.filter('seconds', [function(){
  */
 createApp.filter('timeTo24', [function(){
   return function(input){
-      var hr = parseInt(input.hour);
+      console.log('in filter: ',input);
+      var hr = input.hour;
       var min = input.minute;
       var ap = input.ampm;
 
       if ((ap === 'PM') && (hr < 12)) {
-        var tfHR = parseInt(hr) + 12;
+        var tfHR = hr + 12;
         return tfHR + ':' + min;
       }
         else if ((ap ==='AM') && (hr === 12)){
           return '0' + ':' + min;
         }
           else {
-           hours = parseInt(hr);
+           hours = hr;
            return hours + ':' + min;
           }
   };
@@ -225,18 +226,18 @@ createApp.filter('timeTo24', [function(){
 
 // Sets a fixed length by prepending 0 if length is not met.
 createApp.filter('numberFixedLen', function () {
-        return function (n, len) {
-            var num = parseInt(n, 10);
-            len = parseInt(len, 10);
-            if (isNaN(num) || isNaN(len)) {
-                return n;
-            }
-            num = ''+num;
-            while (num.length < len) {
-                num = '0'+num;
-            }
-            return num;
-        };
+  return function (n, len) {
+      var num = parseInt(n, 10);
+      len = parseInt(len, 10);
+      if (isNaN(num) || isNaN(len)) {
+          return n;
+      }
+      num = ''+num;
+      while (num.length < len) {
+          num = '0'+num;
+      }
+      return num;
+  };
  });
 
 // Sets item scope for speicifc Activity ID.
@@ -258,8 +259,10 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   Activity.model.get({_id: $routeParams.id})
   .$promise.then(function(act){
     data = act;
+    console.log('data',data);
     // Initalize map once we have data.
     initialize();
+
     // place marker once we have data
     placeMarker(data.activityAddress, map);
   });
@@ -271,7 +274,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   // map initialization options
   function initialize() {
       var mapOptions = {
-          center: data.activityAddress,
+          center: new google.maps.LatLng(data.activityAddress[0], data.activityAddress),
           zoom: 15,
           mayTypeId: google.maps.MapTypeId.ROADMAP
       };
@@ -280,7 +283,7 @@ createApp.controller('singleActivityController', ['$routeParams','$scope','Activ
   // marker initialization options
   var placeMarker = function(position, map){
     var marker = new google.maps.Marker({
-      position: position,
+      position: (position[0],position[1]),
       map: map,
       draggable: false,
       animation: google.maps.Animation.DROP
@@ -340,23 +343,30 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         }
       });
     };
-
+    // Build search object from form
      var buildSearch = function(geoLatLng, input){
         var date = $filter('date')(input.date, 'yyyy-MM-dd');
         var time = $filter('timeTo24')(input.time);
+        var arrayCoords = [geoLatLng.D, geoLatLng.k];
+        console.log('geo',arrayCoords);
         search = {
           activityDate : date,
           activityTime : time,
           activityDistance : input.distance,
           activityPace : input.pace,
-          activityAddress  : geoLatLng
+          activityAddress  : arrayCoords
         };
-
+        $http.post('/api/search', search).success(function(data){
+          $log.log('success: ', data);
+        }).error(function(data){
+          $log.warn('error: ', data);
+        });
+        $log.log(search);
       };
 
-      $scope.searchX = function (row) {
-        return (angular.lowercase(row.activityDistance).indexOf($scope.query || '') !== -1);
-      };
+  // $scope.apply(function(){
+
+  // });
 
 }]);
 
@@ -379,26 +389,26 @@ createApp.controller('listViewController', ['$scope', function($scope){
 
 // Create Activity controller
 createApp.controller('createController', ['$scope','$filter','$log','$timeout','Activity', function($scope, $filter, $log, $timeout, Activity){
-  $scope.search = {};
+  // $scope.search = {};
   // Hide zip when creating activity
   $scope.hideZip = true;
-
+  $scope.search = {};
   // Prepare form submission for new DB object
   $scope.publishActivity = function(activityDetails){
     var activity = angular.copy(activityDetails);
-    // console.log('Activity: ', activity);
+
+    // Filter time to 24hr format
+    var time = $filter('timeTo24')(activityDetails.time);
 
     // Filter date to short date
     var date = $filter('date')(activity.date, 'yyyy-MM-dd');
-
-    // Filter time to 24hr format
-    var time = $filter('timeTo24')(activity.time);
-
     // Build timestamp for event
     var buildTimeStamp = date + 'T' + time;
 
     // Get last marker coordinates
     var lastCoords = locationSearch();
+    var arrayCoords = [lastCoords.longitude , lastCoords.latitude];
+    console.log('coords: ',arrayCoords);
 
     // Setup new Activity object to be saved to DB
     var publish = {
@@ -408,16 +418,13 @@ createApp.controller('createController', ['$scope','$filter','$log','$timeout','
       activityTime: time,
       activityDistance: activity.distance,
       activityPace: activity.pace,
-      activityAddress: {
-        lat: lastCoords.latitude,
-        lng: lastCoords.longitude,
-      },
+      activityAddress: arrayCoords,
       activityDescription: activity.description,
       activityTimeStamp: buildTimeStamp,
     };
     var newActivitiy = new Activity.model(publish);
     newActivitiy.$save(function(savedItem){
-      $log.log(savedItem);
+      $log.log('created activity: ',savedItem);
     });
   };
 
@@ -560,7 +567,7 @@ createApp.directive('searchBar', function(){
 createApp.directive('activity', function(){
   return {
     restrict: 'E',
-    templateUrl: '/templates/view'
+    templateUrl: '/templates/viewPanel'
   };
 });
 

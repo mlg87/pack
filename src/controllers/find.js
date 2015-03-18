@@ -56,6 +56,26 @@ var findController = {
         res.send(results);
       });
     }
+  },
+
+  search: function(req, res){
+
+
+      console.log('y', [req.body.activityAddress[0], req.body.activityAddress[1]] );
+
+    Activity.find({
+      activityAddress:{
+        $near: [req.body.activityAddress[0], req.body.activityAddress[1]],
+          $maxDistance: 8000,
+      }
+    }).exec(function(err, locations){
+      if(err){
+        console.log('server error: ', err);
+        return res.json(500, err);
+      }
+      res.send(200, locations);
+    });
+
   }
 };
 

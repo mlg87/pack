@@ -117,3 +117,15 @@ margin-right: 0px;
   border-radius: 48px;
   border: 1px solid #ddd;
 }
+
+.landingCard{
+  width: 250px;
+}
+
+.landingCard img {
+  width:100px;
+}
+
+.landingContainer {
+margin-top: 150px;
+}

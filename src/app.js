@@ -96,6 +96,7 @@ app.post('/logout', function(req, res){
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
 app.post('/api/view', createController.create);
+app.post('/api/search', findController.search);
 
 // Templates route:
 app.get('/templates/:templateid', indexController.getTemplate);
