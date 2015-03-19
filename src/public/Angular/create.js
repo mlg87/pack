@@ -365,7 +365,6 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
         $http.post('/api/search', search).success(function(data){
             $scope.searchValues = search;
             $rootScope.results = data;
-            $log.log(data);
         }).error(function(data){
           $log.warn('error: ', data);
         });

@@ -4,7 +4,6 @@ var Activity = require('../models/activity.js');
 
 var findController = {
 
-
   getAll: function(req, res){
     if(req.query._id){
       // If there is a query parameter for _id,
@@ -38,8 +37,6 @@ var findController = {
   },
 
   search: function(req, res){
-    console.log('LATLNG', [req.body.activityAddress[0], req.body.activityAddress[1]] );
-
     Activity.find({
       activityAddress:{
         $near:{
