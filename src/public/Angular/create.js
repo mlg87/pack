@@ -101,40 +101,106 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
     $rootScope.message = '';
 
     // Logout function is available in any pages
-    $rootScope.logout = function(){
-      $rootScope.message = 'Logged out.';
-      $http.post('/logout');
-    };
+    // $rootScope.logout = function(){
+    //   $rootScope.message = 'Logged out.';
+    //   $http.post('/logout');
+    // };
   });
 
 
   /****************************
    * Login controller
    ****************************/
-  createApp.controller('loginController', function($scope, $rootScope, $http, $location, $log) {
-    // This object will be filled by the form
-    $scope.user = {};
+  // createApp.controller('loginController', function($scope, $rootScope, $http, $location, $log) {
+  //   // This object will be filled by the form
+  //   $scope.user = {};
 
-    // Register the login() function
-    $scope.login = function(){
-      $log.log($scope.user);
-      $http.post('/login', {
-        username: $scope.user.username,
-        password: $scope.user.password,
-      })
-      .success(function(user){
-        // No error: authentication OK
-        $rootScope.message = 'Authentication successful!';
-        $location.url('/admin');
-      })
-      .error(function(){
-        // Error: authentication failed
-        $rootScope.message = 'Authentication failed.';
-        $location.url('/login');
-      });
-    };
-  });
+  //   // Register the login() function
+  //   $scope.login = function(){
+  //     $log.log($scope.user);
+  //     $http.post('/login', {
+  //       username: $scope.user.username,
+  //       password: $scope.user.password,
+  //     })
+  //     .success(function(user){
+  //       // No error: authentication OK
+  //       $rootScope.message = 'Authentication successful!';
+  //       $location.url('/admin');
+  //     })
+  //     .error(function(){
+  //       // Error: authentication failed
+  //       $rootScope.message = 'Authentication failed.';
+  //       $location.url('/login');
+  //     });
+  //   };
+  // });
 
+///////////////
+// new login //
+///////////////
+createApp.controller('loginController', function ($scope, $http, $window, $log) {
+  // $scope.user = {username: 'john.doe', password: 'foobar'};
+  // $scope.user = {};
+   $scope.message = '';
+   $scope.login = function () {
+     $http
+       .post('/authenticate', $scope.user)
+       .success(function (data, status, headers, config) {
+         $window.sessionStorage.token = data.token;
+         $scope.message = 'Welcome';
+         $log.log('logged in');
+         $log.log('sucess User: ', $scope.user);
+         $log.log('token: ' ,data.token );
+       })
+       .error(function (data, status, headers, config) {
+         // Erase the token if the user fails to log in
+         delete $window.sessionStorage.token;
+         $log.log('.error');
+
+         // Handle login errors here
+         $scope.message = 'Error: Invalid user or password';
+       });
+   };
+
+  $scope.logout = function () {
+    $scope.welcome = '';
+    $scope.message = '';
+    $scope.isAuthenticated = false;
+    delete $window.sessionStorage.token;
+    $log.log('logged out');
+
+  };
+});
+
+
+createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window) {
+  return {
+    request: function (config) {
+      config.headers = config.headers || {};
+      if ($window.sessionStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+        $log.log('I have token');
+      }
+      return config;
+    },
+    responseError: function (rejection) {
+      if (rejection.status === 401) {
+        $log.log('responseError');
+        // handle the case where the user is not authenticated
+      }
+      return $q.reject(rejection);
+    }
+  };
+});
+
+createApp.config(function ($httpProvider) {
+  $httpProvider.interceptors.push('authInterceptor');
+});
+
+// $http({url: '/api/restricted', method: 'GET'})
+// .success(function (data, status, headers, config) {
+//   console.log(data.name); // Should log 'foo'
+// });
 
 
   /***************************

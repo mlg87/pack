@@ -49,22 +49,24 @@ app.use(flash());
 // Initialize the express session. Needs to be given a secret property.
 // Also requires the resave option (will not force a resave of session if not modified)
 // as well as saveUninitialized(will not automatically create empty data)
-app.use(session({
-  secret: 'secret',
-  cookie: {
-    maxAge: new Date(Date.now() + 14*24*60*60*1000), // 14 days, in milliseconds
-    expires: new Date(Date.now() + 14*24*60*60*1000) // 14 days, in milliseconds
-  },
-  resave: false,
-  saveUninitialized: false
-}));
 
-var auth = function(req, res, next){
-  if (!req.isAuthenticated())
-    res.send(401);
-  else
-    next();
-};
+
+// app.use(session({
+//   secret: 'secret',
+//   cookie: {
+//     maxAge: new Date(Date.now() + 14*24*60*60*1000), // 14 days, in milliseconds
+//     expires: new Date(Date.now() + 14*24*60*60*1000) // 14 days, in milliseconds
+//   },
+//   resave: false,
+//   saveUninitialized: false
+// }));
+
+// var auth = function(req, res, next){
+//   if (!req.isAuthenticated())
+//     res.send(401);
+//   else
+//     next();
+// };
 
 // Hook in passport to the middleware chain
 app.use(passport.initialize());
@@ -73,18 +75,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // +++++++++++ Protect /api routes with JWT
-app.use('/api', expressJwt({secret: 'secret'}));
+var secret = 'this is the secret';
+app.use('/api', expressJwt({secret: secret}));
 app.use(bodyParser.json());
 
 app.get('/', indexController.index);
 
 
 // +++++++++++
+app.use(function(err, req, res, next){
+  if (err.constructor.name === 'UnauthorizedError') {
+    res.status(401).send('Unauthorized');
+  }
+});
+
 app.post('/authenticate', function (req, res) {
   //TODO validate req.body.username and req.body.password
   //if is invalid, return 401
+  console.log(req.body);
   if (!(req.body.username === 'john.doe' && req.body.password === 'foobar')) {
-    res.send(401, 'Wrong user or password');
+    res.status(401).send('Wrong user or password');
+    console.log('error in app.post');
     return;
   }
 
@@ -119,22 +130,22 @@ app.get('/users',
 });
 
 // TEST IF THE USER IS LOGGED IN
-app.get('/loggedin', function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-});
+// app.get('/loggedin', function(req, res) {
+//   res.send(req.isAuthenticated() ? req.user : '0');
+// });
 
 // ROUTE TO LOG IN
-app.post('/login',
-  authenticationController.processLogin,
-  function(req, res) {
-    res.send(req.user);
-});
+// app.post('/login',
+//   authenticationController.processLogin,
+//   function(req, res) {
+//     res.send(req.user);
+// });
 
 // ROUTE TO LOG OUT
-app.post('/logout', function(req, res){
-  req.logOut();
-  res.send(200);
-});
+// app.post('/logout', function(req, res){
+//   req.logOut();
+//   res.send(200);
+// });
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);

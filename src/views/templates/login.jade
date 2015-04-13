@@ -19,5 +19,7 @@ form(ng-submit='login()')
           md-input-container(md-no-float)
             input(ng-model='user.password', type='password', placeholder='password')
       div(layout='row')
-        md-button.md-raised.md-primary(flex, type='submit') Create
+        md-button.md-raised.md-primary(flex, type='submit') login
+md-button.md-raised.md-primary(flex, type='submit', ng-click='logout()') logout
+
 
