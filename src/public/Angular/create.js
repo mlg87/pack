@@ -143,12 +143,13 @@ createApp.controller('loginController', function ($scope, $http, $window, $log) 
   // $scope.user = {};
    $scope.message = '';
    $scope.login = function () {
+     $log.log('login called');
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
          $window.sessionStorage.token = data.token;
          $scope.message = 'Welcome';
-         $log.log('logged in', 'sucess User: ', $scope.user);
+         // $log.log('logged in', 'sucess User: ', $scope.user);
          $log.log('token: ' , data.token );
        })
        .error(function (data, status, headers, config) {
@@ -175,7 +176,7 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window) {
       config.headers = config.headers || {};
       if ($window.sessionStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
-        $log.log('I have token');
+        $log.log('I have a token');
       }
       return config;
     },

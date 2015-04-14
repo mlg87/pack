@@ -4,6 +4,10 @@ var passport = require('passport');
 // We also will be using our User model
 var User = require('../models/user');
 
+// +++++++++++ Token auth
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
+
 /**
  * A utility function (since we'll use it a couple times)
  * to abstract out the actual login procedure, which can
@@ -13,6 +17,8 @@ var User = require('../models/user');
  * we want to log in.
  */
 var performLogin = function(req, res, next, user){
+  console.log('performLogin');
+  console.log('user: ', user);
   // Passport injects functionality into the express ecosystem,
   // so we are able to call req.login and pass the user we want
   // logged in.
@@ -21,7 +27,14 @@ var performLogin = function(req, res, next, user){
     if(err) return next(err);
 
     // Otherwise, send the user to the homepage.
-    return res.redirect('/');
+    // return res.redirect('/');
+    console.log('performLogin success');
+    // We are sending the profile inside the token
+    var secret = 'this is the secret 123';
+    var token = jwt.sign(user, secret, { expiresInMinutes: 60*5 });
+
+    res.json({ token: token });
+    return;
   });
 };
 
@@ -40,9 +53,8 @@ var authenticationController = {
     // after use. Useful for quick messages like "failed to login."
     // In this case, we pull any existing flash message id'd as "error"
     // and pass it to the view.
-    res.render('/login', {
-      error: req.flash('error')
-    });
+    res.render('#/login');
+    console.log('error authenticationController login');
   },
 
   // This is the post handler for any incoming login attempts.
@@ -63,8 +75,8 @@ var authenticationController = {
       // which will be read and used in the "login" handler above and then redirect
       // to that handler.
       if(!user) {
-        req.flash('error', 'Error logging in. Please try again.');
-        return res.redirect('/login');
+        console.log('error', 'Error logging in. Please try again.');
+        return res.redirect('#/login');
       }
 
       // If we make it this far, the user has correctly authenticated with passport
@@ -115,8 +127,8 @@ var authenticationController = {
 
         // Flash the message and redirect to the login view to
         // show it.
-        req.flash('error', errorMessage);
-        return res.redirect('/login');
+        console.log('error', errorMessage);
+        return res.redirect('#/login');
       }
 
       // If we make it this far, we are ready to log the user in.

@@ -55,11 +55,17 @@ var localStrategy = new LocalStrategy(function(username, password, done){
   User.findOne({username: username}, function(err, user){
 
     // If there was an error, allow execution to move to the next middleware
-    if(err) return done(err);
+    if(err) {
+      console.log('findOne error: ', err);
+      return done(err);
+    }
 
     // If no user was found with that username, continue to the next middleware
     // and tell passport authentication failed.
-    if(!user) return done(null, false);
+    if(!user) {
+      console.log('no user');
+      return done(null, false);
+    }
 
     // A user has been found if we make it here, so let's check if the password
     // they gave matches the one in the database. We are using the method defined
@@ -67,13 +73,18 @@ var localStrategy = new LocalStrategy(function(username, password, done){
     user.comparePassword(password, function(err, isMatch){
 
       // If there was an error, allow execution to move to the next middleware
-      if(err) return done(err);
+      if(err) {
+        console.log('comparePassword err');
+        return done(err);
+      }
 
       // isMatch is true if the passwords match, and false if they don't
       if(isMatch){
+        console.log('password match');
         // Success! Tell passport we made it.
         return done(err, user);
       } else {
+        console.log('password does not match');
         // Password was not correct. Tell passport the login failed.
         return done(null, false);
       }
