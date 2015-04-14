@@ -56,7 +56,9 @@ var findController = {
         console.log('server error: ', err);
         return res.json(500, err);
       }
-      res.send(200, locations);
+      res.status(200).send(locations);
+      // Deprecated
+      // res.send(200, locations);
     });
 
   }
