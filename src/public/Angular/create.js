@@ -147,14 +147,14 @@ createApp.controller('loginController', function ($scope, $http, $window, $log) 
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
-         $window.sessionStorage.token = data.token;
+         $window.localStorage.token = data.token;
          $scope.message = 'Welcome';
          // $log.log('logged in', 'sucess User: ', $scope.user);
          $log.log('token: ' , data.token );
        })
        .error(function (data, status, headers, config) {
          // Erase the token if the user fails to log in
-         delete $window.sessionStorage.token;
+         delete $window.localStorage.token;
          $log.log('.error');
 
          // Handle login errors here
@@ -164,7 +164,7 @@ createApp.controller('loginController', function ($scope, $http, $window, $log) 
 
   $scope.logout = function () {
     $scope.isAuthenticated = false;
-    delete $window.sessionStorage.token;
+    delete $window.localStorage.token;
     $log.log('logged out');
   };
 });
@@ -174,8 +174,8 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window) {
   return {
     request: function (config) {
       config.headers = config.headers || {};
-      if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+      if ($window.localStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
         $log.log('I have a token');
       }
       return config;
@@ -184,6 +184,7 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window) {
       if (rejection.status === 401) {
         $log.log('responseError');
         // handle the case where the user is not authenticated
+
       }
       return $q.reject(rejection);
     }
