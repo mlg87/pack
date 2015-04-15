@@ -13,132 +13,60 @@ var createApp = angular.module('createApp',
 // Configure client-side routing
 createApp.config(function($routeProvider,$httpProvider,$locationProvider){
 
-  // Check if the user is connected
-  //================================================
-  // var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
-  //     // Initialize a new promise
-  //     var deferred = $q.defer();
-
-  //     // Make an AJAX call to check if the user is logged in
-  //     $http.get('/loggedin').success(function(user){
-  //       // Authenticated
-  //       if (user !== '0')
-  //         /*$timeout(deferred.resolve, 0);*/
-  //         deferred.resolve();
-
-  //       // Not Authenticated
-  //       else {
-  //         $rootScope.message = 'You need to log in.';
-  //         deferred.reject();
-  //         $location.url('/login');
-  //       }
-  //     });
-
-  //     return deferred.promise;
-  //   };
-
-  // Add an interceptor for AJAX errors
-  //================================================
-  // $httpProvider.interceptors.push(function($q, $location) {
-  //   return {
-  //     response: function(response) {
-  //       // do something on success
-  //       return response;
-  //     },
-  //     responseError: function(response) {
-  //       if (response.status === 401)
-  //         $location.url('/login');
-  //       return $q.reject(response);
-  //     }
-  //   };
-  // });
-
   // Define all routes
   // =================================================
   $routeProvider
     .when('/', {
       templateUrl: '/templates/landing',
-      controller: 'searchController'
+      controller: 'searchController',
+      access: { requiredLogin : false }
     })
     .when('/view/:id', {
       templateUrl: '/templates/viewActivity',
       controller: 'viewController',
-      resolve: {
-          // loggedin: checkLoggedin
-        }
+      access: { requiredLogin : true }
     })
     .when('/create', {
       templateUrl: '/templates/create',
       controller: 'createController',
-      resolve: {
-          // loggedin: checkLoggedin
-        }
+      access: { requiredLogin : true }
     })
     .when('/search', {
       templateUrl: 'templates/search',
-      controller: 'searchController'
+      controller: 'searchController',
+      access: { requiredLogin : false }
     })
     .when('/results', {
       templateUrl: 'templates/results',
-      controller: 'resultsController'
+      controller: 'resultsController',
+      access: { requiredLogin : false }
     })
     .when('/admin', {
       templateUrl: 'templates/admin',
       controller: 'adminController',
-      resolve: {
-          // loggedin: checkLoggedin
-        }
+      access: { requiredLogin : true }
     })
     .when('/login', {
       templateUrl: 'templates/login',
-      controller: 'loginController'
+      controller: 'loginController',
+      access: { requiredLogin : false }
     })
     .otherwise({
       redirectTo:'/'
     });
   }) // end of config()
-  .run(function($rootScope, $http){
-    $rootScope.message = '';
-
-    // Logout function is available in any pages
-    // $rootScope.logout = function(){
-    //   $rootScope.message = 'Logged out.';
-    //   $http.post('/logout');
-    // };
+  .run(function ($rootScope, $location, AuthenticationService) {
+    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+        if (nextRoute.access.requiredLogin && !AuthenticationService.isAuthenticated) {
+            $location.path("/");
+        }
+    });
   });
 
 
-  /****************************
-   * Login controller
-   ****************************/
-  // createApp.controller('loginController', function($scope, $rootScope, $http, $location, $log) {
-  //   // This object will be filled by the form
-  //   $scope.user = {};
-
-  //   // Register the login() function
-  //   $scope.login = function(){
-  //     $log.log($scope.user);
-  //     $http.post('/login', {
-  //       username: $scope.user.username,
-  //       password: $scope.user.password,
-  //     })
-  //     .success(function(user){
-  //       // No error: authentication OK
-  //       $rootScope.message = 'Authentication successful!';
-  //       $location.url('/admin');
-  //     })
-  //     .error(function(){
-  //       // Error: authentication failed
-  //       $rootScope.message = 'Authentication failed.';
-  //       $location.url('/login');
-  //     });
-  //   };
-  // });
-
-///////////////
-// new login //
-///////////////
-createApp.controller('loginController', function ($scope, $http, $window, $log) {
+// Login Controller
+//================================================
+createApp.controller('loginController', function ($scope, $http, $window, $location, $log, AuthenticationService) {
   // $scope.user = {username: 'john.doe', password: 'foobar'};
   // $scope.user = {};
    $scope.message = '';
@@ -147,15 +75,15 @@ createApp.controller('loginController', function ($scope, $http, $window, $log) 
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
-         $window.localStorage.token = data.token;
-         $scope.message = 'Welcome';
-         // $log.log('logged in', 'sucess User: ', $scope.user);
+         AuthenticationService.isAuthenticated = true;
+         $window.sessionStorage.token = data.token;
+         $location.path('/create');
          $log.log('token: ' , data.token );
        })
        .error(function (data, status, headers, config) {
          // Erase the token if the user fails to log in
-         delete $window.localStorage.token;
-         $log.log('.error');
+         delete $window.sessionStorage.token;
+         $log.log('.error from login');
 
          // Handle login errors here
          $scope.message = 'Error: Invalid user or password';
@@ -163,28 +91,55 @@ createApp.controller('loginController', function ($scope, $http, $window, $log) 
    };
 
   $scope.logout = function () {
-    $scope.isAuthenticated = false;
-    delete $window.localStorage.token;
-    $log.log('logged out');
+    if(AuthenticationService.isAuthenticated){
+      AuthenticationService.isAuthenticated = false;
+      delete $window.sessionStorage.token;
+      $location.path('/');
+      $log.log('logged out');
+    }
   };
 });
 
+createApp.factory('AuthenticationService', function() {
+    var auth = {
+        isAuthenticated: false
+    };
+    return auth;
+});
 
-createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window) {
+// Add an interceptor for AJAX errors
+//================================================
+createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $location, AuthenticationService) {
   return {
     request: function (config) {
       config.headers = config.headers || {};
-      if ($window.localStorage.token) {
-        config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
+      if ($window.sessionStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
         $log.log('I have a token');
       }
       return config;
     },
+
+    requestError: function(rejection) {
+      return $q.reject(rejection);
+    },
+
+    /* Set Authentication.isAuthenticated to true if 200 recieved */
+    response: function(response){
+      if (response !== null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated){
+          AuthenticationService.isAuthenticated = true;
+      }
+      return response || $q.when(response);
+    },
+
+    /* Revoke client authentication if 401 is received */
     responseError: function (rejection) {
-      if (rejection.status === 401) {
+      if (rejection !== null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
         $log.log('responseError');
         // handle the case where the user is not authenticated
-
+        delete $window.sessionStorage.token;
+        AuthenticationService.isAuthenticated = false;
+        $location.path('/login');
       }
       return $q.reject(rejection);
     }
@@ -195,15 +150,10 @@ createApp.config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 });
 
-// $http({url: '/api/restricted', method: 'GET'})
-// .success(function (data, status, headers, config) {
-//   console.log(data.name); // Should log 'foo'
-// });
 
 
-  /***************************
-   * Admin controller
-   ***************************/
+  // Admin Controller
+  //================================================
   createApp.controller('adminController', function($scope, $http) {
     // List of users got from the server
     $scope.users = [];
