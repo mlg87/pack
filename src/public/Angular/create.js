@@ -55,10 +55,11 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
       redirectTo:'/'
     });
   }) // end of config()
-  .run(function ($rootScope, $location, AuthenticationService) {
+  .run(function ($rootScope, $location, $window, AuthenticationService) {
     $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
-        if (nextRoute.access.requiredLogin && !AuthenticationService.isAuthenticated) {
-            $location.path("/");
+        // Redirect only if both isAuthenticaed is false an no token is set
+        if (nextRoute !== null && nextRoute.access !== null && nextRoute.access.requiredLogin && !AuthenticationService.isAuthenticated && !window.sessionStorage.token) {
+            $location.path("/login");
         }
     });
   });

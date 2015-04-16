@@ -1,3 +1,9 @@
+Auth:
+ ☐ Fix refresh from expiring token
+   ☐ Add verifiy method to token manager
+
+
+
 SETUP:
  ☐ Get form data from search and create
    ✔ enter create activity into DB @done (15-03-14 10:55)

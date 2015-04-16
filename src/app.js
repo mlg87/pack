@@ -21,7 +21,7 @@ var passportConfig = require('./config/passport');
 
 // +++++++++++ Token auth
 var expressJwt = require('express-jwt');
-var jwt = require('jsonwebtoken');
+var secret_token = require('./config/secret.js');
 
 
 // Seed the DB with activities
@@ -31,6 +31,7 @@ var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
 var createController = require('./controllers/create.js');
 var authenticationController = require('./controllers/authenticate.js');
+var tokenManager = require('./config/token_manager.js');
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pack');
 
@@ -53,8 +54,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // +++++++++++ Protect /api routes with JWT
-var secret = 'this is the secret';
-app.use('/api', expressJwt({secret: secret}));
+// var secret = 'this is the secret';
+app.use('/api', expressJwt({secret: secret_token}));
 app.use(bodyParser.json());
 
 app.get('/', indexController.index);
@@ -69,12 +70,21 @@ app.use(function(err, req, res, next){
 
 app.post('/authenticate', authenticationController.processLogin);
 
-// app.get('/api/restricted', function (req, res) {
-//   console.log('user ' + req.user.email + ' is calling /api/restricted');
-//   res.json({
-//     name: 'foo'
-//   });
-// });
+
+// Api-specific routes:
+app.get('/api/view', findController.getAll);
+app.post('/api/view', createController.create);
+app.post('/api/search', expressJwt({secret : secret_token}), findController.search);
+
+// Templates route:
+app.get('/templates/:templateid', indexController.getTemplate);
+
+var port = process.env.PORT || 3001;
+
+var server = app.listen(port, function() {
+	console.log('Express server listening on port ' + server.address().port);
+});
+
 
 
 // app.get('/users',
@@ -100,17 +110,3 @@ app.post('/authenticate', authenticationController.processLogin);
 //   req.logOut();
 //   res.send(200);
 // });
-
-// Api-specific routes:
-app.get('/api/view', findController.getAll);
-app.post('/api/view', createController.create);
-app.post('/api/search', findController.search);
-
-// Templates route:
-app.get('/templates/:templateid', indexController.getTemplate);
-
-var port = process.env.PORT || 3001;
-
-var server = app.listen(port, function() {
-	console.log('Express server listening on port ' + server.address().port);
-});
