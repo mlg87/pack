@@ -53,28 +53,31 @@ app.use(passport.initialize());
 // Hook in the passport session management into the middleware chain.
 app.use(passport.session());
 
-// +++++++++++ Protect /api routes with JWT
-// var secret = 'this is the secret';
-app.use('/api', expressJwt({secret: secret_token}));
-app.use(bodyParser.json());
-
-app.get('/', indexController.index);
-
-
-// +++++++++++
-app.use(function(err, req, res, next){
-  if (err.constructor.name === 'UnauthorizedError') {
-    res.status(401).send('Unauthorized');
+app.all('/*', function(req, res, next) {
+  // CORS headers
+  res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  // Set custom headers for CORS
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+  if (req.method == 'OPTIONS') {
+    res.status(200).end();
+  } else {
+    next();
   }
 });
+app.get('/', indexController.index);
+
+// +++++++++++ Protect /api routes with JWT
+app.all('/api/*', tokenManager.verify);
+
+app.use(bodyParser.json());
 
 app.post('/authenticate', authenticationController.processLogin);
-
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
 app.post('/api/view', createController.create);
-app.post('/api/search', expressJwt({secret : secret_token}), findController.search);
+app.post('/api/search', findController.search);
 
 // Templates route:
 app.get('/templates/:templateid', indexController.getTemplate);

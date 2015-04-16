@@ -116,9 +116,12 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
       config.headers = config.headers || {};
       if ($window.sessionStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+        config.headers['X-Access-Token'] = $window.sessionStorage.token;
+        config.headers['X-Key'] = $window.sessionStorage.user;
+        config.headers['Content-Type'] = "application/json";
         $log.log('I have a token');
       }
-      return config;
+      return config || $q.when(config);
     },
 
     requestError: function(rejection) {
