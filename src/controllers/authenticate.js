@@ -7,7 +7,7 @@ var User = require('../models/user');
 // +++++++++++ Token auth
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
-
+var secret_token = require('../config/secret');
 /**
  * A utility function (since we'll use it a couple times)
  * to abstract out the actual login procedure, which can
@@ -30,8 +30,8 @@ var performLogin = function(req, res, next, user){
     // return res.redirect('/');
     console.log('performLogin success');
     // We are sending the profile inside the token
-    var secret = 'this is the secret';
-    var token = jwt.sign(user, secret, { expiresInMinutes: 60*5 });
+    // var secret = 'this is the secret';
+    var token = jwt.sign(user, secret_token, { expiresInMinutes: 1 });
 
     res.json({ token: token });
     return;
