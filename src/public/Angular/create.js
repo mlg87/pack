@@ -132,6 +132,9 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
     response: function(response){
       if (response !== null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated){
           AuthenticationService.isAuthenticated = true;
+          /* Look into watching with scope */
+          // $rootScope.isAuth = true;
+
       }
       return response || $q.when(response);
     },
@@ -143,6 +146,9 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
         // handle the case where the user is not authenticated
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
+        /* Look into watching with scope */
+        // $rootScope.isAuth = false;
+
         $location.path('/login');
       }
       return $q.reject(rejection);
