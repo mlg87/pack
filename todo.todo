@@ -114,6 +114,10 @@ BUILD:
  ☐ Setup JSON from form data
    ☐ reset form
    ☐ $.post to mongo
+
+NOTES:
+  http://thejackalofjavascript.com/architecting-a-restful-node-js-app/
+  https://github.com/kdelemme/blogjs
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
 
