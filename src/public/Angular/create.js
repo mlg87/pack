@@ -80,6 +80,7 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
          $window.sessionStorage.token = data.token;
          $location.path('/create');
          $log.log('token: ' , data.token );
+         $log.log('data: ' , data );
        })
        .error(function (data, status, headers, config) {
          // Erase the token if the user fails to log in
@@ -99,7 +100,17 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
       $log.log('logged out');
     }
   };
+
+  $scope.signUp = function() {
+    $log.log('user: ', $scope.user);
+    var newUser = new User.model($scope.user);
+    newUser.$save(function(savedUser){
+      $log.log('saved user');
+    });
+  };
+
 });
+
 
 createApp.factory('AuthenticationService', function() {
     var auth = {
@@ -614,6 +625,6 @@ createApp.directive('googleMaps', function(){
 createApp.directive('signup', function(){
   return {
     restrict: 'E',
-    templateUrl: '/templates/sign-up'
+    templateUrl: '/templates/signUp'
   };
 });

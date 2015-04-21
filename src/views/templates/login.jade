@@ -8,7 +8,7 @@ if error
   h3= error
 
 //- Form for handling existing user logins
-md-content.loginContainer.md-whiteframe-z3
+md-content.loginContainer.md-whiteframe-z3(ng-controller='loginController')
   form(ng-submit='login()', ng-hide='showSignup')
     div(layout-sm='column', layout, layout-padding, layout-margin)
       md-input-container(flex)

@@ -17,7 +17,7 @@ var secret_token = require('../config/secret');
  */
 var performLogin = function(req, res, next, user){
   console.log('performLogin');
-  console.log('user: ', user);
+  // console.log('user: ', user);
   // Passport injects functionality into the express ecosystem,
   // so we are able to call req.login and pass the user we want
   // logged in.
@@ -32,7 +32,10 @@ var performLogin = function(req, res, next, user){
     // var secret = 'this is the secret';
     var token = jwt.sign(user, secret_token, { expiresInMinutes: 5 });
 
-    res.json({ token: token });
+    res.json({
+      token: token,
+      field: user
+    });
     return;
   });
 };
@@ -104,6 +107,7 @@ var authenticationController = {
       password: req.body.password,
       email: req.body.email
     });
+      console.log('signup req: ', req.body);
 
     // Now that the user is created, we'll attempt to save them to the
     // database.

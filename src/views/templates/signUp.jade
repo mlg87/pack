@@ -7,16 +7,16 @@ md-content(layout-padding, layout-margin, layout-sm='column', layout-align-gt-sm
     div(layout layout-sm='column')
       md-input-container(flex)
         label First name
-        input
+        input(ng-model='user.userData.firstName')
       md-input-container(flex)
         label Last name
-        input
+        input(ng-model='user.userData.lastName')
     div(layout layout-sm='column')
       md-input-container(flex)
         label Email address
-        input
+        input(ng-model='user.userData.email')
       md-input-container(flex)
         label password
-        input(type='password')
+        input(ng-model='user.password', type='password')
     div(layout-sm='column', layout-align-gt-sm='center center', layout='column',layout-padding)
       md-button.md-raised.md-primary(flex, type='submit') Sign up
