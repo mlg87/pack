@@ -603,3 +603,11 @@ createApp.directive('googleMaps', function(){
     templateUrl: '/templates/googlemap'
   };
 });
+
+// Create Sign Up directive
+createApp.directive('signup', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/sign-up'
+  };
+});

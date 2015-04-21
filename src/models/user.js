@@ -2,15 +2,37 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+  userData: {
+    firstName: {
+      type: String,
+      required: true,
+      unique: false
+    },
+    lastName: {
+      type: String,
+      required: true,
+      unique: false
+    },
+    email: {
+      type: String,
+      require: true,
+      unique: true
+    },
+    birthday: {
+      type: String,
+      required: false,
+      unique: false
+    },
+    sex: {
+      type: String,
+      required: false,
+      unique: false
+    },
+    rating: {
+      type: 0
+    },
+    activities: {},
+    friends: {}
   },
   password: {
     type: String,
@@ -75,18 +97,3 @@ userSchema.methods.comparePassword = function(candidatePassword, next){
 
 
 module.exports = mongoose.model('User', userSchema);
-
-/*
-var User = function(fName, lName, email, password, birthday, sex) {
-  this.fName = fName;
-  this.lName = lName;
-  this.email = email;
-  this.password = password;
-  this.birthday = birthday;
-  this.sex = sex;
-  this.rating = 0;
-  this.events = [];
-  this.friends = [];
-};
-
- */
