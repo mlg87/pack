@@ -19,6 +19,11 @@ var passport = require('passport');
 // See users to DB
 var passportConfig = require('./config/passport');
 
+// +++++++++++ Token auth
+var expressJwt = require('express-jwt');
+var secret_token = require('./config/secret.js');
+
+
 // Seed the DB with activities
 require('./models/seeds/activitySeeds.js');
 
@@ -26,6 +31,7 @@ var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
 var createController = require('./controllers/create.js');
 var authenticationController = require('./controllers/authenticate.js');
+var tokenManager = require('./config/token_manager.js');
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/pack');
 
@@ -41,57 +47,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(flash());
 
-// Initialize the express session. Needs to be given a secret property.
-// Also requires the resave option (will not force a resave of session if not modified)
-// as well as saveUninitialized(will not automatically create empty data)
-app.use(session({
-  secret: 'secret',
-  cookie: {
-    maxAge: new Date(Date.now() + 14*24*60*60*1000), // 14 days, in milliseconds
-    expires: new Date(Date.now() + 14*24*60*60*1000) // 14 days, in milliseconds
-  },
-  resave: false,
-  saveUninitialized: false
-}));
-
-var auth = function(req, res, next){
-  if (!req.isAuthenticated())
-    res.send(401);
-  else
-    next();
-};
-
 // Hook in passport to the middleware chain
 app.use(passport.initialize());
 
 // Hook in the passport session management into the middleware chain.
 app.use(passport.session());
 
+app.all('/*', function(req, res, next) {
+  // CORS headers
+  res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  // Set custom headers for CORS
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+  if (req.method == 'OPTIONS') {
+    res.status(200).end();
+  } else {
+    next();
+  }
+});
 app.get('/', indexController.index);
 
-app.get('/users',
-  passportConfig.ensureAuthenticated,
-  function(req, res){
-  res.send([{name: "user1"}, {name: "user2"}]);
-});
+// +++++++++++ Protect /api routes with JWT
+app.all('/api/*', tokenManager.verify);
 
-// TEST IF THE USER IS LOGGED IN
-app.get('/loggedin', function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-});
+app.use(bodyParser.json());
 
-// ROUTE TO LOG IN
-app.post('/login',
-  authenticationController.processLogin,
-  function(req, res) {
-    res.send(req.user);
-});
-
-// ROUTE TO LOG OUT
-app.post('/logout', function(req, res){
-  req.logOut();
-  res.send(200);
-});
+app.post('/authenticate', authenticationController.processLogin);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
@@ -106,3 +87,29 @@ var port = process.env.PORT || 3001;
 var server = app.listen(port, function() {
 	console.log('Express server listening on port ' + server.address().port);
 });
+
+
+
+// app.get('/users',
+//   passportConfig.ensureAuthenticated,
+//   function(req, res){
+//   res.send([{name: "user1"}, {name: "user2"}]);
+// });
+
+// TEST IF THE USER IS LOGGED IN
+// app.get('/loggedin', function(req, res) {
+//   res.send(req.isAuthenticated() ? req.user : '0');
+// });
+
+// ROUTE TO LOG IN
+// app.post('/login',
+//   authenticationController.processLogin,
+//   function(req, res) {
+//     res.send(req.user);
+// });
+
+// ROUTE TO LOG OUT
+// app.post('/logout', function(req, res){
+//   req.logOut();
+//   res.send(200);
+// });

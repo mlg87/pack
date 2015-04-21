@@ -15,8 +15,8 @@ var userSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
-
+  },
+  token : String
 });
 
 // Hook into pre-save DB flow. Will call callback whenever
