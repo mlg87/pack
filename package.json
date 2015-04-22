@@ -26,12 +26,12 @@
     "gulp-uglify": "^1.1.0"
   },
   "name": "pack",
+  "engines": {
+    "node": "0.10.36"
+  },
   "version": "1.0.0",
   "main": "gulpfile.js",
   "scripts": {
-    "engines": {
-      "node": "0.10.36"
-    },
     "start": "node ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
