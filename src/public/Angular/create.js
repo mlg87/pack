@@ -56,11 +56,18 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
     });
   }) // end of config()
   .run(function ($rootScope, $location, $window, AuthenticationService) {
-    $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
+    $rootScope.$on("$routeChangeStart",
+      function(event, nextRoute, currentRoute) {
         // Redirect only if both isAuthenticaed is false an no token is set
         if (nextRoute !== null && nextRoute.access !== null && nextRoute.access.requiredLogin && !AuthenticationService.isAuthenticated && !window.sessionStorage.token) {
             $location.path("/login");
         }
+    });
+    $rootScope.$on('$stateChangeSuccess',
+      function(event){
+        if (!$window.ga)
+            return;
+        $window.ga('send', 'pageview', { page: $location.path() });
     });
   });
 
