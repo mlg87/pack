@@ -63,11 +63,9 @@ createApp.config(function($routeProvider,$httpProvider,$locationProvider){
             $location.path("/login");
         }
     });
-    $rootScope.$on('$stateChangeSuccess',
+    $rootScope.$on('$viewContentLoaded',
       function(event){
-        if (!$window.ga)
-            return;
-        $window.ga('send', 'pageview', { page: $location.path() });
+        $window.ga('send', 'pageview', { page: $location.url() });
     });
   });
 
