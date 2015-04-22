@@ -20,7 +20,7 @@ var passport = require('passport');
 var passportConfig = require('./config/passport');
 
 // +++++++++++ Token auth
-var expressJwt = require('express-jwt');
+// var expressJwt = require('express-jwt');
 var secret_token = require('./config/secret.js');
 
 
