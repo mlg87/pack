@@ -2,21 +2,6 @@
 // persistence, we'll use that as well.
 var User = require('../models/user');
 
-// seed a user
-var user = new User({
-  username: 'kbs',
-  email: 'kbs177@gmail.com',
-  password: 'test'
-});
-
-// user.save(function(err, user){
-//   if(err){
-//     console.log(err);
-//   } else {
-//     console.log('Seeded user');
-//   }
-// });
-
 // First, we'll need passport...
 var passport = require('passport');
 
@@ -48,22 +33,25 @@ passport.deserializeUser(function(id, done){
 
 // Here we define the strategy for our local authentication.
 // This will be utilized by passport whenever we reference it.
-var localStrategy = new LocalStrategy(function(username, password, done){
+var localStrategy = new LocalStrategy({
+  // Overide username and password fields for local strategy
+  usernameField: 'email'
+  },
+  function(email, password, done){
 
-  // Given a username and password, let's try to authenticate this user.
+
+  // Given a email and password, let's try to authenticate this user.
   // We start by seeing if the username exists in our DB
-  User.findOne({username: username}, function(err, user){
+  User.findOne({'userData.email' : email}, function(err, user){
 
     // If there was an error, allow execution to move to the next middleware
     if(err) {
-      console.log('findOne error: ', err);
       return done(err);
     }
 
     // If no user was found with that username, continue to the next middleware
     // and tell passport authentication failed.
     if(!user) {
-      console.log('no user');
       return done(null, false);
     }
 
@@ -74,17 +62,14 @@ var localStrategy = new LocalStrategy(function(username, password, done){
 
       // If there was an error, allow execution to move to the next middleware
       if(err) {
-        console.log('comparePassword err');
         return done(err);
       }
 
       // isMatch is true if the passwords match, and false if they don't
       if(isMatch){
-        console.log('password match');
         // Success! Tell passport we made it.
         return done(err, user);
       } else {
-        console.log('password does not match');
         // Password was not correct. Tell passport the login failed.
         return done(null, false);
       }

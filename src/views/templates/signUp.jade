@@ -1,0 +1,23 @@
+if error
+  h3= error
+
+//- Form for creating new user
+md-content(layout-sm='column', layout-align-gt-sm='center center')
+  form(ng-submit='signUp()')
+    h1 Create a new account
+    div(layout layout-sm='column')
+      md-input-container(flex)
+        label First name
+        input(ng-model='user.userData.firstName')
+      md-input-container(flex)
+        label Last name
+        input(ng-model='user.userData.lastName')
+    div(layout layout-sm='column')
+      md-input-container(flex)
+        label Email address
+        input(ng-model='user.userData.email')
+      md-input-container(flex)
+        label password
+        input(ng-model='user.password', type='password')
+    div(layout-sm='column', layout-align-gt-sm='center center', layout='column',layout-padding)
+      md-button.md-raised.md-primary(flex, type='submit') Sign up

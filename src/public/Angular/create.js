@@ -72,7 +72,7 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
   // $scope.user = {};
    $scope.message = '';
    $scope.login = function () {
-     $log.log('login called');
+     $log.log('login called', $scope.user);
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
@@ -80,6 +80,7 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
          $window.sessionStorage.token = data.token;
          $location.path('/create');
          $log.log('token: ' , data.token );
+         $log.log('data: ' , data );
        })
        .error(function (data, status, headers, config) {
          // Erase the token if the user fails to log in
@@ -99,7 +100,22 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
       $log.log('logged out');
     }
   };
+
+  $scope.signUp = function() {
+    $log.log('user: ', $scope.user);
+    // Post route to add new user to DB
+      $http.post('/user', $scope.user).success(function(data){
+        AuthenticationService.isAuthenticated = true;
+        $window.sessionStorage.token = data.token;
+        $location.path('/create');
+        $log.log('success post: ', data);
+      }).error(function(data){
+        $log.warn('error: ', data);
+      });
+  };
+
 });
+
 
 createApp.factory('AuthenticationService', function() {
     var auth = {
@@ -132,6 +148,9 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
     response: function(response){
       if (response !== null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated){
           AuthenticationService.isAuthenticated = true;
+          /* Look into watching with scope */
+          // $rootScope.isAuth = true;
+
       }
       return response || $q.when(response);
     },
@@ -143,6 +162,9 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
         // handle the case where the user is not authenticated
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
+        /* Look into watching with scope */
+        // $rootScope.isAuth = false;
+
         $location.path('/login');
       }
       return $q.reject(rejection);
@@ -601,5 +623,13 @@ createApp.directive('googleMaps', function(){
   return {
     restrict: 'E',
     templateUrl: '/templates/googlemap'
+  };
+});
+
+// Create Sign Up directive
+createApp.directive('signup', function(){
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/signUp'
   };
 });
