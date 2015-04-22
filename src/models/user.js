@@ -6,33 +6,16 @@ var userSchema = mongoose.Schema({
     firstName: {
       type: String,
       required: true,
-      unique: false
     },
     lastName: {
       type: String,
       required: true,
-      unique: false
     },
     email: {
       type: String,
       require: true,
       unique: true
-    },
-    birthday: {
-      type: String,
-      required: false,
-      unique: false
-    },
-    sex: {
-      type: String,
-      required: false,
-      unique: false
-    },
-    rating: {
-      type: 0
-    },
-    activities: {},
-    friends: {}
+    }
   },
   password: {
     type: String,

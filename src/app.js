@@ -25,7 +25,7 @@ var secret_token = require('./config/secret.js');
 
 
 // Seed the DB with activities
-require('./models/seeds/activitySeeds.js');
+// require('./models/seeds/activitySeeds.js');
 
 var indexController = require('./controllers/index.js');
 var findController = require('./controllers/find.js');
@@ -73,7 +73,7 @@ app.all('/api/*', tokenManager.verify);
 app.use(bodyParser.json());
 
 app.post('/authenticate', authenticationController.processLogin);
-app.post('/user', createController.createUser);
+app.post('/user', authenticationController.processSignup);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);

@@ -110,6 +110,9 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
 
     // Post route to add new user to DB
         $http.post('/user', $scope.user).success(function(data){
+          AuthenticationService.isAuthenticated = true;
+          $window.sessionStorage.token = data.token;
+          $location.path('/create');
           $log.log('success post: ', data);
         }).error(function(data){
           $log.warn('error: ', data);

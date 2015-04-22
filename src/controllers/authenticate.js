@@ -34,7 +34,7 @@ var performLogin = function(req, res, next, user){
 
     res.json({
       token: token,
-      field: user
+      data: user.userData
     });
     return;
   });
@@ -77,7 +77,7 @@ var authenticationController = {
       // which will be read and used in the "login" handler above and then redirect
       // to that handler.
       if(!user) {
-        console.log('error', 'Error logging in. Please try again.');
+        console.log('Error logging in. Please try again.');
         return res.redirect('#/login');
       }
 
@@ -102,13 +102,8 @@ var authenticationController = {
     // work regardless of how the data is sent (post, get).
     // It is safer to send as post, however, because the actual data won't
     // show up in browser history.
-    var user = new User({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email
-    });
-      console.log('signup req: ', req.body);
 
+    var user = new User(req.body);
     // Now that the user is created, we'll attempt to save them to the
     // database.
     user.save(function(err, user){
@@ -117,7 +112,6 @@ var authenticationController = {
       // information. We can customize the printed message based on
       // the error mongoose encounters
       if(err) {
-
         // By default, we'll show a generic message...
         var errorMessage = 'An error occured, please try again';
 
@@ -130,7 +124,6 @@ var authenticationController = {
 
         // Flash the message and redirect to the login view to
         // show it.
-        console.log('error', errorMessage);
         return res.redirect('#/login');
       }
 

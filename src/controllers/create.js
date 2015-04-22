@@ -12,8 +12,11 @@ var indexController = {
     var newUser = new User(req.body);
 
     newUser.save(function(err, results){
+      console.log('user err: ', err);
       console.log('saved: ', results);
-      res.send(results);
+      res.send({
+        data: results
+      });
     });
 
   }
