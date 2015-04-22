@@ -2,21 +2,26 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 
 var userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+  userData: {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      require: true,
+      unique: true
+    }
   },
   password: {
     type: String,
     required: true
-  }
-
+  },
+  token : String
 });
 
 // Hook into pre-save DB flow. Will call callback whenever
@@ -75,18 +80,3 @@ userSchema.methods.comparePassword = function(candidatePassword, next){
 
 
 module.exports = mongoose.model('User', userSchema);
-
-/*
-var User = function(fName, lName, email, password, birthday, sex) {
-  this.fName = fName;
-  this.lName = lName;
-  this.email = email;
-  this.password = password;
-  this.birthday = birthday;
-  this.sex = sex;
-  this.rating = 0;
-  this.events = [];
-  this.friends = [];
-};
-
- */

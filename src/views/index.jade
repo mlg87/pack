@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  .navbar.navbar-fixed-top.navBar(role="navigation")
+  .navbar.navbar-fixed-top.navBar(role="navigation", ng-controller="loginController")
     .container
       .navbar-header
         a.navbar-brand.navbar-form(rel="home", href="#/")
@@ -20,13 +20,8 @@ block content
               b.caret
             ul.dropdown-menu(role='menu')
               li
-                a(href="#/") Profile
-              li.divider
-              li
-                a(href="#/") Login
-              li
-                a(href="#/") Admin
-
+                a(href="#/login") Login
+                a(href="#/", ng-click='logout()') Logout
         .col-sm-3.col-md-3.pull-right
           form.navbar-form(role="search")
             .input-group
