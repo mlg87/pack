@@ -72,20 +72,18 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
   // $scope.user = {};
    $scope.message = '';
    $scope.login = function () {
-     $log.log('login called', $scope.user);
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
          AuthenticationService.isAuthenticated = true;
          $window.sessionStorage.token = data.token;
          $location.path('/create');
-         $log.log('token: ' , data.token );
-         $log.log('data: ' , data );
+         // $log.log('data: ' , data );
        })
        .error(function (data, status, headers, config) {
          // Erase the token if the user fails to log in
          delete $window.sessionStorage.token;
-         $log.log('.error from login');
+         // $log.log('.error from login');
 
          // Handle login errors here
          $scope.message = 'Error: Invalid user or password';
@@ -97,20 +95,19 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
       AuthenticationService.isAuthenticated = false;
       delete $window.sessionStorage.token;
       $location.path('/');
-      $log.log('logged out');
+      // $log.log('logged out');
     }
   };
 
   $scope.signUp = function() {
-    $log.log('user: ', $scope.user);
     // Post route to add new user to DB
       $http.post('/user', $scope.user).success(function(data){
         AuthenticationService.isAuthenticated = true;
         $window.sessionStorage.token = data.token;
         $location.path('/create');
-        $log.log('success post: ', data);
+        // $log.log('success post: ', data);
       }).error(function(data){
-        $log.warn('error: ', data);
+        // $log.warn('error: ', data);
       });
   };
 
@@ -135,7 +132,7 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
         config.headers['X-Access-Token'] = $window.sessionStorage.token;
         config.headers['X-Key'] = $window.sessionStorage.user;
         config.headers['Content-Type'] = "application/json";
-        $log.log('I have a token');
+        // $log.log('I have a token');
       }
       return config || $q.when(config);
     },
@@ -158,7 +155,6 @@ createApp.factory('authInterceptor', function ($log, $rootScope, $q, $window, $l
     /* Revoke client authentication if 401 is received */
     responseError: function (rejection) {
       if (rejection !== null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
-        $log.log('responseError');
         // handle the case where the user is not authenticated
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
@@ -406,7 +402,6 @@ createApp.controller('searchController', ['$scope','$log','$filter','Activity','
             $scope.searchValues = search;
             $rootScope.results = data;
         }).error(function(data){
-          $log.warn('error: ', data);
         });
       };
 
