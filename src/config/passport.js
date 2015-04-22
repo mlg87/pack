@@ -33,13 +33,16 @@ passport.deserializeUser(function(id, done){
 
 // Here we define the strategy for our local authentication.
 // This will be utilized by passport whenever we reference it.
-var localStrategy = new LocalStrategy(function(email, password, done){
-  console.log('local strategy: ', email);
-  // Given a username and password, let's try to authenticate this user.
+var localStrategy = new LocalStrategy({
+  // Overide username and password fields for local strategy
+  usernameField: 'email'
+  },
+  function(email, password, done){
+
+
+  // Given a email and password, let's try to authenticate this user.
   // We start by seeing if the username exists in our DB
-  User.findOne({userData: {
-    email: email
-  }}, function(err, user){
+  User.findOne({'userData.email' : email}, function(err, user){
 
     // If there was an error, allow execution to move to the next middleware
     if(err) {
@@ -59,17 +62,14 @@ var localStrategy = new LocalStrategy(function(email, password, done){
 
       // If there was an error, allow execution to move to the next middleware
       if(err) {
-        console.log('comparePassword err');
         return done(err);
       }
 
       // isMatch is true if the passwords match, and false if they don't
       if(isMatch){
-        console.log('password match');
         // Success! Tell passport we made it.
         return done(err, user);
       } else {
-        console.log('password does not match');
         // Password was not correct. Tell passport the login failed.
         return done(null, false);
       }

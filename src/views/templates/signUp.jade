@@ -2,8 +2,9 @@ if error
   h3= error
 
 //- Form for creating new user
-md-content(layout-padding, layout-margin, layout-sm='column', layout-align-gt-sm='center center')
+md-content(layout-sm='column', layout-align-gt-sm='center center')
   form(ng-submit='signUp()')
+    h1 Create a new account
     div(layout layout-sm='column')
       md-input-container(flex)
         label First name

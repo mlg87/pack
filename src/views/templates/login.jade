@@ -8,20 +8,21 @@ if error
   h3= error
 
 //- Form for handling existing user logins
-md-content.loginContainer.md-whiteframe-z3(ng-controller='loginController')
+md-content.loginContainer.md-whiteframe-z3(layout-padding, layout-margin,ng-controller='loginController')
   form(ng-submit='login()', ng-hide='showSignup')
-    div(layout-sm='column', layout, layout-padding, layout-margin)
+    h1 Login
+    div(layout-sm='column', layout)
       md-input-container(flex)
         label Email address
-        input(ng-model='user.username', type='text')
+        input(ng-model='user.email', type='text')
       md-input-container(flex)
         label Password
         input(ng-model='user.password', type='password')
     div(layout-sm='column', layout-align-gt-sm='center center', layout='column',layout-padding)
       md-button.md-raised.md-primary(flex, type='submit') login
       p
-        | Haven't signed up yet? Do so
-        a(href='', ng-click='showSignup=true')  here
+        | Don't have an account? &nbsp
+        a(href='', ng-click='showSignup=true') Sign up
   div(ng-show='showSignup')
     signup
 

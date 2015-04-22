@@ -40,7 +40,7 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add cookieParser and flash middleware.
@@ -69,8 +69,6 @@ app.get('/', indexController.index);
 
 // +++++++++++ Protect /api routes with JWT
 app.all('/api/*', tokenManager.verify);
-
-app.use(bodyParser.json());
 
 app.post('/authenticate', authenticationController.processLogin);
 app.post('/user', authenticationController.processSignup);

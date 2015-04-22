@@ -72,7 +72,7 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
   // $scope.user = {};
    $scope.message = '';
    $scope.login = function () {
-     $log.log('login called');
+     $log.log('login called', $scope.user);
      $http
        .post('/authenticate', $scope.user)
        .success(function (data, status, headers, config) {
@@ -103,20 +103,15 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
 
   $scope.signUp = function() {
     $log.log('user: ', $scope.user);
-    // var newUser = new User.model($scope.user);
-    // newUser.$save(function(savedUser){
-    //   $log.log('saved user');
-    // });
-
     // Post route to add new user to DB
-        $http.post('/user', $scope.user).success(function(data){
-          AuthenticationService.isAuthenticated = true;
-          $window.sessionStorage.token = data.token;
-          $location.path('/create');
-          $log.log('success post: ', data);
-        }).error(function(data){
-          $log.warn('error: ', data);
-        });
+      $http.post('/user', $scope.user).success(function(data){
+        AuthenticationService.isAuthenticated = true;
+        $window.sessionStorage.token = data.token;
+        $location.path('/create');
+        $log.log('success post: ', data);
+      }).error(function(data){
+        $log.warn('error: ', data);
+      });
   };
 
 });
