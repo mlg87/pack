@@ -103,10 +103,17 @@ createApp.controller('loginController', function ($scope, $http, $window, $locat
 
   $scope.signUp = function() {
     $log.log('user: ', $scope.user);
-    var newUser = new User.model($scope.user);
-    newUser.$save(function(savedUser){
-      $log.log('saved user');
-    });
+    // var newUser = new User.model($scope.user);
+    // newUser.$save(function(savedUser){
+    //   $log.log('saved user');
+    // });
+
+    // Post route to add new user to DB
+        $http.post('/user', $scope.user).success(function(data){
+          $log.log('success post: ', data);
+        }).error(function(data){
+          $log.warn('error: ', data);
+        });
   };
 
 });

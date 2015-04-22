@@ -73,10 +73,11 @@ app.all('/api/*', tokenManager.verify);
 app.use(bodyParser.json());
 
 app.post('/authenticate', authenticationController.processLogin);
+app.post('/user', createController.createUser);
 
 // Api-specific routes:
 app.get('/api/view', findController.getAll);
-app.post('/api/view', createController.create);
+app.post('/api/view', createController.createActivity);
 app.post('/api/search', findController.search);
 
 // Templates route:
